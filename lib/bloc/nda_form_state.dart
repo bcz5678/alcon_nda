@@ -41,7 +41,7 @@ class NDAFormState extends Equatable{
   late GuestData? guestData;
   late ClientData? clientData;
   late EventData? eventData;
-  late List<Map<String, dynamic>>? experiencesData;
+  late List<ExperienceData>? experiencesData;
 
   NDAFormState copyWith({
     FormzSubmissionStatus? formzSubmissionStatus,
@@ -53,7 +53,7 @@ class NDAFormState extends Equatable{
     GuestData? guestData,
     ClientData? clientData,
     EventData? eventData,
-    List<Map<String, dynamic>>? experiencesData,
+    List<ExperienceData>? experiencesData,
   }) {
     return NDAFormState(
       formzSubmissionStatus: formzSubmissionStatus ?? this.formzSubmissionStatus,

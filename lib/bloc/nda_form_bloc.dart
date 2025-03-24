@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:alcon_flex_nda/data/data.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:alcon_flex_nda/data/data.dart';
 
 part 'nda_form_event.dart';
 part 'nda_form_state.dart';
@@ -51,12 +53,28 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       Emitter<NDAFormState> emit
       ) {
 
+    ClientData clientData = getClientDataFromLocal();
+
+    emit(
+        state.copyWith(
+          clientData: clientData,
+        )
+    );
+
   }
 
   void onNDAGetAllExperiencesData(
       NDAGetAllExperiencesData event,
       Emitter<NDAFormState> emit
       ) {
+
+    List<ExperienceData> experiencesList = getGetAllExperiencesDataFromLocal();
+
+    emit(
+        state.copyWith(
+          experiencesData: experiencesList,
+        )
+    );
 
   }
 
@@ -93,13 +111,42 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
 
 
   EventData getEventDataFromLocal() {
-   return EventData(
-     eventDisplayName: "American Academy of Ophthalmology",
-     eventDate: DateTime.now(),
-     eventState: 'llinois',
-     eventCity: 'Chicago ',
-     eventCongressConvention: 'American Academy of Ophthalmology [October 1-3]',
-   );
+    var response = jsonDecode(eventJsonData);
+
+    return EventData(
+      eventDisplayName: response["eventDisplayName"] as String,
+      eventDate: response["eventDate"] != "" ? DateTime.parse(response["eventDate"]) : DateTime.now(),
+      eventState: response["eventState"] as String,
+      eventCity: response["eventCity"] as String,
+      eventCongressConvention: response["eventCongressConvention"] as String,
+    );
+  }
+
+  List<ExperienceData> getGetAllExperiencesDataFromLocal() {
+    List<ExperienceData> returnList = [];
+    var response = jsonDecode(experiencesJsonData);
+
+    for (var item in response["data"]) {
+      returnList.add(
+          ExperienceData(
+            name: item["name"] as String,
+            description: item["description"] as String,
+            logo: item["logo"] as String,
+          )
+      );
+    }
+    return returnList;
+  }
+
+  ClientData getClientDataFromLocal() {
+    var response = jsonDecode(clientJsonData);
+
+    return ClientData(
+      clientBySignature: response["clientBySignature"],
+      clientName: response["clientName"],
+      clientTitle: response["clientTitle"],
+      clientDate: response["clientDate"],
+    );
   }
 }
 
