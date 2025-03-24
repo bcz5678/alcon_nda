@@ -37,6 +37,13 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       Emitter<NDAFormState> emit
       ) {
 
+    EventData _eventdata = getEventDataFromLocal();
+
+    emit(
+        state.copyWith(
+          eventData: _eventdata
+        )
+    );
   }
 
   void onNDAGetClientData(

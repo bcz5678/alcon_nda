@@ -30,7 +30,6 @@ class NDAFormState extends Equatable{
     fullNameInputValid: false,
     titleInputValid: false,
     guestData: GuestData(),
-    eventData: getEventDataFromLocal(),
   );
 
   final FormzSubmissionStatus? formzSubmissionStatus;
@@ -51,7 +50,10 @@ class NDAFormState extends Equatable{
     TitleInput? titleInput,
     bool? fullNameInputValid,
     bool? titleInputValid,
-    GuestData? guestData
+    GuestData? guestData,
+    ClientData? clientData,
+    EventData? eventData,
+    List<Map<String, dynamic>>? experiencesData,
   }) {
     return NDAFormState(
       formzSubmissionStatus: formzSubmissionStatus ?? this.formzSubmissionStatus,
@@ -61,6 +63,9 @@ class NDAFormState extends Equatable{
       fullNameInputValid: fullNameInputValid ?? this.fullNameInputValid,
       titleInputValid: titleInputValid ?? this.titleInputValid,
       guestData: guestData ?? this.guestData,
+      clientData: clientData ?? this.clientData,
+      eventData: eventData ?? this.eventData,
+      experiencesData: experiencesData ?? this.experiencesData,
     );
   }
 
@@ -72,7 +77,10 @@ class NDAFormState extends Equatable{
     titleInput,
     fullNameInputValid,
     titleInputValid,
-    guestData
+    guestData,
+    clientData,
+    eventData,
+    experiencesData,
   ];
 }
 
