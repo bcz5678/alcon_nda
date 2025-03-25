@@ -33,9 +33,7 @@ class _StepTwoState extends State<StepTwo> {
 
     if(state.selectedExperiences!.length > 0) {
       context.read<NDAFormBloc>()
-          .add(NDAFormStepSubmitted(
-          nextStep: NDAFormStep.signature
-      )
+          .add(NDAFormExperiencesSubmitted()
       );
 
       Navigator.push(

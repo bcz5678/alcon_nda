@@ -74,9 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     if (validList.every((val) => val == true)) {
-      context.read<NDAFormBloc>().add(
-          NDAFormStepSubmitted(
-              nextStep: NDAFormStep.addExperiences));
+      context.read<NDAFormBloc>().add(NDAFormDetailsSubmitted());
 
       Navigator.push(
         context,

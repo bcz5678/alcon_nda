@@ -90,13 +90,18 @@ class NDAFormZipcodeChanged extends NDAFormEvent{
 }
 
 
-class NDAFormStepSubmitted extends NDAFormEvent{
-  const NDAFormStepSubmitted({required this.nextStep});
+class NDAFormDetailsSubmitted extends NDAFormEvent{
+  const NDAFormDetailsSubmitted();
 
-  final NDAFormStep nextStep;
+  @override
+  List<Object?> get props => [];
+}
 
-@override
-List<Object?> get props => [nextStep];
+class NDAFormExperiencesSubmitted extends NDAFormEvent{
+  const NDAFormExperiencesSubmitted();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class NDAFormExperienceSelected extends NDAFormEvent {

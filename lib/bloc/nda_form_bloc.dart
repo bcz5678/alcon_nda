@@ -13,6 +13,9 @@ part 'nda_form_state.dart';
 
 class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
   NDAFormBloc() : super(NDAFormState.initial()) {
+    on<NDAGetEventData>(onNDAGetEventData);
+    on<NDAGetClientData>(onNDAGetClientData);
+    on<NDAGetAllExperiencesData>(onNDAGetAllExperiencesData);
     on<NDAFormFullNameChanged>(onNDAFormFullNameChanged);
     on<NDAFormTitleChanged>(onNDAFormTitleChanged);
     on<NDAFormAddress1Changed>(onNDAFormAddress1Changed);
@@ -20,13 +23,61 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     on<NDAFormCityChanged>(onNDAFormCityChanged);
     on<NDAFormStateAbbrChanged>(onNDAFormStateAbbrChanged);
     on<NDAFormZipcodeChanged>(onNDAFormZipcodeChanged);
-    on<NDAFormStepSubmitted>(onNDAFormStepSubmitted);
-    on<NDAGetEventData>(onNDAGetEventData);
-    on<NDAGetClientData>(onNDAGetClientData);
-    on<NDAGetAllExperiencesData>(onNDAGetAllExperiencesData);
+    on<NDAFormDetailsSubmitted>(onNDAFormDetailsSubmitted);
+    on<NDAFormExperiencesSubmitted>(onNDAFormExperiencesSubmitted);
     on<NDAFormExperienceSelected>(onNDAFormExperienceSelected);
     on<NDAFormExperienceUnselected>(onNDAFormExperienceUnselected);
   }
+
+  ///
+  /// SECTION - Getting initial DataSets for display and signing
+  ///
+
+  void onNDAGetEventData(
+      NDAGetEventData event,
+      Emitter<NDAFormState> emit
+      ) {
+
+    EventData _eventdata = getEventDataFromLocal();
+
+    emit(
+        state.copyWith(
+            eventData: _eventdata
+        )
+    );
+  }
+
+  void onNDAGetClientData(
+      NDAGetClientData event,
+      Emitter<NDAFormState> emit
+      ) {
+
+    ClientData clientData = getClientDataFromLocal();
+
+    emit(
+        state.copyWith(
+          clientData: clientData,
+        )
+    );
+  }
+
+  void onNDAGetAllExperiencesData(
+      NDAGetAllExperiencesData event,
+      Emitter<NDAFormState> emit
+      ) {
+
+    List<ExperienceData> experiencesList = getGetAllExperiencesDataFromLocal();
+
+    emit(
+        state.copyWith(
+          experiencesData: experiencesList,
+        )
+    );
+  }
+
+  ///
+  /// SECTION - Form Inputs tracking and validation
+  ///
 
   void onNDAFormFullNameChanged(
       NDAFormFullNameChanged event,
@@ -120,62 +171,42 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     );
   }
 
+  ///
+  /// SECTION - Page Step submissions and moving to next page
+  ///
 
-  void onNDAGetEventData(
-      NDAGetEventData event,
+
+  void onNDAFormDetailsSubmitted(
+      NDAFormDetailsSubmitted event,
       Emitter<NDAFormState> emit
       ) {
 
-    EventData _eventdata = getEventDataFromLocal();
-
-    emit(
-        state.copyWith(
-            eventData: _eventdata
-        )
-    );
-  }
-
-  void onNDAGetClientData(
-      NDAGetClientData event,
-      Emitter<NDAFormState> emit
-      ) {
-
-    ClientData clientData = getClientDataFromLocal();
-
-    emit(
-        state.copyWith(
-          clientData: clientData,
-        )
-    );
-  }
-
-  void onNDAGetAllExperiencesData(
-      NDAGetAllExperiencesData event,
-      Emitter<NDAFormState> emit
-      ) {
-
-    List<ExperienceData> experiencesList = getGetAllExperiencesDataFromLocal();
-
-    emit(
-        state.copyWith(
-          experiencesData: experiencesList,
-        )
-    );
-  }
-
-  void onNDAFormStepSubmitted(
-      NDAFormStepSubmitted event,
-      Emitter<NDAFormState> emit
-      ) {
 
     var guestData = state.guestData;
-
     guestData?.fullName = state.fullNameInput.toString();
     guestData?.title = state.titleInput.toString();
 
     emit(
         state.copyWith(
-          formStepCurrent: event.nextStep,
+          formStepCurrent: NDAFormStep.addExperiences,
+          guestData: guestData,
+        )
+    );
+  }
+
+  void onNDAFormExperiencesSubmitted(
+      NDAFormExperiencesSubmitted event,
+      Emitter<NDAFormState> emit
+      ) {
+
+
+    var guestData = state.guestData;
+    guestData?.experiencesSelected = [];
+    guestData?.experiencesSelected = state.selectedExperiences!;
+
+    emit(
+        state.copyWith(
+          formStepCurrent: NDAFormStep.signature,
           guestData: guestData,
         )
     );
