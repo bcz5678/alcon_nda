@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:alcon_flex_nda/data/data.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:alcon_flex_nda/data/data.dart';
@@ -18,6 +19,8 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     on<NDAGetEventData>(onNDAGetEventData);
     on<NDAGetClientData>(onNDAGetClientData);
     on<NDAGetAllExperiencesData>(onNDAGetAllExperiencesData);
+    on<NDAFormExperienceSelected>(onNDAFormExperienceSelected);
+    on<NDAFormExperienceUnselected>(onNDAFormExperienceUnselected);
   }
 
   void onNDAFormFullNameChanged(
@@ -109,7 +112,39 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     );
   }
 
+  void onNDAFormExperienceSelected(
+      NDAFormExperienceSelected event,
+    Emitter<NDAFormState> emit
+    ) {
 
+    List<ExperienceData>? _selectedExperiences = state.selectedExperiences;
+
+    _selectedExperiences?.add(event.experience);
+
+    emit(
+        state.copyWith(
+          selectedExperiences: _selectedExperiences,
+        )
+    );
+  }
+
+  void onNDAFormExperienceUnselected(
+      NDAFormExperienceUnselected event,
+      Emitter<NDAFormState> emit
+    ) {
+
+    List<ExperienceData>? _selectedExperiences = state.selectedExperiences;
+
+    _selectedExperiences?.remove(event.experience);
+
+    emit(
+        state.copyWith(
+          selectedExperiences: _selectedExperiences,
+        )
+    );
+  }
+
+  
   EventData getEventDataFromLocal() {
     var response = jsonDecode(eventJsonData);
 

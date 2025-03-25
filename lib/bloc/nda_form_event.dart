@@ -52,3 +52,21 @@ class NDAFormStepSubmitted extends NDAFormEvent{
 @override
 List<Object?> get props => [nextStep];
 }
+
+class NDAFormExperienceSelected extends NDAFormEvent {
+  const NDAFormExperienceSelected(this.experience);
+
+  final ExperienceData experience;
+
+  @override
+  List<Object?> get props => [experience];
+}
+
+class NDAFormExperienceUnselected extends NDAFormEvent {
+  const NDAFormExperienceUnselected(this.experience);
+
+  final ExperienceData experience;
+
+  @override
+  List<Object?> get props => [experience];
+}

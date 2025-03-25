@@ -19,6 +19,7 @@ class NDAFormState extends Equatable{
     this.clientData,
     this.eventData,
     this.experiencesData,
+    this.selectedExperiences,
 });
 
   NDAFormState.initial()
@@ -30,6 +31,7 @@ class NDAFormState extends Equatable{
     fullNameInputValid: false,
     titleInputValid: false,
     guestData: GuestData(),
+    selectedExperiences: [],
   );
 
   final FormzSubmissionStatus? formzSubmissionStatus;
@@ -42,6 +44,7 @@ class NDAFormState extends Equatable{
   late ClientData? clientData;
   late EventData? eventData;
   late List<ExperienceData>? experiencesData;
+  late List<ExperienceData>? selectedExperiences;
 
   NDAFormState copyWith({
     FormzSubmissionStatus? formzSubmissionStatus,
@@ -54,6 +57,7 @@ class NDAFormState extends Equatable{
     ClientData? clientData,
     EventData? eventData,
     List<ExperienceData>? experiencesData,
+    List<ExperienceData>? selectedExperiences,
   }) {
     return NDAFormState(
       formzSubmissionStatus: formzSubmissionStatus ?? this.formzSubmissionStatus,
@@ -66,6 +70,7 @@ class NDAFormState extends Equatable{
       clientData: clientData ?? this.clientData,
       eventData: eventData ?? this.eventData,
       experiencesData: experiencesData ?? this.experiencesData,
+      selectedExperiences: selectedExperiences ?? this.selectedExperiences,
     );
   }
 
@@ -81,6 +86,7 @@ class NDAFormState extends Equatable{
     clientData,
     eventData,
     experiencesData,
+    selectedExperiences,
   ];
 }
 

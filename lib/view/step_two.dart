@@ -1,4 +1,6 @@
 import 'package:alcon_flex_nda/app.dart';
+import 'package:alcon_flex_nda/data/data.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,12 +18,10 @@ class StepTwo extends StatefulWidget {
 class _StepTwoState extends State<StepTwo> {
   late List<Map<String, dynamic>> _experiencesList;
   late List<int> _selectedExperiencesIndexes;
-  late Map<String, dynamic> _fullExperiencesList;
   final ScrollController _controller = ScrollController();
 
   @override
   void initState() {
-    _fullExperiencesList = context.read<NDAFormBloc>().state.fullExperienceList;
     _selectedExperiencesIndexes = [];
     _experiencesList = [];
     super.initState();
@@ -30,8 +30,17 @@ class _StepTwoState extends State<StepTwo> {
 
   void onPressedFooterFunction() {
     var state = context.read<NDAFormBloc>().state;
-    print(_selectedExperiencesIndexes);
-    //print(selectedExperiencesReturnList(_selectedExperiencesIndexes));
+
+    context.read<NDAFormBloc>()
+      .add(NDAFormStepSubmitted(
+        nextStep: NDAFormStep.signature
+      )
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const StepThree()),
+    );
   }
 
   List<Map<String, dynamic>> selectedExperiencesReturnList(List<int> items) {
@@ -95,83 +104,100 @@ class _StepTwoState extends State<StepTwo> {
                       slivers: [
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (_selectedExperiencesIndexes.contains(index)) {
-                                  _selectedExperiencesIndexes.remove(index);
-                                } else {
-                                  _selectedExperiencesIndexes.add(index);
-                                }
-                              });
+                            (BuildContext context, int index) {
+                              return BlocBuilder<NDAFormBloc, NDAFormState>(
+                                builder: (context, state) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (_selectedExperiencesIndexes.contains(index)) {
+                                            _selectedExperiencesIndexes.remove(index);
+                                            context.read<NDAFormBloc>()
+                                              .add(NDAFormExperienceUnselected(
+                                                state.experiencesData![index]
+                                              )
+                                            );
+                                          } else {
+                                            _selectedExperiencesIndexes.add(index);
+                                            context.read<NDAFormBloc>()
+                                                .add(NDAFormExperienceSelected(
+                                                state.experiencesData![index]
+                                            )
+                                            );
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: _selectedExperiencesIndexes.contains(index)
+                                                ? AppColors.crystalBlue.withAlpha(50)
+                                                : Colors.transparent,
+                                            border: Border.all(
+                                              color: _selectedExperiencesIndexes.contains(index)
+                                                  ? AppColors.focusedBorder
+                                                  : Colors.grey,
+                                            )),
+                                        alignment: Alignment.center,
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(15.0),
+                                                  child: Container(
+                                                    width: 25,
+                                                    child: _selectedExperiencesIndexes.contains(index)
+                                                      ? Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                        BorderRadius.circular(50),
+                                                        color: AppColors.blueDress,
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.check,
+                                                        color: Colors.white,
+                                                      ))
+                                                      : SizedBox(),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(
+                                                      horizontal: 15.0,
+                                                      vertical: 5.0,
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          state.experiencesData![index].name,
+                                                          style: UITextStyle.headline4,
+                                                        ),
+                                                        if(state.experiencesData![index].description != null)
+                                                          Text(state.experiencesData![index].description!)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: _selectedExperiencesIndexes.contains(index)
-                                      ? AppColors.crystalBlue.withAlpha(50)
-                                      : Colors.transparent,
-                                  border: Border.all(
-                                    color: _selectedExperiencesIndexes.contains(index)
-                                        ? AppColors.focusedBorder
-                                        : Colors.grey,
-                                  )),
-                              height: 100,
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: Container(
-                                          width: 25,
-                                          child: _selectedExperiencesIndexes.contains(index)
-                                            ? Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(50),
-                                              color: AppColors.blueDress,
-                                            ),
-                                            child: const Icon(
-                                              Icons.check,
-                                              color: Colors.white,
-                                            ))
-                                            : SizedBox(),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Here is the Title ${index + 1}",
-                                                style: UITextStyle.headline4,
-                                              ),
-                                              Text("Subtitle ${index + 1}")
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
+                            // 40 list items
+                            childCount: 8,
                           ),
-                        );
-                      },
-                      // 40 list items
-                      childCount: 8,
-                    ),
                         ),
                       ],
                     ),

@@ -42,11 +42,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    context.read<NDAFormBloc>().add(NDAGetEventData());
+    context.read<NDAFormBloc>().add(NDAGetAllExperiencesData());
+    context.read<NDAFormBloc>().add(NDAGetClientData());
     _fullNameDisplayMessage = false;
     _titleDisplayMessage = false;
     super.initState();
   }
-
 
   void onPressedFooterFunction() {
     var state = context.read<NDAFormBloc>().state;
@@ -103,18 +105,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                            child: Text(
-                              "Welcome to {eventName}",
-                              style: GoogleFonts.notoSans(
-                                textStyle: TextStyle(
-                                  color: Colors.black.withAlpha(175),
-                                  fontSize: 60.0,
-                                  fontWeight: FontWeight.bold,
-                                )
-                              ),
-                            ),
+                          BlocBuilder<NDAFormBloc, NDAFormState>(
+                            builder: (context, state) {
+                              return Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                child: Text(
+                                  "Welcome to ${state.eventData!.eventDisplayName}",
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.notoSans(
+                                    textStyle: TextStyle(
+                                      color: Colors.black.withAlpha(175),
+                                      fontSize: 48.0,
+                                      fontWeight: FontWeight.bold,
+                                    )
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           Divider(),
                           Padding(
