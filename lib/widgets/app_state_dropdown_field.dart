@@ -1,13 +1,14 @@
 import 'package:alcon_flex_nda/app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'widgets.dart';
+import 'package:alcon_flex_nda/data/data/data.dart';
 
 /// {@template app_email_text_field}
 /// An email text field component.
 /// {@endtemplate}
-class AppStateAbbrTextField extends StatelessWidget {
+class AppStateAbbrDropdownField extends StatefulWidget {
   /// {@macro app_email_text_field}
-  const AppStateAbbrTextField({
+  const AppStateAbbrDropdownField({
     super.key,
     this.controller,
     this.hintText,
@@ -30,21 +31,50 @@ class AppStateAbbrTextField extends StatelessWidget {
   final Widget? suffix;
 
   /// Called when the user inserts or deletes texts in the text field.
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<dynamic>? onChanged;
 
   /// Whether the text field should be read-only.
   /// Defaults to false.
   final bool? readOnly;
 
   @override
+  State<AppStateAbbrDropdownField> createState() => _AppStateAbbrDropdownFieldState();
+}
+
+class _AppStateAbbrDropdownFieldState extends State<AppStateAbbrDropdownField> {
+  late List<DropdownMenuItem<dynamic>> _statesList;
+
+
+
+  @override
+  void initState() {
+    _statesList = buildStateList(statesAbbrArray);
+    super.initState();
+  }
+
+
+  List<DropdownMenuItem<dynamic>> buildStateList(List<Map<String, dynamic>> entryList) {
+    List<DropdownMenuItem> returnList = [];
+    for(var index = 0; index < entryList.length; index++) {
+      returnList.add(
+          DropdownMenuItem(
+            value: entryList[index]["name"],
+            child: Text(
+                entryList[index]["name"]
+            ),
+          )
+      );
+    }
+    return returnList;
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    return AppTextField(
-      controller: controller,
-      hintText: hintText,
-      errorText: errorText,
-      keyboardType: TextInputType.name,
-      autoFillHints: const [AutofillHints.name],
-      autocorrect: false,
+    return AppDropdownField(
+      items: _statesList,
+      hintText: widget.hintText,
+      errorText: widget.errorText,
       prefix: const Padding(
         padding: EdgeInsets.only(
           left: AppSpacing.sm,
@@ -56,9 +86,11 @@ class AppStateAbbrTextField extends StatelessWidget {
           size: 24,
         ),
       ),
-      readOnly: readOnly ?? false,
-      onChanged: onChanged,
-      suffix: suffix,
+      onChanged: widget.onChanged,
+      suffix: widget.suffix,
     );
   }
 }
+
+
+

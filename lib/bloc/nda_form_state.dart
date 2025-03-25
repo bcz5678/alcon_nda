@@ -18,13 +18,6 @@ class NDAFormState extends Equatable{
     this.cityInput,
     this.stateAbbrInput,
     this.zipcodeInput,
-    this.fullNameInputValid,
-    this.titleInputValid,
-    this.address1InputValid,
-    this.address2InputValid,
-    this.cityInputValid,
-    this.stateAbbrInputValid,
-    this.zipcodeInputValid,
     this.guestData,
     this.clientData,
     this.eventData,
@@ -43,13 +36,6 @@ class NDAFormState extends Equatable{
     cityInput: CityInput.pure(),
     stateAbbrInput: StateAbbrInput.pure(),
     zipcodeInput: ZipcodeInput.pure(),
-    fullNameInputValid: false,
-    titleInputValid: false,
-    address1InputValid: false,
-    address2InputValid: false,
-    cityInputValid: false,
-    stateAbbrInputValid: false,
-    zipcodeInputValid: false,
     guestData: GuestData(),
     selectedExperiences: [],
   );
@@ -63,13 +49,6 @@ class NDAFormState extends Equatable{
   late CityInput? cityInput;
   late StateAbbrInput? stateAbbrInput;
   late ZipcodeInput? zipcodeInput;
-  late bool? fullNameInputValid;
-  late bool? titleInputValid;
-  late bool? address1InputValid;
-  late bool? address2InputValid;
-  late bool? cityInputValid;
-  late bool? stateAbbrInputValid;
-  late bool? zipcodeInputValid;
   late GuestData? guestData;
   late ClientData? clientData;
   late EventData? eventData;
@@ -109,13 +88,6 @@ class NDAFormState extends Equatable{
       cityInput: cityInput ?? this.cityInput,
       stateAbbrInput: stateAbbrInput ?? this.stateAbbrInput,
       zipcodeInput: zipcodeInput ?? this.zipcodeInput,
-      fullNameInputValid: fullNameInputValid ?? this.fullNameInputValid,
-      titleInputValid: titleInputValid ?? this.titleInputValid,
-      address1InputValid: address1InputValid ?? this.address1InputValid,
-      address2InputValid: address2InputValid ?? this.address2InputValid,
-      cityInputValid: cityInputValid ?? this.cityInputValid,
-      stateAbbrInputValid: stateAbbrInputValid ?? this.stateAbbrInputValid,
-      zipcodeInputValid: zipcodeInputValid ?? this.zipcodeInputValid,
       guestData: guestData ?? this.guestData,
       clientData: clientData ?? this.clientData,
       eventData: eventData ?? this.eventData,
@@ -135,13 +107,6 @@ class NDAFormState extends Equatable{
     cityInput,
     stateAbbrInput,
     zipcodeInput,
-    fullNameInputValid,
-    titleInputValid,
-    address1InputValid,
-    address2InputValid,
-    cityInputValid,
-    stateAbbrInputValid,
-    zipcodeInputValid,
     guestData,
     clientData,
     eventData,

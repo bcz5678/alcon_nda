@@ -45,7 +45,7 @@ class _StepThreeState extends State<StepThree> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 40, 0, 10),
                           child: const FractionallySizedBox(
-                            widthFactor: 0.35,
+                            widthFactor: 0.20,
                             child: Image(
                                 image: AssetImage('images/alcon-logo-2019.png')
                             ),

@@ -31,16 +31,18 @@ class _StepTwoState extends State<StepTwo> {
   void onPressedFooterFunction() {
     var state = context.read<NDAFormBloc>().state;
 
-    context.read<NDAFormBloc>()
-      .add(NDAFormStepSubmitted(
-        nextStep: NDAFormStep.signature
+    if(state.selectedExperiences!.length > 0) {
+      context.read<NDAFormBloc>()
+          .add(NDAFormStepSubmitted(
+          nextStep: NDAFormStep.signature
       )
-    );
+      );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const StepThree()),
-    );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const StepThree()),
+      );
+    }
   }
 
   List<Map<String, dynamic>> selectedExperiencesReturnList(List<int> items) {
@@ -79,7 +81,7 @@ class _StepTwoState extends State<StepTwo> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 40, 0, 10),
                     child: const FractionallySizedBox(
-                      widthFactor: 0.35,
+                      widthFactor: 0.20,
                       child: Image(
                           image: AssetImage('images/alcon-logo-2019.png')
                       ),

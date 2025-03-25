@@ -63,7 +63,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void onPressedFooterFunction() {
     var state = context.read<NDAFormBloc>().state;
 
-    if (state.fullNameInputValid! && state.titleInputValid!) {
+    var validList = [
+      state.fullNameInput!.isValid,
+      state.titleInput!.isValid,
+      state.address1Input!.isValid,
+      state.address2Input!.isValid,
+      state.cityInput!.isValid,
+      state.stateAbbrInput!.isValid,
+      state.zipcodeInput!.isValid
+    ];
+
+    if (validList.every((val) => val == true)) {
       context.read<NDAFormBloc>().add(
           NDAFormStepSubmitted(
               nextStep: NDAFormStep.addExperiences));
@@ -74,8 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     } else {
       setState(() {
-        _fullNameDisplayMessage = state.fullNameInput!.isNotValid;
-        _titleDisplayMessage = state.titleInput!.isNotValid;
+        _fullNameDisplayMessage = !state.fullNameInput!.isValid;
+        _titleDisplayMessage = !state.titleInput!.isValid;
+        _address1DisplayMessage = !state.address1Input!.isValid;
+        _address2DisplayMessage = !state.address2Input!.isValid;
+        _cityDisplayMessage = !state.cityInput!.isValid;
+        _stateAbbrDisplayMessage = !state.stateAbbrInput!.isValid;
+        _zipcodeDisplayMessage = !state.zipcodeInput!.isValid;
       });
     }
   }
@@ -301,7 +316,7 @@ class _TitleInputState extends State<_TitleInput> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Title",
+                "Job Title",
                 style: UITextStyle.labelLarge,
               ),
             ),
@@ -309,8 +324,8 @@ class _TitleInputState extends State<_TitleInput> {
               key: const Key('formInput_step1_titleInput'),
               controller: _controller,
               readOnly: state.formzSubmissionStatus?.isInProgress,
-              hintText: "Please enter your title",
-              errorText: widget.displayMessageState ? "Please enter a valid title" : null,
+              hintText: "Please enter your job title",
+              errorText: widget.displayMessageState ? "Please enter a valid job title" : null,
               onChanged: (value) =>
                   context.read<NDAFormBloc>().add(NDAFormTitleChanged(value)),            ),
           ],
@@ -543,7 +558,7 @@ class _StateAbbrInputState extends State<_StateAbbrInput> {
                   )
               ),
             ),
-            AppStateAbbrTextField(
+            AppStateAbbrDropdownField(
               key: const Key('formInput_step1_stateAbbrInput'),
               controller: _controller,
               readOnly: state.formzSubmissionStatus?.isInProgress,

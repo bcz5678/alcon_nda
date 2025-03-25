@@ -27,6 +27,6 @@ class Address2Input extends FormzInput<String, Address2InputValidationError> {
   /// Returns null if valid, and invalid if not allowed by regex
   @override
   Address2InputValidationError? validator(String value) {
-    return _address2InputRegExp.hasMatch(value) ? null : Address2InputValidationError.invalid;
+    return (_address2InputRegExp.hasMatch(value) || value == "") ? null : Address2InputValidationError.invalid;
   }
 }

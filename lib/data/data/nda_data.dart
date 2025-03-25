@@ -51,7 +51,7 @@ String clientJsonData = '''
     "clientBySignature": "Paliwal, Sumit",
     "clientName": "Sumit Paliwal",
     "clientTitle": "VP, Diagnostics & Visualization, R&D",
-    "clientDate": "2022-09-29 00:00:00.000",
+    "clientDate": "2022-09-29 00:00:00.000"
 }
 ''';
 

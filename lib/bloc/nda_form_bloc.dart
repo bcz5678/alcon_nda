@@ -38,7 +38,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
       state.copyWith(
         fullNameInput: fullName,
-        fullNameInputValid: Formz.validate([fullName]),
       )
     );
   }
@@ -52,7 +51,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           titleInput: title,
-          titleInputValid: Formz.validate([title]),
         )
     );
   }
@@ -66,7 +64,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           address1Input: address_1,
-          address1InputValid: Formz.validate([address_1]),
         )
     );
   }
@@ -80,7 +77,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           address2Input: address_2,
-          address2InputValid: Formz.validate([address_2]),
         )
     );
   }
@@ -94,7 +90,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           cityInput: city,
-          cityInputValid: Formz.validate([city]),
         )
     );
   }
@@ -108,7 +103,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           stateAbbrInput: state_abbr,
-          stateAbbrInputValid: Formz.validate([state_abbr]),
         )
     );
   }
@@ -122,7 +116,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           zipcodeInput: zipcode,
-          zipcodeInputValid: Formz.validate([zipcode ]),
         )
     );
   }
@@ -256,7 +249,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       clientBySignature: response["clientBySignature"],
       clientName: response["clientName"],
       clientTitle: response["clientTitle"],
-      clientDate: response["clientDate"],
+      clientDate: response["clientDate"] != "" ? DateTime.parse(response["clientDate"]) : DateTime.now(),
     );
   }
 }

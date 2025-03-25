@@ -27,6 +27,6 @@ class TitleInput extends FormzInput<String, TitleInputValidationError> {
   /// Returns null if valid, and invalid if not allowed by regex
   @override
   TitleInputValidationError? validator(String value) {
-    return _titleInputRegExp.hasMatch(value) ? null : TitleInputValidationError.invalid;
+    return (_titleInputRegExp.hasMatch(value) || value == "") ? null : TitleInputValidationError.invalid;
   }
 }
