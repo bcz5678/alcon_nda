@@ -14,12 +14,6 @@ class ClientData extends Equatable{
   final String clientTitle;
   final DateTime clientDate;
 
-  /*
-  factory NDAData.fromJson(Map<String, dynamic> data) {
-
-  }
- */
-
   @override
   List<Object?> get props => [
     clientBySignature,

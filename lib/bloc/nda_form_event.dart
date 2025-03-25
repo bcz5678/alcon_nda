@@ -44,6 +44,52 @@ class NDAFormTitleChanged extends NDAFormEvent{
   List<Object?> get props => [title];
 }
 
+class NDAFormAddress1Changed extends NDAFormEvent{
+  const NDAFormAddress1Changed(this.address_1);
+
+  final String address_1;
+
+  @override
+  List<Object?> get props => [address_1];
+}
+
+class NDAFormAddress2Changed extends NDAFormEvent{
+  const NDAFormAddress2Changed(this.address_2);
+
+  final String address_2;
+
+  @override
+  List<Object?> get props => [address_2];
+}
+
+class NDAFormCityChanged extends NDAFormEvent{
+  const NDAFormCityChanged(this.city);
+
+  final String city;
+
+  @override
+  List<Object?> get props => [city];
+}
+
+class NDAFormStateAbbrChanged extends NDAFormEvent{
+  const NDAFormStateAbbrChanged(this.state_abbr);
+
+  final String state_abbr;
+
+  @override
+  List<Object?> get props => [state_abbr];
+}
+
+class NDAFormZipcodeChanged extends NDAFormEvent{
+  const NDAFormZipcodeChanged(this.zipcode);
+
+  final String zipcode;
+
+  @override
+  List<Object?> get props => [zipcode];
+}
+
+
 class NDAFormStepSubmitted extends NDAFormEvent{
   const NDAFormStepSubmitted({required this.nextStep});
 

@@ -109,6 +109,7 @@ class AppTextField extends StatelessWidget {
             onFieldSubmitted: onSubmitted,
             decoration: InputDecoration(
               hintText: hintText,
+              hintStyle: const AppTheme().themeData.inputDecorationTheme.hintStyle!.copyWith(fontStyle: FontStyle.italic),
               errorText: errorText,
               prefixIcon: prefix,
               suffixIcon: suffix,

@@ -69,7 +69,11 @@ class _StickyFooterState extends State<StickyFooter> {
                         width: 150,
                         child: AppButton.crystalBlue(
                           key: const Key('formInput_step1_nextStepButton'),
-                          onPressed:  state.fullNameInput!.isPure || state.titleInput!.isPure
+                          onPressed:  state.fullNameInput!.isPure ||
+                                      state.address1Input!.isPure ||
+                                      state.cityInput!.isPure ||
+                                      state.stateAbbrInput!.isPure ||
+                                      state.zipcodeInput!.isPure
                               ? null
                               : widget.onPressedFunction,
                           child: state.formzSubmissionStatus!.isInProgress

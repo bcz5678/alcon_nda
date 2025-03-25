@@ -39,6 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final Map<String, AssetImage> imageAssets = {};
   late bool _fullNameDisplayMessage;
   late bool _titleDisplayMessage;
+  late bool _address1DisplayMessage;
+  late bool _address2DisplayMessage;
+  late bool _cityDisplayMessage;
+  late bool _stateAbbrDisplayMessage;
+  late bool _zipcodeDisplayMessage;
 
   @override
   void initState() {
@@ -47,6 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<NDAFormBloc>().add(NDAGetClientData());
     _fullNameDisplayMessage = false;
     _titleDisplayMessage = false;
+    _address1DisplayMessage = false;
+    _address2DisplayMessage = false;
+    _cityDisplayMessage = false;
+    _stateAbbrDisplayMessage = false;
+    _zipcodeDisplayMessage = false;
     super.initState();
   }
 
@@ -99,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 40, 0, 10),
                             child: const FractionallySizedBox(
-                              widthFactor: 0.35,
+                              widthFactor: 0.20,
                               child: Image(
                                   image: AssetImage('images/alcon-logo-2019.png')
                               ),
@@ -115,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: GoogleFonts.notoSans(
                                     textStyle: TextStyle(
                                       color: Colors.black.withAlpha(175),
-                                      fontSize: 48.0,
+                                      fontSize: 40.0,
                                       fontWeight: FontWeight.bold,
                                     )
                                   ),
@@ -131,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: GoogleFonts.notoSans(
                                   textStyle: TextStyle(
                                     color: Colors.black.withAlpha(175),
-                                    fontSize: 20.0,
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.normal,
                                   )
                               ),
@@ -144,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                style: GoogleFonts.notoSans(
                                 textStyle: TextStyle(
                                   color: Colors.black.withAlpha(175),
-                                  fontSize: 32.0,
+                                  fontSize: 24.0,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -162,13 +172,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 20,),
+                                        padding: const EdgeInsets.only(top: 10,),
                                         child: _FullNameInput(
                                           displayMessageState: _fullNameDisplayMessage,
                                         ),
                                       ),
                                       _TitleInput(
                                         displayMessageState: _titleDisplayMessage,
+                                      ),
+                                      _Address1Input(
+                                        displayMessageState: _address1DisplayMessage,
+                                      ),
+                                      _Address2Input(
+                                        displayMessageState: _address2DisplayMessage,
+                                      ),
+                                      _CityInput(
+                                        displayMessageState: _cityDisplayMessage,
+                                      ),
+                                      _StateAbbrInput(
+                                        displayMessageState: _stateAbbrDisplayMessage,
+                                      ),
+                                      _ZipcodeInput(
+                                        displayMessageState: _zipcodeDisplayMessage,
                                       ),
                                     ],
                                   ),
@@ -213,9 +238,21 @@ class _FullNameInputState extends State<_FullNameInput> {
         children: [
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              "Full Name",
-              style: UITextStyle.labelLarge,
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Full Name ",
+                    style: UITextStyle.labelLarge,
+                  ),
+                  TextSpan(
+                    text: "*",
+                    style: UITextStyle.labelLarge.copyWith(
+                      color: AppColors.red,
+                    )
+                  )
+                ],
+              )
             ),
           ),
           AppFullNameTextField(
@@ -268,7 +305,7 @@ class _TitleInputState extends State<_TitleInput> {
                 style: UITextStyle.labelLarge,
               ),
             ),
-            AppFullNameTextField(
+            AppTitleTextField(
               key: const Key('formInput_step1_titleInput'),
               controller: _controller,
               readOnly: state.formzSubmissionStatus?.isInProgress,
@@ -287,6 +324,308 @@ class _TitleInputState extends State<_TitleInput> {
     super.dispose();
   }
 }
+
+class _Address1Input extends StatefulWidget {
+  const _Address1Input({
+    required this.displayMessageState,
+    super.key
+  });
+
+  final bool displayMessageState;
+
+  @override
+  State<_Address1Input> createState() => _Address1InputState();
+}
+
+class _Address1InputState extends State<_Address1Input> {
+  final _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<NDAFormBloc>().state;
+
+    return Container(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Address ",
+                        style: UITextStyle.labelLarge,
+                      ),
+                      TextSpan(
+                          text: "*",
+                          style: UITextStyle.labelLarge.copyWith(
+                            color: AppColors.red,
+                          )
+                      )
+                    ],
+                  )
+              ),
+            ),
+            AppAddressTextField(
+              key: const Key('formInput_step1_address1Input'),
+              controller: _controller,
+              readOnly: state.formzSubmissionStatus?.isInProgress,
+              hintText: "Please enter your address",
+              errorText: widget.displayMessageState ? "Please enter a valid address" : null,
+              onChanged: (value) =>
+                  context.read<NDAFormBloc>().add(NDAFormAddress1Changed(value)),
+            ),
+          ],
+        )
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+
+class _Address2Input extends StatefulWidget {
+  const _Address2Input({
+    required this.displayMessageState,
+    super.key
+  });
+
+  final bool displayMessageState;
+
+  @override
+  State<_Address2Input> createState() => _Address2InputState();
+}
+
+class _Address2InputState extends State<_Address2Input> {
+  final _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<NDAFormBloc>().state;
+
+    return Container(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Floor/Suite/Apt",
+                style: UITextStyle.labelLarge,
+              ),
+            ),
+            AppAddressTextField(
+              key: const Key('formInput_step1_address2Input'),
+              controller: _controller,
+              readOnly: state.formzSubmissionStatus?.isInProgress,
+              hintText: "Please enter your floor/suite/apt",
+              errorText: widget.displayMessageState ? "Please enter a valid floor/suite/apt" : null,
+              onChanged: (value) =>
+                  context.read<NDAFormBloc>().add(NDAFormAddress2Changed(value)),
+            ),
+          ],
+        )
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+
+class _CityInput extends StatefulWidget {
+  const _CityInput({
+    required this.displayMessageState,
+    super.key
+  });
+
+  final bool displayMessageState;
+
+  @override
+  State<_CityInput> createState() => _CityInputState();
+}
+
+class _CityInputState extends State<_CityInput> {
+  final _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<NDAFormBloc>().state;
+
+    return Container(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "City ",
+                        style: UITextStyle.labelLarge,
+                      ),
+                      TextSpan(
+                          text: "*",
+                          style: UITextStyle.labelLarge.copyWith(
+                            color: AppColors.red,
+                          )
+                      )
+                    ],
+                  )
+              ),
+            ),
+            AppCityTextField(
+              key: const Key('formInput_step1_cityInput'),
+              controller: _controller,
+              readOnly: state.formzSubmissionStatus?.isInProgress,
+              hintText: "Please enter your city",
+              errorText: widget.displayMessageState ? "Please enter a valid city" : null,
+              onChanged: (value) =>
+                  context.read<NDAFormBloc>().add(NDAFormCityChanged(value)),
+            ),
+          ],
+        )
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+
+class _StateAbbrInput extends StatefulWidget {
+  const _StateAbbrInput({
+    required this.displayMessageState,
+    super.key
+  });
+
+  final bool displayMessageState;
+
+  @override
+  State<_StateAbbrInput> createState() => _StateAbbrInputState();
+}
+
+class _StateAbbrInputState extends State<_StateAbbrInput> {
+  final _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<NDAFormBloc>().state;
+
+    return Container(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "State ",
+                        style: UITextStyle.labelLarge,
+                      ),
+                      TextSpan(
+                          text: "*",
+                          style: UITextStyle.labelLarge.copyWith(
+                            color: AppColors.red,
+                          )
+                      )
+                    ],
+                  )
+              ),
+            ),
+            AppStateAbbrTextField(
+              key: const Key('formInput_step1_stateAbbrInput'),
+              controller: _controller,
+              readOnly: state.formzSubmissionStatus?.isInProgress,
+              hintText: "Please enter your state",
+              errorText: widget.displayMessageState ? "Please enter a valid state" : null,
+              onChanged: (value) =>
+                  context.read<NDAFormBloc>().add(NDAFormStateAbbrChanged(value)),
+            ),
+          ],
+        )
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+class _ZipcodeInput extends StatefulWidget {
+  const _ZipcodeInput({
+    required this.displayMessageState,
+    super.key
+  });
+
+  final bool displayMessageState;
+
+  @override
+  State<_ZipcodeInput> createState() => _ZipcodeInputState();
+}
+
+class _ZipcodeInputState extends State<_ZipcodeInput> {
+  final _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<NDAFormBloc>().state;
+
+    return Container(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Zipcode ",
+                        style: UITextStyle.labelLarge,
+                      ),
+                      TextSpan(
+                          text: "*",
+                          style: UITextStyle.labelLarge.copyWith(
+                            color: AppColors.red,
+                          )
+                      )
+                    ],
+                  )
+              ),
+            ),
+            AppZipcodeTextField(
+              key: const Key('formInput_step1_zipcodeInput'),
+              controller: _controller,
+              readOnly: state.formzSubmissionStatus?.isInProgress,
+              hintText: "Please enter your zipcode",
+              errorText: widget.displayMessageState ? "Please enter a valid zipcode" : null,
+              onChanged: (value) =>
+                  context.read<NDAFormBloc>().add(NDAFormZipcodeChanged(value)),
+            ),
+          ],
+        )
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
 
 
 

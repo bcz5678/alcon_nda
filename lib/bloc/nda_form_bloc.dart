@@ -15,6 +15,11 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
   NDAFormBloc() : super(NDAFormState.initial()) {
     on<NDAFormFullNameChanged>(onNDAFormFullNameChanged);
     on<NDAFormTitleChanged>(onNDAFormTitleChanged);
+    on<NDAFormAddress1Changed>(onNDAFormAddress1Changed);
+    on<NDAFormAddress2Changed>(onNDAFormAddress2Changed);
+    on<NDAFormCityChanged>(onNDAFormCityChanged);
+    on<NDAFormStateAbbrChanged>(onNDAFormStateAbbrChanged);
+    on<NDAFormZipcodeChanged>(onNDAFormZipcodeChanged);
     on<NDAFormStepSubmitted>(onNDAFormStepSubmitted);
     on<NDAGetEventData>(onNDAGetEventData);
     on<NDAGetClientData>(onNDAGetClientData);
@@ -27,12 +32,98 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       NDAFormFullNameChanged event,
       Emitter<NDAFormState> emit
       ) {
+
     final fullName = FullNameInput.dirty(event.fullName);
+
     emit(
       state.copyWith(
         fullNameInput: fullName,
         fullNameInputValid: Formz.validate([fullName]),
       )
+    );
+  }
+
+  void onNDAFormTitleChanged(
+      NDAFormTitleChanged event,
+      Emitter<NDAFormState> emit
+      ) {
+    final title = TitleInput.dirty(event.title);
+
+    emit(
+        state.copyWith(
+          titleInput: title,
+          titleInputValid: Formz.validate([title]),
+        )
+    );
+  }
+
+  void onNDAFormAddress1Changed(
+      NDAFormAddress1Changed event,
+      Emitter<NDAFormState> emit
+      ) {
+    final address_1 = Address1Input.dirty(event.address_1);
+
+    emit(
+        state.copyWith(
+          address1Input: address_1,
+          address1InputValid: Formz.validate([address_1]),
+        )
+    );
+  }
+
+  void onNDAFormAddress2Changed(
+      NDAFormAddress2Changed event,
+      Emitter<NDAFormState> emit
+      ) {
+    final address_2 = Address2Input.dirty(event.address_2);
+
+    emit(
+        state.copyWith(
+          address2Input: address_2,
+          address2InputValid: Formz.validate([address_2]),
+        )
+    );
+  }
+
+  void onNDAFormCityChanged(
+      NDAFormCityChanged event,
+      Emitter<NDAFormState> emit
+      ) {
+    final city = CityInput.dirty(event.city);
+
+    emit(
+        state.copyWith(
+          cityInput: city,
+          cityInputValid: Formz.validate([city]),
+        )
+    );
+  }
+
+  void onNDAFormStateAbbrChanged(
+      NDAFormStateAbbrChanged event,
+      Emitter<NDAFormState> emit
+      ) {
+    final state_abbr = StateAbbrInput.dirty(event.state_abbr);
+
+    emit(
+        state.copyWith(
+          stateAbbrInput: state_abbr,
+          stateAbbrInputValid: Formz.validate([state_abbr]),
+        )
+    );
+  }
+
+  void onNDAFormZipcodeChanged(
+      NDAFormZipcodeChanged event,
+      Emitter<NDAFormState> emit
+      ) {
+    final zipcode  = ZipcodeInput.dirty(event.zipcode );
+
+    emit(
+        state.copyWith(
+          zipcodeInput: zipcode,
+          zipcodeInputValid: Formz.validate([zipcode ]),
+        )
     );
   }
 
@@ -46,7 +137,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
 
     emit(
         state.copyWith(
-          eventData: _eventdata
+            eventData: _eventdata
         )
     );
   }
@@ -63,7 +154,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
           clientData: clientData,
         )
     );
-
   }
 
   void onNDAGetAllExperiencesData(
@@ -76,20 +166,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           experiencesData: experiencesList,
-        )
-    );
-
-  }
-
-  void onNDAFormTitleChanged(
-      NDAFormTitleChanged event,
-      Emitter<NDAFormState> emit
-      ) {
-    final title = TitleInput.dirty(event.title);
-    emit(
-        state.copyWith(
-          titleInput: title,
-          titleInputValid: Formz.validate([title]),
         )
     );
   }
@@ -144,7 +220,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     );
   }
 
-  
+
   EventData getEventDataFromLocal() {
     var response = jsonDecode(eventJsonData);
 

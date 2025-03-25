@@ -5,9 +5,9 @@ import 'widgets.dart';
 /// {@template app_email_text_field}
 /// An email text field component.
 /// {@endtemplate}
-class AppTitleTextField extends StatelessWidget {
+class AppStateAbbrTextField extends StatelessWidget {
   /// {@macro app_email_text_field}
-  const AppTitleTextField({
+  const AppStateAbbrTextField({
     super.key,
     this.controller,
     this.hintText,
@@ -51,7 +51,7 @@ class AppTitleTextField extends StatelessWidget {
           right: AppSpacing.sm,
         ),
         child: Icon(
-          Icons.person_outlined,
+          Icons.map_outlined,
           color: AppColors.mediumEmphasisSurface,
           size: 24,
         ),
