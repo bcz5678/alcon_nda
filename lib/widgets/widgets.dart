@@ -7,4 +7,5 @@ export 'app_zipcode_text_field.dart';
 export 'app_title_field.dart';
 export 'app_text_field.dart';
 export 'app_dropdown_field.dart';
+export 'signature_pad_dialog.dart';
 export 'navigation/navigation.dart';
