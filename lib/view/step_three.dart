@@ -1,9 +1,14 @@
+import 'package:flutter/services.dart';
+
+import 'package:alcon_flex_nda/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 import 'package:alcon_flex_nda/widgets/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 class StepThree extends StatefulWidget {
   const StepThree({super.key});
@@ -13,6 +18,31 @@ class StepThree extends StatefulWidget {
 }
 
 class _StepThreeState extends State<StepThree> {
+  GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
+  late PdfDocument _ndaDocument;
+
+  @override
+  void initState() {
+    super.initState();
+    loadPdfDocument();
+
+  }
+
+  Future<void> loadPdfDocument() async {
+    final ndaDocumentBase = await rootBundle.load('files/alcon_base_template.pdf');
+    final ndaDocumentBytes = ndaDocumentBase.buffer.asUint8List();
+    setState(() {
+      _ndaDocument = PdfDocument(inputBytes: ndaDocumentBytes);
+    });
+
+    for (var index = 0; index < _ndaDocument.form.fields.count; index++ ) {
+      print(_ndaDocument.form.fields[index]);
+    }
+  }
+
+  void _handleClearButtonPressed() {
+    signatureGlobalKey.currentState!.clear();
+  }
 
   void onPressedFooterFunction() {
     var state = context.read<NDAFormBloc>().state;
@@ -21,6 +51,8 @@ class _StepThreeState extends State<StepThree> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       bottomNavigationBar: Container(
         width: double.infinity,
@@ -68,7 +100,32 @@ class _StepThreeState extends State<StepThree> {
                         Expanded(
                           child: CustomScrollView(
                             slivers: [
-
+                              SliverToBoxAdapter(
+                                child: Container(
+                                  width: 300,
+                                  height: 200,
+                                  child: SfSignaturePad(
+                                    key: signatureGlobalKey,
+                                    backgroundColor: AppColors.lightBlue.withAlpha(50),
+                                    strokeColor: AppColors.black,
+                                    onDrawEnd: () => print('drawEnd'),
+                                  ),
+                                ),
+                              ),
+                              SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                                  child: Container(
+                                    width: double.infinity / 3,
+                                    child: AppButton.crystalBlue(
+                                      child: Text(
+                                        "Clear ",
+                                      ),
+                                      onPressed: _handleClearButtonPressed,
+                                    ),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),

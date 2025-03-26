@@ -20,7 +20,7 @@ class StateAbbrInput extends FormzInput<String, StateAbbrInputValidationError> {
   ///   .{8,}             // Must be at least 8 characters in length
   /// $'
   static final RegExp _stateAbbrInputRegExp = RegExp(
-    r'^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$',
+    r'^(?=.*?[A-Z])(?=.*?[a-z]).{2,}$',
   );
 
   /// Function: Password input Validator check

@@ -45,6 +45,13 @@ dependencies:
   formz: ^0.8.0
   linear_progress_bar: ^1.1.3
 
+  syncfusion_flutter_pdf:
+    path: packages/syncfusion_flutter_pdf
+  syncfusion_flutter_core:
+    path: packages/syncfusion_flutter_core
+  syncfusion_flutter_signaturepad:
+    path: packages/syncfusion_flutter_signaturepad
+
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +77,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - images/
+     - assets/images/
+     - assets/files/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
