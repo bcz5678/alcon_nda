@@ -183,8 +183,13 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
 
 
     var guestData = state.guestData;
-    guestData?.fullName = state.fullNameInput.toString();
-    guestData?.title = state.titleInput.toString();
+    guestData?.fullName = state.fullNameInput!.value.toString();
+    guestData?.title = state.titleInput!.value.toString();
+    guestData?.address_1 = state.address1Input!.value.toString();
+    guestData?.address_2 = state.address2Input!.value.toString();
+    guestData?.city = state.cityInput!.value.toString();
+    guestData?.state = state.stateAbbrInput!.value.toString();
+    guestData?.zipcode = state.zipcodeInput!.value.toString();
 
     emit(
         state.copyWith(

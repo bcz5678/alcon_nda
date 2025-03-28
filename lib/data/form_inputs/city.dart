@@ -20,7 +20,7 @@ class CityInput extends FormzInput<String, CityInputValidationError> {
   ///   .{8,}             // Must be at least 8 characters in length
   /// $'
   static final RegExp _cityInputRegExp = RegExp(
-    r'^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$',
+    r'^(?=.*?[A-Z])(?=.*?[a-z]).{4,}$',
   );
 
   /// Function: Password input Validator check

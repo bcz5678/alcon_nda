@@ -38,10 +38,6 @@ class _StepThreeState extends State<StepThree> {
   }
 
   void pressSignatureButton() {
-    if(kDebugMode) {
-      print('game_menu -> pressSignButton -> pressed');
-    }
-
     showDialog(
       context: context,
       builder: (context) {
@@ -49,7 +45,7 @@ class _StepThreeState extends State<StepThree> {
           onSignedFunction: onSignedFunctionParent,
         );
       },
-      barrierColor: Color.fromRGBO(255, 255, 255, 0.7),
+      barrierColor: Color.fromRGBO(0, 0, 0, 0.2),
       barrierDismissible: true,
     );
   }
@@ -133,23 +129,53 @@ class PdfContainer extends StatefulWidget {
   State<PdfContainer> createState() => _PdfContainerState();
 }
 
+
+
+
 class _PdfContainerState extends State<PdfContainer> {
   final Map<String, Uint8List> _signedFields = <String, Uint8List>{};
   PdfDocument? _loadedDocument;
   Uint8List? _documentBytes;
   bool _canCompleteSigning = false;
   bool _canShowToast = false;
+  late PdfViewerController _pdfViewerController;
 
   @override
   void initState() {
+    _pdfViewerController = PdfViewerController();
     super.initState();
+
     // Load the PDF document from the asset.
+
+    _generateAsset().then((List<int> bytes) async {
+      setState(() {
+        _documentBytes = Uint8List.fromList(bytes);
+      });
+    });
+
+    /*
     _readAsset('alcon_base_template.pdf').then((List<int> bytes) async {
       setState(() {
         _documentBytes = Uint8List.fromList(bytes);
       });
     });
+
+     */
   }
+
+  // Read the asset file and return the bytes.
+  Future<List<int>> _generateAsset() async {
+    var state = context.read<NDAFormBloc>().state;
+
+    final List<int> data = await PdfNdaApi(
+      guestData: state.guestData!,
+      eventData: state.eventData!,
+      clientData: state.clientData!,
+    ).generateNDA();
+
+    return data;
+  }
+
 
   // Read the asset file and return the bytes.
   Future<List<int>> _readAsset(String name) async {
@@ -164,12 +190,15 @@ class _PdfContainerState extends State<PdfContainer> {
         child: _documentBytes != null
             ? SfPdfViewer.memory(
           _documentBytes!,
+          controller: _pdfViewerController,
+          initialZoomLevel: 1.0,
           onDocumentLoaded: (PdfDocumentLoadedDetails details) {
             // Store the loaded document to access the form fields.
             _loadedDocument = details.document;
             // Clear the signed fields when the document is loaded.
             //_signedFields.clear();
           },
+          onTextSelectionChanged: null,
           onFormFieldValueChanged:
               (PdfFormFieldValueChangedDetails details) {
             // Update the signed fields when the form field value is changed.

@@ -60,7 +60,7 @@ String eventJsonData = '''
 {
     "eventDisplayName": "American Academy of Ophthalmology",
     "eventDate": "",
-    "eventState": "llinois",
+    "eventState": "Illinois",
     "eventCity": "Chicago ",
     "eventCongressConvention": "American Academy of Ophthalmology [October 1-3]"
 }

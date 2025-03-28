@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late bool _cityDisplayMessage;
   late bool _stateAbbrDisplayMessage;
   late bool _zipcodeDisplayMessage;
+  late Image logoImage;
 
   @override
   void initState() {
@@ -57,7 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
     _cityDisplayMessage = false;
     _stateAbbrDisplayMessage = false;
     _zipcodeDisplayMessage = false;
+    logoImage = Image.asset('images/alcon-logo-2019.png');
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(logoImage.image, context);
   }
 
   void onPressedFooterFunction() {

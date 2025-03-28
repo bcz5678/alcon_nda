@@ -20,7 +20,7 @@ class Address2Input extends FormzInput<String, Address2InputValidationError> {
   ///   .{8,}             // Must be at least 8 characters in length
   /// $'
   static final RegExp _address2InputRegExp = RegExp(
-    r'^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$',
+    r'^.{1,}$',
   );
 
   /// Function: Password input Validator check
