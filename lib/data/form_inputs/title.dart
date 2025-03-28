@@ -20,7 +20,7 @@ class TitleInput extends FormzInput<String, TitleInputValidationError> {
   ///   .{5,}             // Must be at least 8 characters in length
   /// $'
   static final RegExp _titleInputRegExp = RegExp(
-    r'^(?=.*?[A-Z])(?=.*?[a-z]).{5,}$',
+    r'^.{3,}$',
   );
 
   /// Function: Password input Validator check

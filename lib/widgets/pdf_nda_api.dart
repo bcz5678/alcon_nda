@@ -96,6 +96,8 @@ class PdfNdaApi {
     );
 
 
+
+
     //Generate Title
     textElement = PdfTextElement(
       text: 'Confidentiality Agreement for Surgical Diagnostic Equipment Discussion',
@@ -521,12 +523,433 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
+    var _preColumnLayoutResult = layoutResult;
+    double _column1FieldStartOffset = 70.0;
+    double _column2FieldStartOffset = 40.0;
+    var _gutterWidth = 15;
+    var _columnRowSpacing = 35;
+    var _column1TempText = '';
+    var _column2TempText = '';
+    var underlineUnits = 25;
+    var _columnMeasureText= Size(0,0);
+
+    /// COLUMN 1
+
+    // SIGNATURE - LABEL
+    _column1TempText = 'Signature: ';
+    textElement.font = defaultFont;
+    textElement.text = _column1TempText;
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.justify,
+      paragraphIndent: 0,
+    );
+       layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          0, _preColumnLayoutResult.bounds.bottom + 20 + _columnRowSpacing, pageWidth / 2, pageHeight),
+      format: layoutFormat,
+    )!;
+
+
+    // SIGNATURE - DATA
+    _column1TempText = guestData.signature.toString();
+    textElement.font = defaultFont;
+    textElement.text = _column1TempText;
+
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          _column1FieldStartOffset, _preColumnLayoutResult.bounds.bottom + 20 + _columnRowSpacing, pageWidth / 2 - _column1FieldStartOffset - _gutterWidth, pageHeight),
+      format: layoutFormat,
+    )!;
+
+    _columnMeasureText = defaultFont.measureString(_column1TempText);
+
+    page3.graphics.drawLine(
+        PdfPen(
+          PdfColor(0, 0, 0),
+          width: 0.5,
+        ),
+        Offset(
+          _column1FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1) + _columnMeasureText.height,
+        ),
+        Offset(
+          ((pageWidth / 2) - _gutterWidth),
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1) + _columnMeasureText.height,
+        )
+    );
+
+
+    // NAME - LABEL
+    _column1TempText = "Name: ";
+    textElement.font = defaultFont;
+    textElement.text = _column1TempText;
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.justify,
+      paragraphIndent: 0,
+    );
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          0,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2),
+          pageWidth / 2,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+
+    // NAME - Data
+    _column1TempText = guestData.fullName.toString();
+    textElement.font = defaultFont;
+    textElement.text = _column1TempText;
+
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          _column1FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2),
+          pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    _columnMeasureText = defaultFont.measureString(_column1TempText);
+
+    page3.graphics.drawLine(
+      PdfPen(
+        PdfColor(0, 0, 0),
+        width: 0.5,
+      ),
+      Offset(
+          _column1FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2) + _columnMeasureText.height,
+      ),
+      Offset(
+          ((pageWidth / 2) - _gutterWidth),
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2) + _columnMeasureText.height,
+      )
+    );
+
+
+
+    // TITLE - LABEL
+    _column1TempText = "Title: ";
+    textElement.font = defaultFont;
+    textElement.text = _column1TempText;
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.justify,
+      paragraphIndent: 0,
+    );
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          0,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3),
+          pageWidth / 2,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    // TITLE - Data
+    _column1TempText = guestData.title.toString();
+    textElement.font = defaultFont;
+    textElement.text = _column1TempText;
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          _column1FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3),
+          pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    _columnMeasureText = defaultFont.measureString(_column1TempText);
+
+    page3.graphics.drawLine(
+        PdfPen(
+          PdfColor(0, 0, 0),
+          width: 0.5,
+        ),
+        Offset(
+          _column1FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3) + _columnMeasureText.height,
+        ),
+        Offset(
+          ((pageWidth / 2) - _gutterWidth),
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3) + _columnMeasureText.height,
+        )
+    );
+
+
+
+    // DATE - LABEL
+    _column1TempText = "Date: ";
+    textElement.font = defaultFont;
+    textElement.text = _column1TempText;
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.justify,
+      paragraphIndent: 0,
+    );
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          0,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4),
+          pageWidth / 2,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    // Date - Data
+    _column1TempText = DateFormat.yMd().format(DateTime.now()).toString();
+    textElement.font = defaultFont;
+    textElement.text = _column1TempText;
+
+
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          _column1FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4),
+          pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    _columnMeasureText = defaultFont.measureString(_column1TempText);
+
+    page3.graphics.drawLine(
+        PdfPen(
+          PdfColor(0, 0, 0),
+          width: 0.5,
+        ),
+        Offset(
+          _column1FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4) + _columnMeasureText.height,
+        ),
+        Offset(
+          ((pageWidth / 2) - _gutterWidth),
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4) + _columnMeasureText.height,
+        )
+    );
+
+
+    /// COLUMN 2
+
+    // ALCON TITLE
+    _column2TempText = 'ALCON RESEARCH, LLC'.toUpperCase();
+    textElement.font = defaultFont;
+    textElement.text = _column2TempText;
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          pageWidth / 2, _preColumnLayoutResult.bounds.bottom + 20, pageWidth / 2, pageHeight),
+      format: layoutFormat,
+    )!;
+
+
+    // BY - LABEL
+    _column2TempText = "By: ";
+    textElement.text = _column2TempText;
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          pageWidth / 2, _preColumnLayoutResult.bounds.bottom + 20 + _columnRowSpacing, pageWidth / 2, pageHeight),
+      format: layoutFormat,
+    )!;
+
+    // By - Data
+    _column2TempText = clientData.clientBySignature.toString();
+    textElement.font = defaultFont;
+    textElement.text = _column2TempText;
+
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          (pageWidth / 2) + _column2FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1),
+          pageWidth / 2 - _gutterWidth,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    _columnMeasureText = defaultFont.measureString(_column2TempText);
+
+    page3.graphics.drawLine(
+        PdfPen(
+          PdfColor(0, 0, 0),
+          width: 0.5,
+        ),
+        Offset(
+          (pageWidth / 2) + _column2FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1) + _columnMeasureText.height,
+        ),
+        Offset(
+          pageWidth,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1) + _columnMeasureText.height,
+        )
+    );
+
+
+    // NAME - LABEL
+    _column2TempText = "Name: ";
+    textElement.text = _column2TempText;
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          pageWidth / 2,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2),
+          pageWidth / 2,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    // Name - Data
+    _column2TempText = clientData.clientName.toString();
+    textElement.font = defaultFont;
+    textElement.text = _column2TempText;
+
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          (pageWidth / 2) + _column2FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2),
+          pageWidth / 2 - _gutterWidth,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    _columnMeasureText = defaultFont.measureString(_column2TempText);
+
+    page3.graphics.drawLine(
+        PdfPen(
+          PdfColor(0, 0, 0),
+          width: 0.5,
+        ),
+        Offset(
+          (pageWidth / 2) + _column2FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2) + _columnMeasureText.height,
+        ),
+        Offset(
+          pageWidth,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2) + _columnMeasureText.height,
+        )
+    );
+
+
+    // TITLE - LABEL
+    _column2TempText = "Title: ";
+    textElement.text = _column2TempText;
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          pageWidth / 2,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3),
+          pageWidth / 2,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    // Title - Data
+    _column2TempText = clientData.clientTitle.toString();
+    textElement.font = defaultFont;
+    textElement.text = _column2TempText;
+
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          (pageWidth / 2) + _column2FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3),
+          pageWidth / 2 - _gutterWidth,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    _columnMeasureText = defaultFont.measureString(_column2TempText);
+
+    page3.graphics.drawLine(
+        PdfPen(
+          PdfColor(0, 0, 0),
+          width: 0.5,
+        ),
+        Offset(
+          (pageWidth / 2) + _column2FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3) + _columnMeasureText.height,
+        ),
+        Offset(
+          pageWidth,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3) + _columnMeasureText.height,
+        )
+    );
+
+
+    // DATE - LABEL
+    _column2TempText = "Date: ";
+    textElement.text = _column2TempText;
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          pageWidth / 2,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4),
+          pageWidth / 2,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    // Title - Data
+    _column2TempText = DateFormat.yMd().format(clientData.clientDate).toString();
+    textElement.font = defaultFont;
+    textElement.text = _column2TempText;
+
+    layoutResult = textElement.draw(
+      page: page3,
+      bounds: Rect.fromLTWH(
+          (pageWidth / 2) + _column2FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4),
+          pageWidth / 2 - _gutterWidth,
+          pageHeight
+      ),
+      format: layoutFormat,
+    )!;
+
+    _columnMeasureText = defaultFont.measureString(_column2TempText);
+
+    page3.graphics.drawLine(
+        PdfPen(
+          PdfColor(0, 0, 0),
+          width: 0.5,
+        ),
+        Offset(
+          (pageWidth / 2) + _column2FieldStartOffset,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4) + _columnMeasureText.height,
+        ),
+        Offset(
+          pageWidth,
+          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4) + _columnMeasureText.height,
+        )
+    );
+
+
 
     _savedDocument = await savePdf(_document);
 
     return _savedDocument;
   }
-
 
 
   Future<List<int>> savePdf(PdfDocument document) async {
@@ -543,6 +966,20 @@ class PdfNdaApi {
     }
 
     return returnList;
+  }
+
+  String generateFieldWithUnderline({required int underlineUnits, required String dataString}) {
+    late String returnString;
+
+    if(dataString != "") {
+      returnString = ("${dataString!}${"_" * underlineUnits}");
+
+          "_" * (underlineUnits - dataString.length);
+    } else {
+      returnString = ("${dataString!}${"_" * underlineUnits}");
+    }
+
+    return returnString;
   }
 
 }
