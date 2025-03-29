@@ -95,7 +95,25 @@ class PdfNdaApi {
       layoutType: PdfLayoutType.paginate,
     );
 
+    //Create the footer with specific bounds
+    PdfPageTemplateElement footer = PdfPageTemplateElement(
+        Rect.fromLTWH(0, 0, _document.pageSettings.size.width, 50));
 
+//Create the page number field
+    PdfPageNumberField pageNumber = PdfPageNumberField(
+        font: PdfStandardFont(PdfFontFamily.timesRoman, 14),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)));
+
+//Sets the number style for page number
+    pageNumber.numberStyle = PdfNumberStyle.upperRoman;
+
+//Create the page count field
+    PdfPageCountField count = PdfPageCountField(
+        font: PdfStandardFont(PdfFontFamily.timesRoman, 14),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)));
+
+//set the number style for page count
+    count.numberStyle = PdfNumberStyle.upperRoman;
 
 
     //Generate Title
@@ -525,13 +543,13 @@ class PdfNdaApi {
 
     var _preColumnLayoutResult = layoutResult;
     double _column1FieldStartOffset = 70.0;
-    double _column2FieldStartOffset = 40.0;
+    double _column2FieldStartOffset = 50.0;
     var _gutterWidth = 15;
     var _columnRowSpacing = 35;
     var _column1TempText = '';
     var _column2TempText = '';
     var underlineUnits = 25;
-    var _columnMeasureText= Size(0,0);
+    var _columnMeasureText= Size(20,0);
 
     /// COLUMN 1
 
@@ -552,7 +570,7 @@ class PdfNdaApi {
 
 
     // SIGNATURE - DATA
-    _column1TempText = guestData.signature.toString();
+    _column1TempText = guestData.signature.toString() != null ? guestData.signature.toString() : "";
     textElement.font = defaultFont;
     textElement.text = _column1TempText;
 
@@ -656,7 +674,7 @@ class PdfNdaApi {
     )!;
 
     // TITLE - Data
-    _column1TempText = guestData.title.toString();
+    _column1TempText = guestData.title.toString() != null ? guestData.title.toString() : "";
     textElement.font = defaultFont;
     textElement.text = _column1TempText;
     layoutResult = textElement.draw(
