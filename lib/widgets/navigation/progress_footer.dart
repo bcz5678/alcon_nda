@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
-import 'package:alcon_flex_nda/app_ui/app_ui.dart';
+import 'package:alcon_flex_nda/app_ui/app_ui.dart' show AppColors, AppFontWeight, UITextStyle;
 import 'package:alcon_flex_nda/widgets/widgets.dart' show AppButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';

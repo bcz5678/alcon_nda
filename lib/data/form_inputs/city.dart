@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
 
 enum CityInputValidationError {

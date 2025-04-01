@@ -3,10 +3,8 @@ import 'dart:typed_data';
 
 import 'package:alcon_flex_nda/data/data.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:alcon_flex_nda/data/data.dart';
 
 part 'nda_form_event.dart';
 part 'nda_form_state.dart';
@@ -27,6 +25,8 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     on<NDAFormExperiencesSubmitted>(onNDAFormExperiencesSubmitted);
     on<NDAFormExperienceSelected>(onNDAFormExperienceSelected);
     on<NDAFormExperienceUnselected>(onNDAFormExperienceUnselected);
+    on<NDAFormExperienceSelectAll>(onNDAFormExperienceSelectAll);
+    on<NDAFormExperienceUnselectAll>(onNDAFormExperienceUnselectAll);
     on<NDAFormAddSignature>(onNDAFormAddSignature);
   }
 
@@ -242,6 +242,47 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     List<ExperienceData>? _selectedExperiences = state.selectedExperiences;
 
     _selectedExperiences?.remove(event.experience);
+
+    emit(
+        state.copyWith(
+          selectedExperiences: _selectedExperiences,
+        )
+    );
+  }
+
+  void onNDAFormExperienceSelectAll(
+      NDAFormExperienceSelectAll event,
+      Emitter<NDAFormState> emit
+      ) {
+
+    var experiencesList = jsonDecode(experiencesJsonData);
+    List<ExperienceData>? _selectedExperiences = [];
+
+    for (var item in experiencesList["data"]) {
+      _selectedExperiences.add(
+          ExperienceData(
+            name: item["name"] as String,
+            description: item["description"] as String,
+            logo: item["logo"] as String,
+          )
+      );
+    }
+
+    emit(
+        state.copyWith(
+          selectedExperiences: _selectedExperiences,
+        )
+    );
+  }
+
+
+  ///[ANCHOR]
+  void onNDAFormExperienceUnselectAll(
+      NDAFormExperienceUnselectAll event,
+      Emitter<NDAFormState> emit
+      ) {
+
+    List<ExperienceData>? _selectedExperiences = [];
 
     emit(
         state.copyWith(

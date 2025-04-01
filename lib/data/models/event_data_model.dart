@@ -1,4 +1,3 @@
-import 'dart:core';
 import 'package:equatable/equatable.dart';
 
 class EventData extends Equatable{

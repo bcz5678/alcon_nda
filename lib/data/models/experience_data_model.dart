@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:equatable/equatable.dart';
 
 class ExperienceData extends Equatable {
@@ -12,6 +10,8 @@ class ExperienceData extends Equatable {
   final String name;
   late String? description;
   late String? logo;
+
+  
   @override
   List<Object?> get props => [
     name,

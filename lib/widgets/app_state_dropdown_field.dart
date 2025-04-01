@@ -1,7 +1,7 @@
-import 'package:alcon_flex_nda/app_ui/app_ui.dart';
+import 'package:alcon_flex_nda/app_ui/app_ui.dart' show AppColors, AppSpacing;
 import 'package:flutter/material.dart';
-import 'widgets.dart';
-import 'package:alcon_flex_nda/data/data/data.dart';
+import 'widgets.dart' show AppDropdownField;
+import 'package:alcon_flex_nda/data/data/data.dart' show statesAbbrArray;
 
 /// {@template app_email_text_field}
 /// An email text field component.

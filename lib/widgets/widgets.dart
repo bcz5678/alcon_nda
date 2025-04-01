@@ -1,4 +1,5 @@
 export 'app_button.dart';
+export 'app_checkbox.dart';
 export 'app_full_name_field.dart';
 export 'app_address_text_field.dart';
 export 'app_city_text_field.dart';

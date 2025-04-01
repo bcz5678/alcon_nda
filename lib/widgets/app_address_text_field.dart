@@ -1,4 +1,4 @@
-import 'package:alcon_flex_nda/app_ui/app_ui.dart';
+import 'package:alcon_flex_nda/app_ui/app_ui.dart' show AppColors, AppSpacing;
 import 'package:flutter/material.dart';
 import 'widgets.dart';
 

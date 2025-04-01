@@ -1,11 +1,10 @@
-import 'package:alcon_flex_nda/app.dart';
-import 'package:alcon_flex_nda/data/data.dart';
-import 'package:flutter/foundation.dart';
+import 'package:alcon_flex_nda/app.dart' show StepThree, StickyFooter;
+import 'package:alcon_flex_nda/widgets/app_experiences_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
-import 'package:alcon_flex_nda/app_ui/app_ui.dart';
+import 'package:alcon_flex_nda/app_ui/app_ui.dart' show UITextStyle, AppColors;
 
 
 class StepTwo extends StatefulWidget {
@@ -19,6 +18,7 @@ class _StepTwoState extends State<StepTwo> {
   late List<Map<String, dynamic>> _experiencesList;
   late List<int> _selectedExperiencesIndexes;
   final ScrollController _controller = ScrollController();
+  late bool _selectAllState = false;
 
   @override
   void initState() {
@@ -99,6 +99,26 @@ class _StepTwoState extends State<StepTwo> {
                     ),
                   ),
                   Divider(),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0),
+                    child: Row(
+                      children: [
+                        AppExperiencesCheckbox(
+                            value:  _selectAllState,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectAllState = !_selectAllState;
+                              });
+                            }
+                        ),
+                        Text(
+                          "Select All",
+                          style: UITextStyle.labelLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+
                   Expanded(
                     child: CustomScrollView(
                       slivers: [

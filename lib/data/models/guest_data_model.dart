@@ -1,7 +1,8 @@
 import 'dart:typed_data';
-
-import 'package:alcon_flex_nda/data/data.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:alcon_flex_nda/data/data.dart' show ExperienceData;
+
 
 class GuestData extends Equatable {
   GuestData({

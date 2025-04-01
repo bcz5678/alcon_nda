@@ -131,7 +131,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, 0, pageWidth, pageHeight),
+          0, 0, pageWidth, 0),
       format: layoutFormat,
     )!;
 
@@ -180,13 +180,21 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-      0, layoutResult!.bounds.top, pageWidth, pageHeight),
+      0, layoutResult!.bounds.top, pageWidth, 0),
       format: layoutFormat,
     )!;
 
     // Combine and set overflow
     combinedMeasureText += underlineFont.measureString(tempText).width;
-    var overflowMeasureText = combinedMeasureText - pageWidth;
+
+    print('combinedMeasureText - ${combinedMeasureText}');
+    print('pageWidth - ${pageWidth}');
+
+    var overflowMeasureText = (combinedMeasureText - pageWidth) > 0
+                              ? (combinedMeasureText - pageWidth)
+                              : 0.0;
+
+    print('overflowMeasureText - ${overflowMeasureText}');
 
     //Add GUEST FULLNAME, underlined
     combinedMeasureText = overflowMeasureText;
@@ -234,7 +242,7 @@ class PdfNdaApi {
 
     //Add GUEST ADDRESS, underlined
     textElement.font = underlineFont;
-    tempText = '${guestData.address_1}${guestData.address_2 != ", " ? ", ${guestData.address_2.toString()}, " : null }${guestData.city},  ${guestData.state} ${guestData.zipcode}'.toUpperCase();
+    tempText = '${guestData.address_1}${guestData.address_2 != "" ? ", ${guestData.address_2.toString()}, " : ", " }${guestData.city}, ${guestData.state} ${guestData.zipcode}'.toUpperCase();
     textElement.text = tempText;
     textElement.stringFormat = PdfStringFormat(
       alignment: PdfTextAlignment.left,
@@ -243,14 +251,16 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult.bounds.top, pageWidth, pageHeight),
+          0, layoutResult.bounds.top, pageWidth, 0),
       format: layoutFormat,
     )!;
 
     measuredTextSize = underlineFont.measureString(tempText);
 
-    //Calculate the Overflow
-    overflowMeasureText = combinedMeasureText + measuredTextSize.width - pageWidth;
+    overflowMeasureText = (combinedMeasureText - pageWidth) > 0
+        ? (combinedMeasureText - pageWidth)
+        : 0.0;
+
 
     //Add paragraph post-GUEST ADDRESS
     textElement.font = defaultFont;
@@ -284,7 +294,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + 20, pageWidth, 0),
       format: layoutFormat,
     )!;
 
@@ -293,7 +303,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + 20, pageWidth, 0),
       format: layoutFormat,
     )!;
 
@@ -383,7 +393,7 @@ class PdfNdaApi {
 
     //Add Paragraph
     textElement.text =
-      "The parties acknowledge that the foregoing is the sole consideration relating to Alcon's disclosure, and that no payment is contemplated relating to Receiving Party’s review and evaluation of Alcon’s proprietary surgical equipment.";
+      "The parties acknowledge that the foregoing is the sole consideration relating to Alcon\'s disclosure, and that no payment is contemplated relating to Receiving Party\’s review and evaluation of Alcon\’s proprietary surgical equipment.";
     textElement.font = underlineFont;
     layoutResult = textElement.draw(
       page: page1,

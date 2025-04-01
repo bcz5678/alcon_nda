@@ -122,6 +122,22 @@ class NDAFormExperienceUnselected extends NDAFormEvent {
   List<Object?> get props => [experience];
 }
 
+class NDAFormExperienceSelectAll extends NDAFormEvent {
+  const NDAFormExperienceSelectAll();
+
+
+  @override
+  List<Object?> get props => [];
+}
+
+class NDAFormExperienceUnselectAll extends NDAFormEvent {
+  const NDAFormExperienceUnselectAll();
+
+
+  @override
+  List<Object?> get props => [];
+}
+
 class NDAFormAddSignature extends NDAFormEvent {
   const NDAFormAddSignature(this.signature);
 
