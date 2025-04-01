@@ -121,3 +121,12 @@ class NDAFormExperienceUnselected extends NDAFormEvent {
   @override
   List<Object?> get props => [experience];
 }
+
+class NDAFormAddSignature extends NDAFormEvent {
+  const NDAFormAddSignature(this.signature);
+
+  final Uint8List signature;
+
+  @override
+  List<Object?> get props => [signature];
+}

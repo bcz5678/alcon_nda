@@ -1,15 +1,22 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
+import 'package:alcon_flex_nda/app.dart';
 import 'package:flutter/material.dart';
 import 'package:alcon_flex_nda/app_ui/app_ui.dart';
 import 'package:alcon_flex_nda/widgets/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 class SignaturePadDialog extends StatefulWidget {
   const SignaturePadDialog({
+    required this.contextNDABloc,
     required this.onSignedFunction,
     super.key,
   });
 
+  final BuildContext contextNDABloc;
   final VoidCallback onSignedFunction;
 
   @override
@@ -18,6 +25,7 @@ class SignaturePadDialog extends StatefulWidget {
 
 class _SignaturePadDialogState extends State<SignaturePadDialog> {
   GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
+  bool _signaturePresent = false;
 
   @override
   void initState() {
@@ -26,6 +34,9 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
 
   void _handleClearButtonPressed() {
     signatureGlobalKey.currentState!.clear();
+    setState(() {
+      _signaturePresent = false;
+    });
   }
 
 
@@ -100,7 +111,9 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
                           key: signatureGlobalKey,
                           backgroundColor: AppColors.lightBlue.withAlpha(50),
                           strokeColor: AppColors.black,
-                          onDrawEnd: () => print('drawEnd'),
+                          onDrawEnd: () => setState(() {
+                            _signaturePresent = true;
+                          }),
                         ),
                       ),
                     ),
@@ -129,7 +142,16 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
                               child: Text(
                                 "Sign and Review",
                               ),
-                              onPressed: () => widget.onSignedFunction.call(),
+                              onPressed: _signaturePresent ?
+                                () async {
+                                  ui.Image data = await signatureGlobalKey.currentState!.toImage();
+
+                                  ByteData? bytes = await data.toByteData();
+                                  Uint8List? signatureImageList = bytes?.buffer.asUint8List();
+                                  context.read<NDAFormBloc>().add(NDAFormAddSignature(signatureImageList!));
+                                  Navigator.of(context, rootNavigator: true).pop();
+                                }
+                              : null,
                             ),
                           ),
                         ),

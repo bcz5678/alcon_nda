@@ -42,11 +42,14 @@ class PdfNdaApi {
   late double combinedMeasureText;
 
 
+
   Future<List<int>> generateNDA() async {
     PdfTextElement textElement;
     PdfOrderedList listElement;
     PdfLayoutResult? layoutResult;
     List<int> _savedDocument;
+    PdfShapeElement signatureElement;
+    PdfButtonField signatureButton;
 
     //Initialize Main Document Layout
     _document = PdfDocument();
@@ -568,20 +571,23 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
+    _columnMeasureText = defaultFont.measureString(_column1TempText);
+
 
     // SIGNATURE - DATA
-    _column1TempText = guestData.signature.toString() != null ? guestData.signature.toString() : "";
-    textElement.font = defaultFont;
-    textElement.text = _column1TempText;
 
-    layoutResult = textElement.draw(
-      page: page3,
-      bounds: Rect.fromLTWH(
-          _column1FieldStartOffset, _preColumnLayoutResult.bounds.bottom + 20 + _columnRowSpacing, pageWidth / 2 - _column1FieldStartOffset - _gutterWidth, pageHeight),
-      format: layoutFormat,
-    )!;
+    if(guestData.signature != null) {
+      print('signature not null -> ${guestData.signature}');
+      signatureElement = PdfBitmap(guestData.signature!);
 
-    _columnMeasureText = defaultFont.measureString(_column1TempText);
+      layoutResult = signatureElement.draw(
+        page: page3,
+        bounds: Rect.fromLTWH(
+            _column1FieldStartOffset, _preColumnLayoutResult.bounds.bottom + 20, pageWidth / 2 - _column1FieldStartOffset - _gutterWidth, _columnRowSpacing as double),
+        format: layoutFormat,
+      )!;
+
+    }
 
     page3.graphics.drawLine(
         PdfPen(
@@ -635,7 +641,6 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
-    _columnMeasureText = defaultFont.measureString(_column1TempText);
 
     page3.graphics.drawLine(
       PdfPen(
@@ -687,8 +692,6 @@ class PdfNdaApi {
       ),
       format: layoutFormat,
     )!;
-
-    _columnMeasureText = defaultFont.measureString(_column1TempText);
 
     page3.graphics.drawLine(
         PdfPen(
@@ -743,7 +746,6 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
-    _columnMeasureText = defaultFont.measureString(_column1TempText);
 
     page3.graphics.drawLine(
         PdfPen(
@@ -801,7 +803,6 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
-    _columnMeasureText = defaultFont.measureString(_column2TempText);
 
     page3.graphics.drawLine(
         PdfPen(
@@ -849,7 +850,6 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
-    _columnMeasureText = defaultFont.measureString(_column2TempText);
 
     page3.graphics.drawLine(
         PdfPen(
@@ -897,7 +897,6 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
-    _columnMeasureText = defaultFont.measureString(_column2TempText);
 
     page3.graphics.drawLine(
         PdfPen(
@@ -945,7 +944,6 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
-    _columnMeasureText = defaultFont.measureString(_column2TempText);
 
     page3.graphics.drawLine(
         PdfPen(

@@ -27,6 +27,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     on<NDAFormExperiencesSubmitted>(onNDAFormExperiencesSubmitted);
     on<NDAFormExperienceSelected>(onNDAFormExperienceSelected);
     on<NDAFormExperienceUnselected>(onNDAFormExperienceUnselected);
+    on<NDAFormAddSignature>(onNDAFormAddSignature);
   }
 
   ///
@@ -245,6 +246,22 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           selectedExperiences: _selectedExperiences,
+        )
+    );
+  }
+
+  void onNDAFormAddSignature(
+      NDAFormAddSignature event,
+      Emitter<NDAFormState> emit
+      ) {
+
+    var _guestData = state.guestData;
+
+    _guestData?.signature = event.signature;
+
+    emit(
+        state.copyWith(
+          guestData: _guestData,
         )
     );
   }

@@ -21,11 +21,48 @@ class StepThree extends StatefulWidget {
 }
 
 class _StepThreeState extends State<StepThree> {
-  GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
+  Uint8List? _documentBytes;
+  late PdfViewerController _pdfViewerController;
+  late bool _isSigningEnabled = false;
+
 
   @override
   void initState() {
+    _pdfViewerController = PdfViewerController();
+    addScrollListener();
     super.initState();
+
+    // Load the PDF document from the asset.
+
+    _generateAsset().then((List<int> bytes) async {
+      setState(() {
+        _documentBytes = Uint8List.fromList(bytes);
+      });
+    });
+
+  }
+
+  // Read the asset file and return the bytes.
+  Future<List<int>> _generateAsset() async {
+    var state = context.read<NDAFormBloc>().state;
+
+    final List<int> data = await PdfNdaApi(
+      guestData: state.guestData!,
+      eventData: state.eventData!,
+      clientData: state.clientData!,
+    ).generateNDA();
+
+    return data;
+  }
+
+  void addScrollListener() {
+    _pdfViewerController.addListener(() {
+      if(_pdfViewerController.pageNumber == _pdfViewerController.pageCount) {
+        setState(() {
+          _isSigningEnabled = true;
+        });
+      }
+    });
   }
 
   void onPressedFooterFunction() {
@@ -42,6 +79,7 @@ class _StepThreeState extends State<StepThree> {
       context: context,
       builder: (context) {
         return SignaturePadDialog(
+          contextNDABloc: context,
           onSignedFunction: onSignedFunctionParent,
         );
       },
@@ -52,8 +90,6 @@ class _StepThreeState extends State<StepThree> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       bottomNavigationBar: Container(
         width: double.infinity,
@@ -87,7 +123,7 @@ class _StepThreeState extends State<StepThree> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                           child: Text(
-                            "Please Review the NDA below and Sign",
+                            "Please Review the NDA Below and Sign",
                             style: GoogleFonts.notoSans(
                               textStyle: TextStyle(
                                 color: Colors.black.withAlpha(175),
@@ -98,19 +134,35 @@ class _StepThreeState extends State<StepThree> {
                           ),
                         ),
                         Divider(),
+                        Expanded(
+                          child: _documentBytes != null
+                          ? SfPdfViewer.memory(
+                            _documentBytes!,
+                            controller: _pdfViewerController,
+                            scrollDirection: PdfScrollDirection.vertical,
+                            initialZoomLevel: 1.0,
+                            onTextSelectionChanged: null,
+                          )
+                          : const Center(
+                              child: CircularProgressIndicator(
+                              color: AppColors.crystalBlue,
+                              ),
+                            ),
+                        ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          padding: const EdgeInsets.only(top: 10.0),
                           child: Container(
                             width: double.infinity / 3,
                             child: AppButton.crystalBlue(
                               child: Text(
                                 "Sign PDF",
                               ),
-                              onPressed: pressSignatureButton,
+                              onPressed: _isSigningEnabled
+                                ? pressSignatureButton
+                                : null,
                             ),
                           ),
                         ),
-                        PdfContainer(),
                       ]
                   )
               ),
@@ -122,111 +174,4 @@ class _StepThreeState extends State<StepThree> {
 }
 
 
-class PdfContainer extends StatefulWidget {
-  const PdfContainer({super.key});
-
-  @override
-  State<PdfContainer> createState() => _PdfContainerState();
-}
-
-
-
-
-class _PdfContainerState extends State<PdfContainer> {
-  final Map<String, Uint8List> _signedFields = <String, Uint8List>{};
-  PdfDocument? _loadedDocument;
-  Uint8List? _documentBytes;
-  bool _canCompleteSigning = false;
-  bool _canShowToast = false;
-  late PdfViewerController _pdfViewerController;
-
-  @override
-  void initState() {
-    _pdfViewerController = PdfViewerController();
-    super.initState();
-
-    // Load the PDF document from the asset.
-
-    _generateAsset().then((List<int> bytes) async {
-      setState(() {
-        _documentBytes = Uint8List.fromList(bytes);
-      });
-    });
-
-    /*
-    _readAsset('alcon_base_template.pdf').then((List<int> bytes) async {
-      setState(() {
-        _documentBytes = Uint8List.fromList(bytes);
-      });
-    });
-
-     */
-  }
-
-  // Read the asset file and return the bytes.
-  Future<List<int>> _generateAsset() async {
-    var state = context.read<NDAFormBloc>().state;
-
-    final List<int> data = await PdfNdaApi(
-      guestData: state.guestData!,
-      eventData: state.eventData!,
-      clientData: state.clientData!,
-    ).generateNDA();
-
-    return data;
-  }
-
-
-  // Read the asset file and return the bytes.
-  Future<List<int>> _readAsset(String name) async {
-    final ByteData data = await rootBundle.load('assets/files/$name');
-    return data.buffer.asUint8List();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Expanded(
-        child: _documentBytes != null
-            ? SfPdfViewer.memory(
-          _documentBytes!,
-          controller: _pdfViewerController,
-          initialZoomLevel: 1.0,
-          onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-            // Store the loaded document to access the form fields.
-            _loadedDocument = details.document;
-            // Clear the signed fields when the document is loaded.
-            //_signedFields.clear();
-          },
-          onTextSelectionChanged: null,
-          onFormFieldValueChanged:
-              (PdfFormFieldValueChangedDetails details) {
-            // Update the signed fields when the form field value is changed.
-            if (details.formField is PdfSignatureFormField) {
-              final PdfSignatureFormField signatureField =
-              details.formField as PdfSignatureFormField;
-              if (signatureField.signature != null) {
-                _signedFields[details.formField.name] =
-                signatureField.signature!;
-                setState(() {
-                  _canCompleteSigning = true;
-                });
-              } else {
-                _signedFields.remove(details.formField.name);
-                setState(() {
-                  _canCompleteSigning = false;
-                });
-              }
-            }
-          },
-        )
-            : const Center(
-          child: CircularProgressIndicator(
-            color: AppColors.crystalBlue,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
