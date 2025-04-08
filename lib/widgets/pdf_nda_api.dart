@@ -587,7 +587,7 @@ class PdfNdaApi {
     // SIGNATURE - DATA
 
     if(guestData.signature != null) {
-      print('signature not null -> ${guestData.signature}');
+      //print('signature not null -> ${guestData.signature}');
       signatureElement = PdfBitmap(guestData.signature!);
 
       layoutResult = signatureElement.draw(

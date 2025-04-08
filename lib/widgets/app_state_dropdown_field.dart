@@ -11,6 +11,7 @@ class AppStateAbbrDropdownField extends StatefulWidget {
   const AppStateAbbrDropdownField({
     super.key,
     this.controller,
+    this.initialValue,
     this.hintText,
     this.errorText,
     this.suffix,
@@ -20,6 +21,9 @@ class AppStateAbbrDropdownField extends StatefulWidget {
 
   /// Controls the text being edited.
   final TextEditingController? controller;
+
+  /// Prefills value if present in Bloc State.
+  final String? initialValue;
 
   /// Text that suggests what sort of input the field accepts.
   final String? hintText;
@@ -73,6 +77,7 @@ class _AppStateAbbrDropdownFieldState extends State<AppStateAbbrDropdownField> {
   Widget build(BuildContext context) {
     return AppDropdownField(
       items: _statesList,
+      initialValue: widget.initialValue,
       hintText: widget.hintText,
       errorText: widget.errorText,
       prefix: const Padding(

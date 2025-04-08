@@ -12,6 +12,7 @@ class AppDropdownField extends StatefulWidget {
   const AppDropdownField({
     super.key,
     this.items,
+    this.initialValue,
     this.hintText,
     this.errorText,
     this.prefix,
@@ -25,6 +26,9 @@ class AppDropdownField extends StatefulWidget {
 
   /// List of DropdownMenuItem<T>
   final List<DropdownMenuItem<dynamic>>? items;
+
+  /// Prefills value if present in Bloc State.
+  final String? initialValue;
 
   /// Text that suggests what sort of input the field accepts.
   final String? hintText;
@@ -56,7 +60,16 @@ class AppDropdownField extends StatefulWidget {
 
 class _AppDropdownFieldState extends State<AppDropdownField> {
   /// Value selected on the
-  var _selectedStateAbbr;
+  late String? _selectedStateAbbr;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedStateAbbr = null;
+    if(widget.initialValue != null) {
+      _selectedStateAbbr = widget.initialValue;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -71,7 +71,7 @@ class _StepThreeState extends State<StepThree> {
   }
 
   void onSignedFunctionParent() {
-    print('onSignedFunctionParent signed');
+    //print('onSignedFunctionParent signed');
   }
 
   void pressSignatureButton() {
@@ -90,6 +90,8 @@ class _StepThreeState extends State<StepThree> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.read<NDAFormBloc>().state;
+
     return Scaffold(
       bottomNavigationBar: Container(
         width: double.infinity,
@@ -154,7 +156,11 @@ class _StepThreeState extends State<StepThree> {
                           child: Container(
                             width: double.infinity / 3,
                             child: AppButton.crystalBlue(
-                              child: Text(
+                              child: state.guestData?.signature != null
+                              ? Text(
+                                 "Edit Signature"
+                                )
+                              : Text(
                                 "Sign PDF",
                               ),
                               onPressed: _isSigningEnabled

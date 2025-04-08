@@ -1,4 +1,5 @@
 import 'package:alcon_flex_nda/app.dart' show StepThree, StickyFooter;
+import 'package:alcon_flex_nda/data/data.dart';
 import 'package:alcon_flex_nda/widgets/app_experiences_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,7 @@ class StepTwo extends StatefulWidget {
 }
 
 class _StepTwoState extends State<StepTwo> {
-  late List<Map<String, dynamic>> _experiencesList;
+  late List<ExperienceData> _experiencesList;
   late List<int> _selectedExperiencesIndexes;
   final ScrollController _controller = ScrollController();
   late bool _selectAllState = false;
@@ -24,6 +25,7 @@ class _StepTwoState extends State<StepTwo> {
   void initState() {
     _selectedExperiencesIndexes = [];
     _experiencesList = [];
+    buildExperiencesList();
     super.initState();
   }
 
@@ -43,15 +45,39 @@ class _StepTwoState extends State<StepTwo> {
     }
   }
 
-  List<Map<String, dynamic>> selectedExperiencesReturnList(List<int> items) {
-    List<Map<String, dynamic>> returnList = [];
+  Future<void> buildExperiencesList() async {
+    context.read<NDAFormBloc>().add(NDAGetAllExperiencesData());
+    setState(() {
+      _experiencesList = context.read<NDAFormBloc>().state.experiencesData!;
+    });
+  }
 
-    for(var index = 0; index < items.length; index++) {
-      returnList.add(_experiencesList[index]);
+  Future<void> selectAllExperiences() async {
+    List<int>returnList = [];
+    print('all -> ${_experiencesList}');
+    for(var index = 0; index < _experiencesList.length; index++) {
+      returnList.add(index);
     }
 
-    return returnList;
+    context.read<NDAFormBloc>().add(NDAFormExperienceSelectAll());
+    setState(() {
+      _selectedExperiencesIndexes = returnList;
+      _selectAllState = !_selectAllState;
+      print('all -> ${_selectedExperiencesIndexes}');
+    });
   }
+
+  Future<void> unselectAllExperiences() async {
+
+    context.read<NDAFormBloc>().add(NDAFormExperienceUnselectAll());
+    setState(() {
+      _selectAllState = !_selectAllState;
+      _selectedExperiencesIndexes = [];
+      print('none -> ${_selectedExperiencesIndexes}');
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +132,11 @@ class _StepTwoState extends State<StepTwo> {
                         AppExperiencesCheckbox(
                             value:  _selectAllState,
                             onChanged: (value) {
-                              setState(() {
-                                _selectAllState = !_selectAllState;
-                              });
+                              if(_selectAllState == true) {
+                                unselectAllExperiences();
+                              } else {
+                                selectAllExperiences();
+                              }
                             }
                         ),
                         Text(
@@ -139,6 +167,7 @@ class _StepTwoState extends State<StepTwo> {
                                                 state.experiencesData![index]
                                               )
                                             );
+                                            _selectAllState = false;
                                           } else {
                                             _selectedExperiencesIndexes.add(index);
                                             context.read<NDAFormBloc>()

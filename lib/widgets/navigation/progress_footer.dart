@@ -65,25 +65,78 @@ class _StickyFooterState extends State<StickyFooter> {
                       Expanded(
                         child: SizedBox(),
                       ),
-                      Container(
-                        width: 150,
-                        child: AppButton.crystalBlue(
-                          key: const Key('formInput_step1_nextStepButton'),
-                          onPressed:  state.fullNameInput!.isPure ||
-                                      state.address1Input!.isPure ||
-                                      state.cityInput!.isPure ||
-                                      state.stateAbbrInput!.isPure ||
-                                      state.zipcodeInput!.isPure
-                              ? null
-                              : widget.onPressedFunction,
-                          child: state.formzSubmissionStatus!.isInProgress
-                              ? const SizedBox.square(
-                            dimension: 24,
-                            child: CircularProgressIndicator(),
+                      if (widget.currentStep == 1)...[
+                        Container(
+                          width: 150,
+                          child: AppButton.crystalBlue(
+                            key: const Key('formInput_step1_nextStepButton'),
+                            onPressed:  state.fullNameInput!.isPure ||
+                                        state.address1Input!.isPure ||
+                                        state.cityInput!.isPure ||
+                                        state.stateAbbrInput!.isPure ||
+                                        state.zipcodeInput!.isPure
+                                ? null
+                                : widget.onPressedFunction,
+                            child: state.formzSubmissionStatus!.isInProgress
+                                ? const SizedBox.square(
+                              dimension: 24,
+                              child: CircularProgressIndicator(),
+                            )
+                                : Text("Next Step"),
+                          ),
+                        )
+                      ],
+                      if (widget.currentStep == 2)...[
+                        Container(
+                          width: 150,
+                          child: AppButton.crystalBlue(
+                            key: const Key('formInput_step2_nextStepButton'),
+                            onPressed: state.selectedExperiences!.isEmpty
+                                ? null
+                                : widget.onPressedFunction,
+                            child: state.formzSubmissionStatus!.isInProgress
+                                ? const SizedBox.square(
+                              dimension: 24,
+                              child: CircularProgressIndicator(),
+                            )
+                                : Text("Next Step"),
+                          ),
+                        )
+                      ],
+                      if (widget.currentStep == 3)...[
+                        Container(
+                          width: 150,
+                          child: AppButton.crystalBlue(
+                            key: const Key('formInput_step2_nextStepButton'),
+                            onPressed: state.guestData!.signature != null
+                                ? null
+                                : widget.onPressedFunction,
+                            child: state.formzSubmissionStatus!.isInProgress
+                                ? const SizedBox.square(
+                              dimension: 24,
+                              child: CircularProgressIndicator(),
+                            )
+                                : Text("Next Step"),
+                          ),
+                        )
+                      ],
+                      if (widget.currentStep == 4)...[
+                        if (widget.currentStep == 3)...[
+                          Container(
+                            width: 150,
+                            child: AppButton.crystalBlue(
+                              key: const Key('formInput_step2_nextStepButton'),
+                              onPressed:  widget.onPressedFunction,
+                              child: state.formzSubmissionStatus!.isInProgress
+                                  ? const SizedBox.square(
+                                dimension: 24,
+                                child: CircularProgressIndicator(),
+                              )
+                                  : Text("Submit NDA"),
+                            ),
                           )
-                              : Text("Next Step"),
-                        ),
-                      )
+                        ],
+                      ]
                     ],
                   ),
                 ],

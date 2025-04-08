@@ -11,7 +11,6 @@ class AppTextField extends StatelessWidget {
   /// {@macro app_text_field}
   const AppTextField({
     super.key,
-    this.initialValue,
     this.autoFillHints,
     this.controller,
     this.inputFormatters,
@@ -28,9 +27,6 @@ class AppTextField extends StatelessWidget {
     this.padding,
     this.obscureText = false,
   });
-
-  /// A value to initialize the field to.
-  final String? initialValue;
 
   /// List of auto fill hints.
   final Iterable<String>? autoFillHints;
@@ -94,7 +90,6 @@ class AppTextField extends StatelessWidget {
           constraints: const BoxConstraints(minHeight: 80),
           child: TextFormField(
             key: key,
-            initialValue: initialValue,
             controller: controller,
             inputFormatters: inputFormatters,
             keyboardType: keyboardType,
