@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -83,11 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (validList.every((val) => val == true)) {
       context.read<NDAFormBloc>().add(NDAFormDetailsSubmitted());
+      context.go('/step_two');
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const StepTwo()),
-      );
     } else {
       setState(() {
         _fullNameDisplayMessage = !state.fullNameInput!.isValid;

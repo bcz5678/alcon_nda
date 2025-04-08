@@ -1,8 +1,27 @@
 import 'package:alcon_flex_nda/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'view/view.dart';
+
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => HomePage(),
+    ),
+    GoRoute(
+      path: '/step_two',
+      builder: (context, state) => StepTwo(),
+    ),
+    GoRoute(
+      path: '/step_three',
+      builder: (context, state) => StepThree(),
+    ),
+  ],
+);
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +40,11 @@ class AlcornNdaApp extends StatelessWidget {
           create: (context) => NDAFormBloc(),
         ),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: "Alcon NDA App",
         theme: ThemeData.light(),
-        home: HomePage(),
+        routerConfig: _router,
       ),
     );
   }

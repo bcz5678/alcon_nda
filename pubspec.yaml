@@ -45,6 +45,7 @@ dependencies:
   signature: ^6.0.0
   formz: ^0.8.0
   linear_progress_bar: ^1.1.3
+  go_router: ^14.8.1
 
   syncfusion_flutter_pdf:
     path: packages/syncfusion_flutter_pdf

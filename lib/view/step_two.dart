@@ -3,6 +3,7 @@ import 'package:alcon_flex_nda/data/data.dart';
 import 'package:alcon_flex_nda/widgets/app_experiences_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 import 'package:alcon_flex_nda/app_ui/app_ui.dart' show UITextStyle, AppColors;
@@ -38,10 +39,7 @@ class _StepTwoState extends State<StepTwo> {
           .add(NDAFormExperiencesSubmitted()
       );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const StepThree()),
-      );
+      context.go('/step_three');
     }
   }
 

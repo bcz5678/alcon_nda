@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 import 'package:alcon_flex_nda/widgets/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -67,7 +68,9 @@ class _StepThreeState extends State<StepThree> {
 
   void onPressedFooterFunction() {
     var state = context.read<NDAFormBloc>().state;
-    //print(selectedExperiencesReturnList(_selectedExperiencesIndexes));
+    if(state.guestData?.signature != null) {
+      context.go('/step_four');
+    }
   }
 
   void onSignedFunctionParent() {
