@@ -2,6 +2,7 @@ import 'package:alcon_flex_nda/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'view/view.dart';
 
@@ -25,6 +26,7 @@ final _router = GoRouter(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  usePathUrlStrategy();
   runApp(AlcornNdaApp());
 }
 

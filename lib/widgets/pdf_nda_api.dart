@@ -96,6 +96,7 @@ class PdfNdaApi {
     // Set Layout format to span page breaks and set pagination bounds
     PdfLayoutFormat layoutFormat = PdfLayoutFormat(
       layoutType: PdfLayoutType.paginate,
+      breakType: PdfLayoutBreakType.fitPage,
     );
 
     //Create the footer with specific bounds
@@ -183,6 +184,8 @@ class PdfNdaApi {
       0, layoutResult!.bounds.top, pageWidth, 0),
       format: layoutFormat,
     )!;
+
+
 
     // Combine and set overflow
     combinedMeasureText += underlineFont.measureString(tempText).width;
@@ -366,6 +369,7 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
+
     // Add List
     listElement = PdfOrderedList(
       items: PdfListItemCollection([
@@ -391,6 +395,7 @@ class PdfNdaApi {
     )!;
 
 
+
     //Add Paragraph
     textElement.text =
       "The parties acknowledge that the foregoing is the sole consideration relating to Alcon\'s disclosure, and that no payment is contemplated relating to Receiving Party\’s review and evaluation of Alcon\’s proprietary surgical equipment.";
@@ -401,6 +406,7 @@ class PdfNdaApi {
           0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
+
 
     //Add Paragraph
     textElement.text =
@@ -413,15 +419,17 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
+
     //Add Paragraph
     textElement.text =
       'The obligations of confidence and non-use assumed by Receiving Party hereunder shall not apply to any Confidential Information which Receiving Party can demonstrate:';
     layoutResult = textElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutFormat.paginateBounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
+
 
     // Add List
     listElement = PdfOrderedList(
@@ -512,13 +520,14 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
+
     //Add Paragraph
     textElement.text =
     'The term of this Agreement shall be for one (1) year from the date stated above. However, the foregoing obligations of confidentiality and non-use shall survive the expiration or termination of this Agreement.';
     layoutResult = textElement.draw(
       page: page3,
       bounds: Rect.fromLTWH(
-          0, layoutFormat.paginateBounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult.bounds.bottom + 20, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -544,6 +553,8 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
+
+
     //Add Paragraph
     textElement.text =
     'IN WITNESS WHEREOF, the parties hereby execute this Confidentiality Agreement by their duly authorized Representative as of the Effective Date first above written.';
@@ -553,6 +564,7 @@ class PdfNdaApi {
           0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
+
 
     var _preColumnLayoutResult = layoutResult;
     double _column1FieldStartOffset = 70.0;

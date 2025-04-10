@@ -2,44 +2,36 @@ String experiencesJsonData = '''
 {
     "data": [
         {
-            "name": "LuxOR® Revalia™ Surgical Ophthalmic Microscope (Ergonomic Binoculars) equipment",
-            "description": "Description Here",
-            "logo": ""
+            "name": "ADI Practice Solutions",
+            "description": "Description Here"
         },
         {
-            "name": "Experience #2",
-            "description": "Description Here",
-            "logo": ""
+            "name": "ADI (Surgical Planning Experience)",
+            "description": "Description Here"
         },
         {
-            "name": "Experience #3",
-            "description": "Description Here",
-            "logo": ""
+            "name": "Cataract Wetlab",
+            "description": "Description Here"
         },
         {
-            "name": "Experience #4",
-            "description": "Description Here",
-            "logo": ""
+            "name": "IOL Hands On Delivery",
+            "description": "Description Here"
         },
         {
-            "name": "Experience #5",
-            "description": "Description Here",
-            "logo": ""
+            "name": "IOL Innovation Suite",
+            "description": "Description Here"
         },
         {
-            "name": "Experience #6",
-            "description": "Description Here",
-            "logo": ""
+            "name": "Surgical Glaucoma Innovation Suite",
+            "description": "Description Here"
         },
         {
-            "name": "Experience #7",
-            "description": "Description Here",
-            "logo": ""
+            "name": "Voyager",
+            "description": "Description Here"
         },
         {
-            "name": "Experience #8",
-            "description": "Description Here",
-            "logo": ""
+            "name": "Wavelight",
+            "description": "Description Here"
         }
     ]
 }

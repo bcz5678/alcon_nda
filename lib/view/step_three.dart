@@ -111,68 +111,73 @@ class _StepThreeState extends State<StepThree> {
                   width: MediaQuery.of(context).size.width >= 1000
                       ? 1000
                       : constraints.maxWidth,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 40, 0, 10),
-                          child: const FractionallySizedBox(
-                            widthFactor: 0.20,
-                            child: Image(
-                                image: AssetImage('images/alcon-logo-2019.png')
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                          child: Text(
-                            "Please Review the NDA Below and Sign",
-                            style: GoogleFonts.notoSans(
-                              textStyle: TextStyle(
-                                color: Colors.black.withAlpha(175),
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.w700,
+                  child: Padding(
+                    padding:  MediaQuery.of(context).size.width >= 1000
+                        ? const EdgeInsets.all(0.0)
+                        : const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 40, 0, 10),
+                            child: FractionallySizedBox(
+                              widthFactor: 0.20,
+                              child: Image(
+                                  image: AssetImage('images/alcon-logo-2019.png')
                               ),
                             ),
                           ),
-                        ),
-                        Divider(),
-                        Expanded(
-                          child: _documentBytes != null
-                          ? SfPdfViewer.memory(
-                            _documentBytes!,
-                            controller: _pdfViewerController,
-                            scrollDirection: PdfScrollDirection.vertical,
-                            initialZoomLevel: 1.0,
-                            onTextSelectionChanged: null,
-                          )
-                          : const Center(
-                              child: CircularProgressIndicator(
-                              color: AppColors.crystalBlue,
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Text(
+                              "Please Review the NDA Below and Sign",
+                              style: GoogleFonts.notoSans(
+                                textStyle: TextStyle(
+                                  color: Colors.black.withAlpha(175),
+                                  fontSize: 32.0,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Container(
-                            width: double.infinity / 3,
-                            child: AppButton.crystalBlue(
-                              child: state.guestData?.signature != null
-                              ? Text(
-                                 "Edit Signature"
-                                )
-                              : Text(
-                                "Sign PDF",
-                              ),
-                              onPressed: _isSigningEnabled
-                                ? pressSignatureButton
-                                : null,
                             ),
                           ),
-                        ),
-                      ]
+                          Divider(),
+                          Expanded(
+                            child: _documentBytes != null
+                            ? SfPdfViewer.memory(
+                              _documentBytes!,
+                              controller: _pdfViewerController,
+                              scrollDirection: PdfScrollDirection.vertical,
+                              initialZoomLevel: 1.0,
+                              onTextSelectionChanged: null,
+                            )
+                            : const Center(
+                                child: CircularProgressIndicator(
+                                color: AppColors.crystalBlue,
+                                ),
+                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Container(
+                              width: double.infinity / 3,
+                              child: AppButton.crystalBlue(
+                                child: state.guestData?.signature != null
+                                ? Text(
+                                   "Edit Signature"
+                                  )
+                                : Text(
+                                  "Sign PDF",
+                                ),
+                                onPressed: _isSigningEnabled
+                                  ? pressSignatureButton
+                                  : null,
+                              ),
+                            ),
+                          ),
+                        ]
+                    ),
                   )
               ),
             );
