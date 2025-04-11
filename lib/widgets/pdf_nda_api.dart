@@ -66,6 +66,8 @@ class PdfNdaApi {
     double pageHeight =  _document.pageSettings.height;
 
     defaultParagraphIndentation = 50;
+    double verticalLineSpacer = 20;
+    double horizontalLineSpacer = 10.0;
 
     //Set the fonts
     defaultFont = PdfStandardFont(
@@ -147,7 +149,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, 0, 0),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, 0, 0),
       format: layoutFormat,
     )!;
 
@@ -170,6 +172,8 @@ class PdfNdaApi {
     measuredTextSize = underlineFont.measureString(tempText);
     combinedMeasureText = measuredTextSize.width;
 
+    print('combinedMeasureText - post date- ${combinedMeasureText}');
+
     //Add paragraph post-EFFECTIVE DATE
     textElement.font = defaultFont;
     tempText = r' (the "Effective Date"), by and between Alcon Research, LLC ("Alcon") and ';
@@ -188,9 +192,10 @@ class PdfNdaApi {
 
 
     // Combine and set overflow
+    print(tempText);
     combinedMeasureText += underlineFont.measureString(tempText).width;
-
-    print('combinedMeasureText - ${combinedMeasureText}');
+    print('combinedMeasureText - underlineText - ${underlineFont.measureString(tempText).width}');
+    print('combinedMeasureText - post effective date and - ${combinedMeasureText}');
     print('pageWidth - ${pageWidth}');
 
     var overflowMeasureText = (combinedMeasureText - pageWidth) > 0
@@ -199,18 +204,18 @@ class PdfNdaApi {
 
     print('overflowMeasureText - ${overflowMeasureText}');
 
+    
     //Add GUEST FULLNAME, underlined
-    combinedMeasureText = overflowMeasureText;
-
-
+    combinedMeasureText = overflowMeasureText + (horizontalLineSpacer * 2);
 
     textElement.font = underlineFont;
-    tempText = 'BRIAN COLLIER'.toUpperCase();
+    tempText = guestData.fullName!.toUpperCase();
+    
 
     textElement.text = tempText;
     textElement.stringFormat = PdfStringFormat(
       alignment: PdfTextAlignment.left,
-      paragraphIndent: overflowMeasureText + 15,
+      paragraphIndent: combinedMeasureText,
     );
     layoutResult = textElement.draw(
       page: page1,
@@ -222,7 +227,7 @@ class PdfNdaApi {
 
     // Set fullName MeasuredTextSize
     measuredTextSize = underlineFont.measureString(tempText);
-    combinedMeasureText = measuredTextSize.width + 30;
+    combinedMeasureText = measuredTextSize.width + (horizontalLineSpacer * 4);
 
     //Add paragraph post-GUEST FULL NAME
     textElement.font = defaultFont;
@@ -230,7 +235,7 @@ class PdfNdaApi {
     textElement.text = tempText;
     textElement.stringFormat = PdfStringFormat(
       alignment: PdfTextAlignment.left,
-      paragraphIndent: combinedMeasureText ,
+      paragraphIndent: combinedMeasureText,
     );
     layoutResult = textElement.draw(
       page: page1,
@@ -238,10 +243,14 @@ class PdfNdaApi {
           0, layoutResult!.bounds.top, 0, 0),
       format: layoutFormat,
     )!;
+
+    print('pdf_nda_api -> post with an address of -> ${layoutResult.bounds}');
+
+
     measuredTextSize = defaultFont.measureString(tempText);
 
     // Add  to the combined text
-    combinedMeasureText += measuredTextSize.width;
+    combinedMeasureText += measuredTextSize.width + horizontalLineSpacer;
 
     //Add GUEST ADDRESS, underlined
     textElement.font = underlineFont;
@@ -249,7 +258,7 @@ class PdfNdaApi {
     textElement.text = tempText;
     textElement.stringFormat = PdfStringFormat(
       alignment: PdfTextAlignment.left,
-      paragraphIndent: combinedMeasureText + 10,
+      paragraphIndent: combinedMeasureText,
     );
     layoutResult = textElement.draw(
       page: page1,
@@ -258,7 +267,9 @@ class PdfNdaApi {
       format: layoutFormat,
     )!;
 
-    measuredTextSize = underlineFont.measureString(tempText);
+    print('pdf_nda_api -> post address -> ${layoutResult.bounds}');
+
+    combinedMeasureText += underlineFont.measureString(tempText).width + (horizontalLineSpacer * 2);
 
     overflowMeasureText = (combinedMeasureText - pageWidth) > 0
         ? (combinedMeasureText - pageWidth)
@@ -271,7 +282,7 @@ class PdfNdaApi {
     r' ("Receiving Party").';
     textElement.stringFormat = PdfStringFormat(
       alignment: PdfTextAlignment.left,
-      paragraphIndent: overflowMeasureText + 40,
+      paragraphIndent: overflowMeasureText,
     );
 
     layoutResult = textElement.draw(
@@ -297,7 +308,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, 0),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, 0),
       format: layoutFormat,
     )!;
 
@@ -306,7 +317,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, 0),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, 0),
       format: layoutFormat,
     )!;
 
@@ -316,7 +327,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -335,7 +346,7 @@ class PdfNdaApi {
     layoutResult = listElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -350,7 +361,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -365,7 +376,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -390,7 +401,7 @@ class PdfNdaApi {
     layoutResult = listElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -403,7 +414,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -415,7 +426,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page1,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -423,10 +434,14 @@ class PdfNdaApi {
     //Add Paragraph
     textElement.text =
       'The obligations of confidence and non-use assumed by Receiving Party hereunder shall not apply to any Confidential Information which Receiving Party can demonstrate:';
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.left,
+      paragraphIndent: defaultParagraphIndentation,
+    );
     layoutResult = textElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -450,7 +465,7 @@ class PdfNdaApi {
     layoutResult = listElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -461,7 +476,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -472,7 +487,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -483,7 +498,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -494,7 +509,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -505,7 +520,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -516,7 +531,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page2,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -524,10 +539,14 @@ class PdfNdaApi {
     //Add Paragraph
     textElement.text =
     'The term of this Agreement shall be for one (1) year from the date stated above. However, the foregoing obligations of confidentiality and non-use shall survive the expiration or termination of this Agreement.';
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.left,
+      paragraphIndent: defaultParagraphIndentation,
+    );
     layoutResult = textElement.draw(
       page: page3,
       bounds: Rect.fromLTWH(
-          0, layoutResult.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -535,10 +554,14 @@ class PdfNdaApi {
     //Add Paragraph
     textElement.text =
     'This Agreement constitutes the entire understanding between the parties relating to the Purpose hereof. No amendment or modification to this Agreement will be valid or binding upon the parties unless made in writing and signed by each party.';
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.left,
+      paragraphIndent: defaultParagraphIndentation,
+    );
     layoutResult = textElement.draw(
       page: page3,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -546,10 +569,14 @@ class PdfNdaApi {
     //Add Paragraph
     textElement.text =
     'This Agreement may be executed in two (2) or more counterparts, each of which shall constitute an original and all of which together shall constitute one and the same instrument.';
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.left,
+      paragraphIndent: defaultParagraphIndentation,
+    );
     layoutResult = textElement.draw(
       page: page3,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -558,10 +585,14 @@ class PdfNdaApi {
     //Add Paragraph
     textElement.text =
     'IN WITNESS WHEREOF, the parties hereby execute this Confidentiality Agreement by their duly authorized Representative as of the Effective Date first above written.';
+    textElement.stringFormat = PdfStringFormat(
+      alignment: PdfTextAlignment.left,
+      paragraphIndent: defaultParagraphIndentation,
+    );
     layoutResult = textElement.draw(
       page: page3,
       bounds: Rect.fromLTWH(
-          0, layoutResult!.bounds.bottom + 20, pageWidth, pageHeight),
+          0, layoutResult!.bounds.bottom + verticalLineSpacer, pageWidth, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -589,7 +620,7 @@ class PdfNdaApi {
        layoutResult = textElement.draw(
       page: page3,
       bounds: Rect.fromLTWH(
-          0, _preColumnLayoutResult.bounds.bottom + 20 + _columnRowSpacing, pageWidth / 2, pageHeight),
+          0, _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + _columnRowSpacing, pageWidth / 2, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -605,7 +636,7 @@ class PdfNdaApi {
       layoutResult = signatureElement.draw(
         page: page3,
         bounds: Rect.fromLTWH(
-            _column1FieldStartOffset, _preColumnLayoutResult.bounds.bottom + 20, pageWidth / 2 - _column1FieldStartOffset - _gutterWidth, _columnRowSpacing as double),
+            _column1FieldStartOffset, _preColumnLayoutResult.bounds.bottom + verticalLineSpacer, pageWidth / 2 - _column1FieldStartOffset - _gutterWidth, _columnRowSpacing as double),
         format: layoutFormat,
       )!;
 
@@ -618,11 +649,11 @@ class PdfNdaApi {
         ),
         Offset(
           _column1FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 1) + _columnMeasureText.height,
         ),
         Offset(
           ((pageWidth / 2) - _gutterWidth),
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 1) + _columnMeasureText.height,
         )
     );
 
@@ -639,7 +670,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           0,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 2),
           pageWidth / 2,
           pageHeight
       ),
@@ -656,7 +687,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           _column1FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 2),
           pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
           pageHeight
       ),
@@ -671,11 +702,11 @@ class PdfNdaApi {
       ),
       Offset(
           _column1FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 2) + _columnMeasureText.height,
       ),
       Offset(
           ((pageWidth / 2) - _gutterWidth),
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 2) + _columnMeasureText.height,
       )
     );
 
@@ -693,7 +724,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           0,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 3),
           pageWidth / 2,
           pageHeight
       ),
@@ -708,7 +739,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           _column1FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 3),
           pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
           pageHeight
       ),
@@ -722,11 +753,11 @@ class PdfNdaApi {
         ),
         Offset(
           _column1FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 3) + _columnMeasureText.height,
         ),
         Offset(
           ((pageWidth / 2) - _gutterWidth),
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 3) + _columnMeasureText.height,
         )
     );
 
@@ -744,7 +775,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           0,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 4),
           pageWidth / 2,
           pageHeight
       ),
@@ -761,7 +792,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           _column1FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 4),
           pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
           pageHeight
       ),
@@ -776,11 +807,11 @@ class PdfNdaApi {
         ),
         Offset(
           _column1FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 4) + _columnMeasureText.height,
         ),
         Offset(
           ((pageWidth / 2) - _gutterWidth),
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 4) + _columnMeasureText.height,
         )
     );
 
@@ -794,7 +825,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page3,
       bounds: Rect.fromLTWH(
-          pageWidth / 2, _preColumnLayoutResult.bounds.bottom + 20, pageWidth / 2, pageHeight),
+          pageWidth / 2, _preColumnLayoutResult.bounds.bottom + verticalLineSpacer, pageWidth / 2, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -805,7 +836,7 @@ class PdfNdaApi {
     layoutResult = textElement.draw(
       page: page3,
       bounds: Rect.fromLTWH(
-          pageWidth / 2, _preColumnLayoutResult.bounds.bottom + 20 + _columnRowSpacing, pageWidth / 2, pageHeight),
+          pageWidth / 2, _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + _columnRowSpacing, pageWidth / 2, pageHeight),
       format: layoutFormat,
     )!;
 
@@ -818,7 +849,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           (pageWidth / 2) + _column2FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 1),
           pageWidth / 2 - _gutterWidth,
           pageHeight
       ),
@@ -833,11 +864,11 @@ class PdfNdaApi {
         ),
         Offset(
           (pageWidth / 2) + _column2FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 1) + _columnMeasureText.height,
         ),
         Offset(
           pageWidth,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 1) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 1) + _columnMeasureText.height,
         )
     );
 
@@ -849,7 +880,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           pageWidth / 2,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 2),
           pageWidth / 2,
           pageHeight
       ),
@@ -865,7 +896,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           (pageWidth / 2) + _column2FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 2),
           pageWidth / 2 - _gutterWidth,
           pageHeight
       ),
@@ -880,11 +911,11 @@ class PdfNdaApi {
         ),
         Offset(
           (pageWidth / 2) + _column2FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 2) + _columnMeasureText.height,
         ),
         Offset(
           pageWidth,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 2) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 2) + _columnMeasureText.height,
         )
     );
 
@@ -896,7 +927,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           pageWidth / 2,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 3),
           pageWidth / 2,
           pageHeight
       ),
@@ -912,7 +943,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           (pageWidth / 2) + _column2FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 3),
           pageWidth / 2 - _gutterWidth,
           pageHeight
       ),
@@ -927,11 +958,11 @@ class PdfNdaApi {
         ),
         Offset(
           (pageWidth / 2) + _column2FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 3) + _columnMeasureText.height,
         ),
         Offset(
           pageWidth,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 3) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 3) + _columnMeasureText.height,
         )
     );
 
@@ -943,7 +974,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           pageWidth / 2,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 4),
           pageWidth / 2,
           pageHeight
       ),
@@ -959,7 +990,7 @@ class PdfNdaApi {
       page: page3,
       bounds: Rect.fromLTWH(
           (pageWidth / 2) + _column2FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4),
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 4),
           pageWidth / 2 - _gutterWidth,
           pageHeight
       ),
@@ -974,11 +1005,11 @@ class PdfNdaApi {
         ),
         Offset(
           (pageWidth / 2) + _column2FieldStartOffset,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 4) + _columnMeasureText.height,
         ),
         Offset(
           pageWidth,
-          _preColumnLayoutResult.bounds.bottom + 20 + (_columnRowSpacing * 4) + _columnMeasureText.height,
+          _preColumnLayoutResult.bounds.bottom + verticalLineSpacer + (_columnRowSpacing * 4) + _columnMeasureText.height,
         )
     );
 

@@ -69,8 +69,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
 
     List<ExperienceData> experiencesList = getGetAllExperiencesDataFromLocal();
 
-    print('nda_form_bloc -> onNDAGetAllExperiencesData -> ${experiencesList}');
-
     emit(
         state.copyWith(
           experiencesData: experiencesList,
