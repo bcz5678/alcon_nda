@@ -409,7 +409,7 @@ class PdfNdaApi {
 
     //Add Paragraph
     textElement.text =
-      "The parties acknowledge that the foregoing is the sole consideration relating to Alcon\'s disclosure, and that no payment is contemplated relating to Receiving Party\’s review and evaluation of Alcon\’s proprietary surgical equipment.";
+      "The parties acknowledge that the foregoing is the sole consideration relating to Alcon\'s disclosure, and that no payment is contemplated relating to Receiving Party\'s review and evaluation of Alcon\'s proprietary surgical equipment.";
     textElement.font = underlineFont;
     layoutResult = textElement.draw(
       page: page1,
@@ -601,7 +601,7 @@ class PdfNdaApi {
     double _column1FieldStartOffset = 70.0;
     double _column2FieldStartOffset = 50.0;
     var _gutterWidth = 15;
-    var _columnRowSpacing = 35;
+    double _columnRowSpacing = 35;
     var _column1TempText = '';
     var _column2TempText = '';
     var underlineUnits = 25;
@@ -641,6 +641,23 @@ class PdfNdaApi {
       )!;
 
     }
+
+    // Create a signature form field and add it to the document.
+    _document.form.fields.add(
+        PdfSignatureField(
+            page3,
+            'Tap to Sign',
+           bounds: Rect.fromLTWH(
+              _column1FieldStartOffset,
+               _preColumnLayoutResult.bounds.bottom + verticalLineSpacer,
+               pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
+               (_columnRowSpacing * 2) - verticalLineSpacer,
+           ),
+          borderColor: guestData.signature != null
+                      ? PdfColor(0,0,0)
+                      : PdfColor(255,0,0),
+        ),
+    );
 
     page3.graphics.drawLine(
         PdfPen(

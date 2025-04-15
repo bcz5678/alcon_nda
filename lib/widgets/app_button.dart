@@ -1,5 +1,5 @@
-import 'package:alcon_flex_nda/app_ui/app_ui.dart' show AppColors, AppSpacing;
 import 'package:flutter/material.dart';
+import 'package:app_ui/app_ui.dart';
 
 /// {@template app_button}
 /// Button with text displayed in the application.

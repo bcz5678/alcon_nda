@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -15,14 +16,16 @@ bool kIsDesktop = kIsWeb || Platform.isMacOS || Platform.isWindows;
 /// Indicates whether the current environment is running in macOS
 bool kIsMacOS = helper.getPlatformType() == 'macos';
 
+const double kMaxWidth = 1000.0;
+
 /// Indicates the default padding for checkbox and radio button form fields on mobile platforms.
 const double kFormFieldSelectionPadding = 3.0;
 
 /// Indicates the default width of signature pad.
-const double kSignaturePadWidth = 306;
+const double kSignaturePadWidth = 800;
 
 /// Indicates the default height of signature pad.
-const double kSignaturePadHeight = 172;
+const double kSignaturePadHeight = 600;
 
 /// TextSelectionHelper for storing information of text selection.
 class TextSelectionHelper {

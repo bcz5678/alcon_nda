@@ -3,9 +3,9 @@ import 'dart:ui' as ui;
 
 import 'package:alcon_flex_nda/app.dart' show NDAFormBloc, NDAFormAddSignature, AppButton;
 import 'package:flutter/material.dart';
-import 'package:alcon_flex_nda/app_ui/app_ui.dart' show AppColors, UITextStyle;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
+import 'package:app_ui/app_ui.dart';
 
 class SignaturePadDialog extends StatefulWidget {
   const SignaturePadDialog({

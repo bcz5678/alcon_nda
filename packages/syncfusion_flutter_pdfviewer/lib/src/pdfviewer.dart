@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_core/localizations.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 
 import 'annotation/annotation.dart';
 import 'annotation/annotation_settings.dart';
@@ -144,6 +145,7 @@ class SfPdfViewer extends StatefulWidget {
     /// The source of the PDF document to be displayed.
     required PDFSource source,
     Key? key,
+    required this.contextBloc,
     this.canShowScrollHead = true,
     this.pageSpacing = 4,
     this.controller,
@@ -220,6 +222,7 @@ class SfPdfViewer extends StatefulWidget {
     String name, {
     Key? key,
     AssetBundle? bundle,
+    required this.contextBloc,
     this.canShowScrollHead = true,
     this.pageSpacing = 4,
     this.controller,
@@ -296,6 +299,7 @@ class SfPdfViewer extends StatefulWidget {
     String src, {
     Key? key,
     Map<String, String>? headers,
+    required this.contextBloc,
     this.canShowScrollHead = true,
     this.pageSpacing = 4,
     this.controller,
@@ -371,6 +375,7 @@ class SfPdfViewer extends StatefulWidget {
   SfPdfViewer.memory(
     Uint8List bytes, {
     Key? key,
+    required this.contextBloc,
     this.canShowScrollHead = true,
     this.pageSpacing = 4,
     this.controller,
@@ -449,6 +454,7 @@ class SfPdfViewer extends StatefulWidget {
   SfPdfViewer.file(
     File file, {
     Key? key,
+    required this.contextBloc,
     this.canShowScrollHead = true,
     this.pageSpacing = 4,
     this.controller,
@@ -779,6 +785,12 @@ class SfPdfViewer extends StatefulWidget {
 
   /// Occurs when annotation is removed.
   final PdfAnnotationCallback? onAnnotationRemoved;
+
+
+  /// Bloc passed in context from the App to the package
+
+  final BuildContext? contextBloc;
+
 
   /// Indicates whether the scroll head in [SfPdfViewer] can be displayed or not.
   ///
@@ -1198,6 +1210,8 @@ class SfPdfViewer extends StatefulWidget {
 ///
 /// Typically used to open and close the bookmark view.
 class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
+  late BuildContext _contextBloc;
+
   late PdfViewerPlugin _plugin;
   late PdfViewerController _pdfViewerController;
   CancelableOperation<Uint8List>? _getPdfFileCancellableOperation;
@@ -1349,6 +1363,8 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
     if (kIsDesktop && !_isMobileView) {
       helper.preventDefaultMenu();
     }
+
+    _contextBloc = widget.contextBloc!;
     _transformationController = TransformationControllerExt()
       ..addListener(_updateScrollOffset);
     _plugin = PdfViewerPlugin();
@@ -1756,6 +1772,7 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
       // Retrieve the signature field details
       if (field is PdfSignatureField && field.signature == null) {
         final PdfSignatureFormFieldHelper helper = PdfSignatureFormFieldHelper(
+          _contextBloc,
           field,
           pageIndex,
           onValueChanged: _formFieldValueChanged,

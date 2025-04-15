@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:alcon_flex_nda/app_ui/app_ui.dart' show AppColors, AppTheme;
+import 'package:app_ui/app_ui.dart';
 
 /// {@template app_text_field}
 /// A dropdown field component based on material [TextFormField] widget with a

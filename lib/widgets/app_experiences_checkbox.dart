@@ -1,6 +1,6 @@
-import 'package:alcon_flex_nda/app_ui/app_ui.dart' show AppColors, AppSpacing;
 import 'package:flutter/material.dart';
 import 'widgets.dart' show AppCheckbox;
+import 'package:app_ui/app_ui.dart';
 
 class AppExperiencesCheckbox extends StatelessWidget {
   const AppExperiencesCheckbox({
