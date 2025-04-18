@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
-import 'package:alcon_flex_nda/app_ui/app_ui.dart' show UITextStyle, AppColors;
+import 'package:app_ui/app_ui.dart';
 
 
 class StepTwo extends StatefulWidget {
@@ -27,7 +27,7 @@ class _StepTwoState extends State<StepTwo> {
     _selectedExperiencesIndexes = [];
     _experiencesList = [];
     buildExperiencesList();
-    selectAllExperiences();
+    initializeSelectedExperiences();
     super.initState();
   }
 
@@ -50,6 +50,22 @@ class _StepTwoState extends State<StepTwo> {
       _experiencesList = context.read<NDAFormBloc>().state.experiencesData!;
     });
   }
+
+  Future<void> initializeSelectedExperiences() async {
+    List<ExperienceData>? returnSelected = context.read<NDAFormBloc>().state.guestData!.experiencesSelected;
+    setState(() {
+      if (returnSelected != null && returnSelected.isNotEmpty) {
+        for (var index = 0; index < _experiencesList.length; index++) {
+          if(returnSelected.contains(_experiencesList[index])) {
+            _selectedExperiencesIndexes.add(index);
+          }
+        }
+      } else {
+        selectAllExperiences();
+      }
+    });
+}
+
 
   Future<void> selectAllExperiences() async {
     List<int>returnList = [];

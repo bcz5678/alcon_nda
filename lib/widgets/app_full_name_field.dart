@@ -10,15 +10,19 @@ class AppFullNameTextField extends StatelessWidget {
   const AppFullNameTextField({
     super.key,
     this.controller,
+    this.initialValue,
     this.hintText,
     this.errorText,
     this.suffix,
     this.readOnly,
     this.onChanged,
+    this.onTap,
   });
 
   /// Controls the text being edited.
   final TextEditingController? controller;
+
+  final String? initialValue;
 
   /// Text that suggests what sort of input the field accepts.
   final String? hintText;
@@ -32,6 +36,9 @@ class AppFullNameTextField extends StatelessWidget {
   /// Called when the user inserts or deletes texts in the text field.
   final ValueChanged<String>? onChanged;
 
+  /// Called when the text field has been tapped.
+  final VoidCallback? onTap;
+
   /// Whether the text field should be read-only.
   /// Defaults to false.
   final bool? readOnly;
@@ -39,11 +46,12 @@ class AppFullNameTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppTextField(
-      controller: controller,
+      //controller: controller,
+      initialValue: initialValue,
       hintText: hintText,
       errorText: errorText,
       keyboardType: TextInputType.name,
-      autoFillHints: const [AutofillHints.name],
+      //autoFillHints: const [AutofillHints.name],
       autocorrect: false,
       prefix: const Padding(
         padding: EdgeInsets.only(
@@ -58,6 +66,7 @@ class AppFullNameTextField extends StatelessWidget {
       ),
       readOnly: readOnly ?? false,
       onChanged: onChanged,
+      onTap: onTap,
       suffix: suffix,
     );
   }

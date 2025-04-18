@@ -1,10 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:alcon_flex_nda/data/data.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:google_sign_in/google_sign_in.dart' as signIn;
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+import '../authentication/GoogleAuthCliient.dart';
 
 part 'nda_form_event.dart';
 part 'nda_form_state.dart';
@@ -28,6 +35,8 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     on<NDAFormExperienceSelectAll>(onNDAFormExperienceSelectAll);
     on<NDAFormExperienceUnselectAll>(onNDAFormExperienceUnselectAll);
     on<NDAFormAddSignature>(onNDAFormAddSignature);
+    on<NDASavePdf>(onNDASavePdf);
+    on<NDASubmitPdf>(onNDASubmitPdf);
   }
 
   ///
@@ -274,8 +283,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     );
   }
 
-
-  ///[ANCHOR]
   void onNDAFormExperienceUnselectAll(
       NDAFormExperienceUnselectAll event,
       Emitter<NDAFormState> emit
@@ -302,8 +309,68 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     emit(
         state.copyWith(
           guestData: _guestData,
+          isSigned: true,
         )
     );
+  }
+
+
+  void onNDASavePdf(
+      NDASavePdf event,
+      Emitter<NDAFormState> emit
+      ) async{
+
+    emit(
+      state.copyWith(
+        pdfSubmissionStatus: PdfSubmissionStatus.building,
+      )
+    );
+
+    try {
+      var _savedPdf = await event.pdfViewerController
+          .saveDocument(flattenOption: PdfFlattenOption.formFields);
+
+      print('nda_form_bloc -> onNDASubmitPdf -> ${_savedPdf}');
+
+      emit(
+          state.copyWith(
+            savedPdf: _savedPdf,
+          )
+      );
+
+      NDASubmitPdf();
+
+    } catch(e) {
+      emit(
+          state.copyWith(
+            pdfSubmissionStatus: PdfSubmissionStatus.error,
+          )
+      );
+    }
+
+  }
+
+  void onNDASubmitPdf(
+      NDASubmitPdf event,
+      Emitter<NDAFormState> emit
+      ) {
+
+    emit(
+        state.copyWith(
+          pdfSubmissionStatus: PdfSubmissionStatus.submitting,
+        )
+    );
+
+    try{
+
+
+
+
+    } catch(e) {
+
+    }
+
+
   }
 
 
@@ -344,6 +411,42 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       clientDate: response["clientDate"] != "" ? DateTime.parse(response["clientDate"]) : DateTime.now(),
     );
   }
+
+
+  /*
+  Future<void> loginToDrive() async {
+    final googleSignIn = signIn.GoogleSignIn.standard(scopes: [drive.DriveApi.driveScope]);
+    final signIn.GoogleSignInAccount? account = await googleSignIn.signIn();
+    Map<String, String>? _authHeaders = await account?.authHeaders;
+  }
+
+  Future<void> uploadToDrive({
+    required List<int?> pdfFile,
+  }) async {
+
+    //final Directory directory = await getApplicationDocumentsDirectory();
+    final File file1 = File('${directory.path}/my_file.txt');
+    //file1.writeAsStringSync(jsonEncode(humanList));
+
+    var client = GoogleAuthClient(authHeaders);
+    var ga = drive.DriveApi(client);
+    var response;
+
+    drive.File fileToUpload = drive.File();
+    //pre defined string variable for the file name
+    fileToUpload.name = fileName;
+    try {
+      response = await ga.files.create(
+        fileToUpload,
+        uploadMedia: drive.Media(file1.openRead(), file1.lengthSync()),
+      );
+    } catch (e) {
+      print(e);
+    }
+
+   */
 }
+
+
 
 

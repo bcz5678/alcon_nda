@@ -7,10 +7,19 @@ enum NDAFormStep {
   submit
 }
 
+enum PdfSubmissionStatus {
+  waiting,
+  building,
+  submitting,
+  submitted,
+  error,
+}
+
 class NDAFormState extends Equatable{
   NDAFormState({
     required this.formzSubmissionStatus,
     required this.formStepCurrent,
+    this.pdfSubmissionStatus,
     this.fullNameInput,
     this.titleInput,
     this.address1Input,
@@ -23,12 +32,15 @@ class NDAFormState extends Equatable{
     this.eventData,
     this.experiencesData,
     this.selectedExperiences,
+    this.isSigned = false,
+    this.savedPdf,
 });
 
   NDAFormState.initial()
       : this(
     formzSubmissionStatus: FormzSubmissionStatus.initial,
     formStepCurrent: NDAFormStep.start,
+    pdfSubmissionStatus: PdfSubmissionStatus.waiting,
     fullNameInput: FullNameInput.pure(),
     titleInput: TitleInput.pure(),
     address1Input: Address1Input.pure(),
@@ -38,10 +50,12 @@ class NDAFormState extends Equatable{
     zipcodeInput: ZipcodeInput.pure(),
     guestData: GuestData(),
     selectedExperiences: [],
+    isSigned: false,
   );
 
   final FormzSubmissionStatus? formzSubmissionStatus;
   final NDAFormStep? formStepCurrent;
+  final PdfSubmissionStatus? pdfSubmissionStatus;
   late FullNameInput? fullNameInput;
   late TitleInput? titleInput;
   late Address1Input? address1Input;
@@ -54,10 +68,13 @@ class NDAFormState extends Equatable{
   late EventData? eventData;
   late List<ExperienceData>? experiencesData;
   late List<ExperienceData>? selectedExperiences;
+  late bool isSigned;
+  late List<int>? savedPdf;
 
   NDAFormState copyWith({
     FormzSubmissionStatus? formzSubmissionStatus,
     NDAFormStep? formStepCurrent,
+    PdfSubmissionStatus? pdfSubmissionStatus,
     FullNameInput? fullNameInput,
     TitleInput? titleInput,
     Address1Input? address1Input,
@@ -77,10 +94,13 @@ class NDAFormState extends Equatable{
     EventData? eventData,
     List<ExperienceData>? experiencesData,
     List<ExperienceData>? selectedExperiences,
+    bool? isSigned,
+    List<int>? savedPdf,
   }) {
     return NDAFormState(
       formzSubmissionStatus: formzSubmissionStatus ?? this.formzSubmissionStatus,
       formStepCurrent: formStepCurrent ?? this.formStepCurrent,
+      pdfSubmissionStatus: pdfSubmissionStatus ?? this.pdfSubmissionStatus,
       fullNameInput: fullNameInput ?? this.fullNameInput,
       titleInput: titleInput ?? this.titleInput,
       address1Input: address1Input ?? this.address1Input,
@@ -93,6 +113,8 @@ class NDAFormState extends Equatable{
       eventData: eventData ?? this.eventData,
       experiencesData: experiencesData ?? this.experiencesData,
       selectedExperiences: selectedExperiences ?? this.selectedExperiences,
+      isSigned: isSigned ?? this.isSigned,
+      savedPdf: savedPdf ?? this.savedPdf,
     );
   }
 
@@ -100,6 +122,7 @@ class NDAFormState extends Equatable{
   List<Object?> get props => [
     formzSubmissionStatus,
     formStepCurrent,
+    pdfSubmissionStatus,
     fullNameInput,
     titleInput,
     address1Input,
@@ -112,6 +135,8 @@ class NDAFormState extends Equatable{
     eventData,
     experiencesData,
     selectedExperiences,
+    isSigned,
+    savedPdf,
   ];
 }
 

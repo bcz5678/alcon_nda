@@ -13,6 +13,7 @@ class AppTextField extends StatelessWidget {
     super.key,
     this.autoFillHints,
     this.controller,
+    this.initialValue,
     this.inputFormatters,
     this.autocorrect = true,
     this.readOnly = false,
@@ -36,6 +37,8 @@ class AppTextField extends StatelessWidget {
   /// If null, this widget will create its own [TextEditingController] and
   /// initialize its [TextEditingController.text] with [initialValue].
   final TextEditingController? controller;
+
+  final String? initialValue;
 
   /// Optional input validation and formatting overrides.
   final List<TextInputFormatter>? inputFormatters;
@@ -91,6 +94,7 @@ class AppTextField extends StatelessWidget {
           child: TextFormField(
             key: key,
             controller: controller,
+            initialValue: initialValue,
             inputFormatters: inputFormatters,
             keyboardType: keyboardType,
             autocorrect: autocorrect,

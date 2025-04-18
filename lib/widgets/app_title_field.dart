@@ -11,6 +11,7 @@ class AppTitleTextField extends StatelessWidget {
   const AppTitleTextField({
     super.key,
     this.controller,
+    this.initialValue,
     this.hintText,
     this.errorText,
     this.suffix,
@@ -20,6 +21,9 @@ class AppTitleTextField extends StatelessWidget {
 
   /// Controls the text being edited.
   final TextEditingController? controller;
+
+  /// Controls the initialValue for state on reload
+  final String? initialValue;
 
   /// Text that suggests what sort of input the field accepts.
   final String? hintText;
@@ -40,7 +44,8 @@ class AppTitleTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppTextField(
-      controller: controller,
+      //controller: controller,
+      initialValue: initialValue,
       hintText: hintText,
       errorText: errorText,
       keyboardType: TextInputType.name,

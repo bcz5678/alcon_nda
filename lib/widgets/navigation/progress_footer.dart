@@ -8,14 +8,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 
 class StickyFooter extends StatefulWidget {
-  const StickyFooter({
+  StickyFooter({
     required this.currentStep,
     required this.onPressedFunction,
+    this.onBackFunction,
     super.key
   });
 
   final int currentStep;
   final VoidCallback onPressedFunction;
+  late VoidCallback? onBackFunction;
 
   @override
   State<StickyFooter> createState() => _StickyFooterState();
@@ -60,12 +62,15 @@ class _StickyFooterState extends State<StickyFooter> {
                               onTap: () {
                                 switch (widget.currentStep){
                                   case 2:
+                                    widget.onBackFunction?.call();
                                     context.go('/');
                                     break;
                                   case 3:
+                                     widget.onBackFunction?.call();
                                     context.go('/step_two');
                                     break;
                                   case 4:
+                                    widget.onBackFunction?.call();
                                     context.go('/step_three');
                                     break;
                                 }
@@ -118,36 +123,19 @@ class _StickyFooterState extends State<StickyFooter> {
                         Container(
                           width: 150,
                           child: AppButton.crystalBlue(
-                            key: const Key('formInput_step3_nextStepButton'),
-                            onPressed: state.guestData!.signature != null
-                                ? null
-                                : widget.onPressedFunction,
+                            key: const Key('formInput_step3_submitButton'),
+                            onPressed: state.isSigned
+                                ? widget.onPressedFunction //
+                                : null,
                             child: state.formzSubmissionStatus!.isInProgress
                                 ? const SizedBox.square(
                               dimension: 24,
                               child: CircularProgressIndicator(),
                             )
-                                : Text("Review and Submit"),
+                                : Text("Submit Signed NDA"),
                           ),
                         )
                       ],
-                      if (widget.currentStep == 4)...[
-                        if (widget.currentStep == 3)...[
-                          Container(
-                            width: 150,
-                            child: AppButton.crystalBlue(
-                              key: const Key('formInput_step4_nextStepButton'),
-                              onPressed:  widget.onPressedFunction,
-                              child: state.formzSubmissionStatus!.isInProgress
-                                  ? const SizedBox.square(
-                                dimension: 24,
-                                child: CircularProgressIndicator(),
-                              )
-                                  : Text("Submit"),
-                            ),
-                          )
-                        ],
-                      ]
                     ],
                   ),
                 ],

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "718960937683",
+    "project_id": "alconnda",
+    "storage_bucket": "alconnda.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718960937683:android:b881894908ed543e61e226",
+        "android_client_info": {
+          "package_name": "com.example.alcorn_nda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFf4NGZzZDO1skM-li_FASMhegD2sr9GY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

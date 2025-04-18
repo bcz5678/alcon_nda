@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -9,10 +11,8 @@ import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 import 'package:alcon_flex_nda/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:syncfusion_pdfviewer_web/pdfviewer_web.dart';
-import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
+import 'package:app_ui/app_ui.dart';
 
 class StepThree extends StatefulWidget {
   const StepThree({super.key});
@@ -26,16 +26,19 @@ class _StepThreeState extends State<StepThree> {
   late PdfViewerController _pdfViewerController;
   late bool _isSigningEnabled = false;
 
+  late PdfNdaApi pdfNdaApi;
+
 
   @override
   void initState() {
     _pdfViewerController = PdfViewerController();
-    addScrollListener();
     super.initState();
+
+    pdfNdaApi = generatePdfNdaApi();
 
     // Load the PDF document from the asset.
 
-    _generateAsset().then((List<int> bytes) async {
+    _generateAsset(pdfNdaApi).then((List<int> bytes) async {
       setState(() {
         _documentBytes = Uint8List.fromList(bytes);
       });
@@ -43,52 +46,48 @@ class _StepThreeState extends State<StepThree> {
 
   }
 
-  // Read the asset file and return the bytes.
-  Future<List<int>> _generateAsset() async {
+  PdfNdaApi generatePdfNdaApi() {
     var state = context.read<NDAFormBloc>().state;
 
-    final List<int> data = await PdfNdaApi(
+    return PdfNdaApi(
       guestData: state.guestData!,
       eventData: state.eventData!,
       clientData: state.clientData!,
-    ).generateNDA();
+    );
+  }
+
+  // Read the asset file and return the bytes.
+  Future<List<int>> _generateAsset(PdfNdaApi pdfNdaApi) async {
+    final List<int> data = await pdfNdaApi.generateNDA();
 
     return data;
   }
 
-  void addScrollListener() {
-    _pdfViewerController.addListener(() {
-      if(_pdfViewerController.pageNumber == _pdfViewerController.pageCount) {
-        setState(() {
-          _isSigningEnabled = true;
-        });
-      }
-    });
-  }
+  Future<void> onPressedFooterFunction() async {
 
-  void onPressedFooterFunction() {
-    var state = context.read<NDAFormBloc>().state;
-    if(state.guestData?.signature != null) {
-      context.go('/step_four');
-    }
-  }
+    print('step_three -> onPressedFooterFunction -> Entry');
 
-  void onSignedFunctionParent() {
-    //print('onSignedFunctionParent signed');
-  }
-
-  void pressSignatureButton() {
     showDialog(
       context: context,
       builder: (context) {
-        return SignaturePadDialog(
+        return SubmissionDialog(
           contextNDABloc: context,
-          onSignedFunction: onSignedFunctionParent,
+          pdfViewerController: _pdfViewerController,
         );
       },
       barrierColor: Color.fromRGBO(0, 0, 0, 0.2),
-      barrierDismissible: true,
+      barrierDismissible: false,
     );
+  }
+
+  void onBackFooterFunction() {
+     _pdfViewerController.dispose();
+ }
+
+  void onSignedFunctionParent() {
+    setState(() {
+      _isSigningEnabled = true;
+    });
   }
 
   @override
@@ -102,6 +101,7 @@ class _StepThreeState extends State<StepThree> {
         child: StickyFooter(
           currentStep: 3,
           onPressedFunction: onPressedFooterFunction,
+          onBackFunction: onBackFooterFunction,
         ),
       ),
       body: LayoutBuilder(
@@ -147,6 +147,7 @@ class _StepThreeState extends State<StepThree> {
                             child: _documentBytes != null
                             ? SfPdfViewer.memory(
                               _documentBytes!,
+                              contextBloc: context,
                               controller: _pdfViewerController,
                               scrollDirection: PdfScrollDirection.vertical,
                               initialZoomLevel: 1.0,
@@ -158,6 +159,7 @@ class _StepThreeState extends State<StepThree> {
                                 ),
                               ),
                           ),
+                          /*
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Container(
@@ -176,6 +178,7 @@ class _StepThreeState extends State<StepThree> {
                               ),
                             ),
                           ),
+                          */
                         ]
                     ),
                   )

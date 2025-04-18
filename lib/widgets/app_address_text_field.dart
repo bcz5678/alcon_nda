@@ -10,6 +10,7 @@ class AppAddressTextField extends StatelessWidget {
   const AppAddressTextField({
     super.key,
     this.controller,
+    this.initialValue,
     this.hintText,
     this.errorText,
     this.suffix,
@@ -19,6 +20,9 @@ class AppAddressTextField extends StatelessWidget {
 
   /// Controls the text being edited.
   final TextEditingController? controller;
+
+  /// Controls the initialValue for state on reload
+  final String? initialValue;
 
   /// Text that suggests what sort of input the field accepts.
   final String? hintText;
@@ -40,6 +44,7 @@ class AppAddressTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppTextField(
       controller: controller,
+      initialValue: initialValue,
       hintText: hintText,
       errorText: errorText,
       keyboardType: TextInputType.name,

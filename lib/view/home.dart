@@ -1,5 +1,4 @@
 import 'package:alcon_flex_nda/app.dart';
-import 'package:alcon_flex_nda/data/data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:app_ui/app_ui.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -250,14 +250,9 @@ class _FullNameInput extends StatefulWidget {
 }
 
 class _FullNameInputState extends State<_FullNameInput> {
-  final _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<NDAFormBloc>().state;
-    if( state.guestData!.fullName != null) {
-      _controller.text = state.guestData!.fullName!;
-    }
 
     return Container(
       child: Column(
@@ -283,12 +278,13 @@ class _FullNameInputState extends State<_FullNameInput> {
           ),
           AppFullNameTextField(
             key: const Key('formInput_step1_fullNameInput'),
-            controller: _controller,
+            initialValue: state.guestData!.fullName ?? null,
             readOnly: state.formzSubmissionStatus?.isInProgress,
             hintText: "Please enter your full name",
             errorText: widget.displayMessageState ? "Please enter a valid full name" : null,
-            onChanged: (value) =>
-              context.read<NDAFormBloc>().add(NDAFormFullNameChanged(value)),
+            onChanged: (value) {
+              context.read<NDAFormBloc>().add(NDAFormFullNameChanged(value));
+            },
           ),
         ],
       )
@@ -297,7 +293,6 @@ class _FullNameInputState extends State<_FullNameInput> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }
@@ -314,14 +309,11 @@ final bool displayMessageState;
 }
 
 class _TitleInputState extends State<_TitleInput> {
-  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<NDAFormBloc>().state;
-    if( state.guestData!.title != null) {
-      _controller.text = state.guestData!.title!;
-    }
+
 
     return Container(
         child: Column(
@@ -335,12 +327,14 @@ class _TitleInputState extends State<_TitleInput> {
             ),
             AppTitleTextField(
               key: const Key('formInput_step1_titleInput'),
-              controller: _controller,
+              initialValue: state.guestData!.title ?? null,
               readOnly: state.formzSubmissionStatus?.isInProgress,
               hintText: "Please enter your job title",
               errorText: widget.displayMessageState ? "Please enter a valid job title" : null,
-              onChanged: (value) =>
-                  context.read<NDAFormBloc>().add(NDAFormTitleChanged(value)),            ),
+              onChanged: (value)  {
+                context.read<NDAFormBloc>().add(NDAFormTitleChanged(value));
+              },
+            ),
           ],
         )
     );
@@ -348,7 +342,6 @@ class _TitleInputState extends State<_TitleInput> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }
@@ -365,14 +358,9 @@ class _Address1Input extends StatefulWidget {
 }
 
 class _Address1InputState extends State<_Address1Input> {
-  final _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<NDAFormBloc>().state;
-    if( state.guestData!.address_1 != null) {
-      _controller.text = state.guestData!.address_1!;
-    }
 
     return Container(
         child: Column(
@@ -398,7 +386,7 @@ class _Address1InputState extends State<_Address1Input> {
             ),
             AppAddressTextField(
               key: const Key('formInput_step1_address1Input'),
-              controller: _controller,
+              initialValue: state.guestData!.address_1 ?? null,
               readOnly: state.formzSubmissionStatus?.isInProgress,
               hintText: "Please enter your address",
               errorText: widget.displayMessageState ? "Please enter a valid address" : null,
@@ -412,7 +400,6 @@ class _Address1InputState extends State<_Address1Input> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }
@@ -430,14 +417,10 @@ class _Address2Input extends StatefulWidget {
 }
 
 class _Address2InputState extends State<_Address2Input> {
-  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<NDAFormBloc>().state;
-    if( state.guestData!.address_2 != null) {
-      _controller.text = state.guestData!.address_2!;
-    }
 
     return Container(
         child: Column(
@@ -451,7 +434,7 @@ class _Address2InputState extends State<_Address2Input> {
             ),
             AppAddressTextField(
               key: const Key('formInput_step1_address2Input'),
-              controller: _controller,
+              initialValue: state.guestData!.address_2 ?? null,
               readOnly: state.formzSubmissionStatus?.isInProgress,
               hintText: "Please enter your floor/suite/apt",
               errorText: widget.displayMessageState ? "Please enter a valid floor/suite/apt" : null,
@@ -465,7 +448,6 @@ class _Address2InputState extends State<_Address2Input> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }
@@ -483,14 +465,9 @@ class _CityInput extends StatefulWidget {
 }
 
 class _CityInputState extends State<_CityInput> {
-  final _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<NDAFormBloc>().state;
-    if( state.guestData!.city != null) {
-      _controller.text = state.guestData!.city!;
-    }
 
     return Container(
         child: Column(
@@ -516,7 +493,7 @@ class _CityInputState extends State<_CityInput> {
             ),
             AppCityTextField(
               key: const Key('formInput_step1_cityInput'),
-              controller: _controller,
+              initialValue: state.guestData!.city ?? null,
               readOnly: state.formzSubmissionStatus?.isInProgress,
               hintText: "Please enter your city",
               errorText: widget.displayMessageState ? "Please enter a valid city" : null,
@@ -530,7 +507,6 @@ class _CityInputState extends State<_CityInput> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }
@@ -548,14 +524,10 @@ class _StateAbbrInput extends StatefulWidget {
 }
 
 class _StateAbbrInputState extends State<_StateAbbrInput> {
-  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<NDAFormBloc>().state;
-    if( state.guestData!.state != null) {
-      _controller.text = state.guestData!.state!;
-    }
 
     return Container(
         child: Column(
@@ -581,7 +553,7 @@ class _StateAbbrInputState extends State<_StateAbbrInput> {
             ),
             AppStateAbbrDropdownField(
               key: const Key('formInput_step1_stateAbbrInput'),
-              controller: _controller,
+              initialValue: state.guestData!.state ?? null,
               readOnly: state.formzSubmissionStatus?.isInProgress,
               hintText: "Please enter your state",
               errorText: widget.displayMessageState ? "Please enter a valid state" : null,
@@ -595,7 +567,6 @@ class _StateAbbrInputState extends State<_StateAbbrInput> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }
@@ -612,14 +583,9 @@ class _ZipcodeInput extends StatefulWidget {
 }
 
 class _ZipcodeInputState extends State<_ZipcodeInput> {
-  final _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<NDAFormBloc>().state;
-    if( state.guestData!.zipcode != null) {
-      _controller.text = state.guestData!.zipcode!;
-    }
 
     return Container(
         child: Column(
@@ -645,7 +611,7 @@ class _ZipcodeInputState extends State<_ZipcodeInput> {
             ),
             AppZipcodeTextField(
               key: const Key('formInput_step1_zipcodeInput'),
-              controller: _controller,
+              initialValue: state.guestData!.zipcode ?? null,
               readOnly: state.formzSubmissionStatus?.isInProgress,
               hintText: "Please enter your zipcode",
               errorText: widget.displayMessageState ? "Please enter a valid zipcode" : null,
@@ -659,7 +625,6 @@ class _ZipcodeInputState extends State<_ZipcodeInput> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }

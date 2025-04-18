@@ -42,6 +42,8 @@ class PdfNdaApi {
   late double combinedMeasureText;
 
 
+  Future<List<int>> get currentPdfDocument async { return generateNDA();}
+
 
   Future<List<int>> generateNDA() async {
     PdfTextElement textElement;
@@ -645,13 +647,13 @@ class PdfNdaApi {
     // Create a signature form field and add it to the document.
     _document.form.fields.add(
         PdfSignatureField(
-            page3,
-            'Tap to Sign',
-           bounds: Rect.fromLTWH(
-              _column1FieldStartOffset,
-               _preColumnLayoutResult.bounds.bottom + verticalLineSpacer,
-               pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
-               (_columnRowSpacing * 2) - verticalLineSpacer,
+          page3,
+          'Tap to Sign',
+          bounds: Rect.fromLTWH(
+            _column1FieldStartOffset,
+            _preColumnLayoutResult.bounds.bottom + verticalLineSpacer,
+            pageWidth / 2 - _column1FieldStartOffset - _gutterWidth,
+            (_columnRowSpacing * 2) - verticalLineSpacer,
            ),
           borderColor: guestData.signature != null
                       ? PdfColor(0,0,0)
@@ -1067,5 +1069,4 @@ class PdfNdaApi {
 
     return returnString;
   }
-
 }
