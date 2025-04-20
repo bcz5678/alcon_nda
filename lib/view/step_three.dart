@@ -11,6 +11,7 @@ import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 import 'package:alcon_flex_nda/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:app_ui/app_ui.dart';
 
@@ -26,7 +27,7 @@ class _StepThreeState extends State<StepThree> {
   late PdfViewerController _pdfViewerController;
   late bool _isSigningEnabled = false;
 
-  late PdfNdaApi pdfNdaApi;
+  //late PdfNdaApi pdfNdaApi;
 
 
   @override
@@ -34,16 +35,16 @@ class _StepThreeState extends State<StepThree> {
     _pdfViewerController = PdfViewerController();
     super.initState();
 
-    pdfNdaApi = generatePdfNdaApi();
+   // pdfNdaApi = generatePdfNdaApi();
 
     // Load the PDF document from the asset.
-
+    /*
     _generateAsset(pdfNdaApi).then((List<int> bytes) async {
       setState(() {
         _documentBytes = Uint8List.fromList(bytes);
       });
     });
-
+     */
   }
 
   PdfNdaApi generatePdfNdaApi() {
@@ -88,6 +89,14 @@ class _StepThreeState extends State<StepThree> {
     setState(() {
       _isSigningEnabled = true;
     });
+  }
+
+  void onPdfLoaded() {
+    print(_pdfViewerController.getFormFields());
+    _pdfViewerController.importFormData(
+      inputBytes,
+      DataFormat.json
+    );
   }
 
   @override
@@ -144,19 +153,22 @@ class _StepThreeState extends State<StepThree> {
                           ),
                           Divider(),
                           Expanded(
-                            child: _documentBytes != null
-                            ? SfPdfViewer.memory(
+                           /*SfPdfViewer.memory(
                               _documentBytes!,
                               contextBloc: context,
                               controller: _pdfViewerController,
                               scrollDirection: PdfScrollDirection.vertical,
                               initialZoomLevel: 1.0,
                               onTextSelectionChanged: null,
-                            )
-                            : const Center(
-                                child: CircularProgressIndicator(
-                                color: AppColors.crystalBlue,
-                                ),
+                            ) */
+                              child: SfPdfViewer.asset(
+                                'assets/files/alcon_base_template_clean.pdf',
+                                contextBloc: context,
+                                controller: _pdfViewerController,
+                                scrollDirection: PdfScrollDirection.vertical,
+                                initialZoomLevel: 1.0,
+                                onTextSelectionChanged: null,
+                                onDocumentLoaded: (details) => onPdfLoaded(),
                               ),
                           ),
                           /*

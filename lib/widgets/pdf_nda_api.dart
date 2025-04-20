@@ -1039,6 +1039,18 @@ class PdfNdaApi {
     return _savedDocument;
   }
 
+  Future<List<int>> generateNDAFromTemplate() async {
+    List<int> _savedDocument;
+    PdfShapeElement signatureElement;
+
+    //Initialize Main Document Layout
+    _document = PdfDocument();
+
+    _savedDocument = await savePdf(_document);
+
+    return _savedDocument;
+  }
+
 
   Future<List<int>> savePdf(PdfDocument document) async {
     List<int> documentBytes = await document.save();

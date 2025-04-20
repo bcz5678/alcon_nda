@@ -364,8 +364,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     try{
 
 
-
-
     } catch(e) {
 
     }
