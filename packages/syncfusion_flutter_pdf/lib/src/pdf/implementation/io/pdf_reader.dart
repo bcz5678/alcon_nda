@@ -383,8 +383,10 @@ class PdfReader {
     final List<int> word = <int>[];
     skipWhiteSpace();
     character = _peek();
+
     //Return the character if it is a delimiter character.
     if (_isJsonDelimiter(_getEqualChar(character))) {
+      print('pdf_reader -> getNextJsonToken -> isJsonDelimiter -> ${_getEqualChar(character)}');
       final Map<String, dynamic> result = _appendCharacter(token);
       character = result['character'] as int;
       return token = result['token'] as String;

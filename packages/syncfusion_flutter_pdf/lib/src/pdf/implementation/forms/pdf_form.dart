@@ -133,6 +133,9 @@ class PdfForm implements IPdfWrapper {
         continueImportOnError);
   }
 
+
+
+
   /// Imports form value to the file with the specific [DataFormat].
   void importData(List<int> inputBytes, DataFormat dataFormat,
       [bool continueImportOnError = false]) {
@@ -146,6 +149,16 @@ class PdfForm implements IPdfWrapper {
       _importDataXml(inputBytes, continueImportOnError);
     }
   }
+
+  /// Imports form value to the file with the specific [DataFormat].
+  void importDataNew(Map<String, String> jsonMap, DataFormat dataFormat,
+      [bool continueImportOnError = false]) {
+    if (dataFormat == DataFormat.json) {
+      _importDataJSONNew(jsonMap, continueImportOnError);
+    }
+  }
+
+
 
   /// Export the form data to a file with the specific [DataFormat] and form name.
   List<int> exportData(DataFormat dataFormat, [String formName = '']) {
@@ -633,6 +646,29 @@ class PdfForm implements IPdfWrapper {
       }
     }
     return xfdf.save();
+  }
+
+  void _importDataJSONNew(Map<String, String> jsonMap, bool continueImportOnError){
+    PdfField? field;
+    jsonMap.forEach((String k, String v) {
+      try {
+        if(v.isNotEmpty) {
+          final int index =
+          PdfFormFieldCollectionHelper.getHelper(fields).getFieldIndex(k);
+          if (index == -1) {
+            throw ArgumentError('Incorrect field name.');
+          }
+          field = fields[index];
+          if (field != null) {
+            PdfFieldHelper.getHelper(field!).importFieldValue(v);
+          }
+        }
+      } catch (e) {
+        if (!continueImportOnError) {
+          rethrow;
+        }
+      }
+    });
   }
 
   void _importDataJSON(List<int> bytes, bool continueImportOnError) {

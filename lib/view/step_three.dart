@@ -1,5 +1,4 @@
-import 'dart:isolate';
-
+import 'package:alcon_flex_nda/data/data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -9,11 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 import 'package:alcon_flex_nda/widgets/widgets.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:app_ui/app_ui.dart';
+
 
 class StepThree extends StatefulWidget {
   const StepThree({super.key});
@@ -26,12 +25,14 @@ class _StepThreeState extends State<StepThree> {
   Uint8List? _documentBytes;
   late PdfViewerController _pdfViewerController;
   late bool _isSigningEnabled = false;
+  late Map<String, String> formJsonMap;
 
   //late PdfNdaApi pdfNdaApi;
 
 
   @override
   void initState() {
+    initializeFormData();
     _pdfViewerController = PdfViewerController();
     super.initState();
 
@@ -45,6 +46,20 @@ class _StepThreeState extends State<StepThree> {
       });
     });
      */
+  }
+
+  Future<void> initializeFormData() async {
+    var state = context.read<NDAFormBloc>().state;
+    Map<String, String> returnList = FormDataModel(
+        clientData: state.clientData!,
+        eventData: state.eventData!,
+        guestData: state.guestData!,
+    ).toJsonMap();
+
+    setState(() {
+      formJsonMap = returnList;
+    });
+
   }
 
   PdfNdaApi generatePdfNdaApi() {
@@ -92,10 +107,9 @@ class _StepThreeState extends State<StepThree> {
   }
 
   void onPdfLoaded() {
-    print(_pdfViewerController.getFormFields());
-    _pdfViewerController.importFormData(
-      inputBytes,
-      DataFormat.json
+    _pdfViewerController.importFormDataNew(
+      formJsonMap,
+      DataFormat.json,
     );
   }
 

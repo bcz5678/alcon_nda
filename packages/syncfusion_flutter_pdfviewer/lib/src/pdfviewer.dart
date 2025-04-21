@@ -5595,11 +5595,12 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
       }
     } else if (property == 'importFormData') {
       if (_document != null) {
-        _document!.form.importData(
-          _pdfViewerController._importedFormDataBytes,
+          _document!.form.importDataNew(
+          _pdfViewerController._importedFormJsonMap,
           _pdfViewerController._importDataFormat,
           _pdfViewerController._continueImportOnError,
         );
+
         setState(() {
           _importFormFieldData();
         });
@@ -6568,6 +6569,9 @@ class PdfViewerController extends ChangeNotifier with _ValueChangeNotifier {
   /// Imported form data bytes
   List<int> _importedFormDataBytes = <int>[];
 
+  /// Imported form data bytes
+  Map<String, String> _importedFormJsonMap = <String, String>{};
+
   /// Exported form data bytes
   List<int> _exportedFormDataBytes = <int>[];
 
@@ -6900,6 +6904,17 @@ class PdfViewerController extends ChangeNotifier with _ValueChangeNotifier {
     bool continueImportOnError = false,
   ]) {
     _importedFormDataBytes = inputBytes;
+    _importDataFormat = dataFormat;
+    _continueImportOnError = continueImportOnError;
+    _notifyPropertyChangedListeners(property: 'importFormData');
+  }
+
+  void importFormDataNew(
+      Map<String, String> jsonMap,
+      DataFormat dataFormat, [
+        bool continueImportOnError = false,
+      ]) {
+    _importedFormJsonMap = jsonMap;
     _importDataFormat = dataFormat;
     _continueImportOnError = continueImportOnError;
     _notifyPropertyChangedListeners(property: 'importFormData');
