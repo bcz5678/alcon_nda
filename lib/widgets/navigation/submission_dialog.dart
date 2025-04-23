@@ -72,7 +72,7 @@ class _SubmissionDialogState extends State<SubmissionDialog> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children:[
                     Expanded(
                       flex: 4,
@@ -82,37 +82,53 @@ class _SubmissionDialogState extends State<SubmissionDialog> {
                           child: Column(
                             children: [
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "1. Building Signed PDF",
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Text(
+                                      "1. Building Signed PDF",
+                                      style: UITextStyle.headline4,
+                                    ),
                                   ),
                                   Container(
                                     width: 30,
                                     height: 30,
-                                    child: Image.asset(
-                                        'images/blue_circle_progress.gif'
-                                      )
+                                    child: [PdfSubmissionStatus.waiting,
+                                            PdfSubmissionStatus.building].contains(state.pdfSubmissionStatus)
+                                        ? CircularProgressIndicator(
+                                            color: AppColors.crystalBlue,
+                                          )
+                                        : Icon(
+                                      Icons.check_circle,
+                                      color: Colors.green,
+                                      size: 30.0,
+                                    ),
                                   ),
-                                  /*
-                                  Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 30.0,
-                                  ),
-
-                                   */
                                 ],
                               ),
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "2. Saving PDF",
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Text(
+                                      "2. Saving PDF",
+                                      style: UITextStyle.headline4,
+                                    ),
                                   ),
-                                  Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 30.0,
-                                  ),
+                                  [PdfSubmissionStatus.waiting,
+                                    PdfSubmissionStatus.building].contains(state.pdfSubmissionStatus)
+                                      ? SizedBox()
+                                      : state.pdfSubmissionStatus == PdfSubmissionStatus.submitting
+                                        ? CircularProgressIndicator(
+                                            color: AppColors.crystalBlue,
+                                          )
+                                        : Icon(
+                                            Icons.check_circle,
+                                            color: Colors.green,
+                                            size: 30.0,
+                                          ),
                                 ],
                               ),
                             ],
@@ -125,22 +141,24 @@ class _SubmissionDialogState extends State<SubmissionDialog> {
                       child: Row(
                         children: [
                           Expanded(
-                            flex: 1,
-                            child: Container(
-                              width: 150,
-                              child: GestureDetector(
-                                  child: Text(
-                                      "Back to Form",
-                                      style: UITextStyle.headline6.copyWith(
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: AppFontWeight.regular,
-                                      )
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context, rootNavigator: true).pop();
-                                  }
-                              )
-                            ),
+                            flex: 2,
+                            child: state.pdfSubmissionStatus != PdfSubmissionStatus.submitted
+                                ? Container(
+                                    width: 200,
+                                    child: GestureDetector(
+                                        child: Text(
+                                            "Back to Form",
+                                            style: UITextStyle.headline6.copyWith(
+                                              decoration: TextDecoration.underline,
+                                              fontWeight: AppFontWeight.regular,
+                                            )
+                                        ),
+                                        onTap: () {
+                                          Navigator.of(context, rootNavigator: true).pop();
+                                        }
+                                    )
+                                  )
+                                : SizedBox(),
                           ),
                           Expanded(
                             flex: 3,
@@ -150,15 +168,17 @@ class _SubmissionDialogState extends State<SubmissionDialog> {
                             flex: 1,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20.0),
-                              child: Container(
-                                width: 150,
-                                child: AppButton.crystalBlue(
-                                  child: Text(
-                                    "Reset Form",
-                                  ),
-                                  onPressed: null,
-                                ),
-                              ),
+                              child: state.pdfSubmissionStatus == PdfSubmissionStatus.submitted
+                                  ? Container(
+                                      width: 150,
+                                      child: AppButton.crystalBlue(
+                                        child: Text(
+                                          "Reset Form",
+                                        ),
+                                        onPressed: null,
+                                      ),
+                                    )
+                                  : SizedBox(),
                             ),
                           ),
                         ],

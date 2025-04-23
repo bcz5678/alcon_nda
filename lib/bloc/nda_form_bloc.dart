@@ -355,18 +355,32 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       Emitter<NDAFormState> emit
       ) {
 
+    print('nda_form_bloc -> onNDASubmitForm -> Entry');
+
     emit(
         state.copyWith(
           pdfSubmissionStatus: PdfSubmissionStatus.submitting,
         )
     );
 
+    print('nda_form_bloc -> onNDASubmitPdf -> ${state.pdfSubmissionStatus}');
+
     try{
 
+
+      emit(
+          state.copyWith(
+            pdfSubmissionStatus: PdfSubmissionStatus.submitted,
+          )
+      );
+
+      print('nda_form_bloc -> onNDASubmitPdf -> ${state.pdfSubmissionStatus}');
 
     } catch(e) {
 
     }
+
+
 
 
   }
