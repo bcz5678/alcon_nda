@@ -124,107 +124,117 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: MediaQuery.of(context).size.width >= 1000
                             ? const EdgeInsets.all(0.0)
                             : const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.fromLTRB(0, 40, 0, 10),
-                              child: FractionallySizedBox(
-                                widthFactor: 0.20,
-                                child: Image(
-                                    image: AssetImage('images/alcon-logo-2019.png')
+                        child:  BlocBuilder<NDAFormBloc, NDAFormState>(
+                          builder: (context, state) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 40, 0, 10),
+                                  child: FractionallySizedBox(
+                                    widthFactor: 0.20,
+                                    child: Image(
+                                        image: AssetImage(
+                                            'images/alcon-logo-2019.png')
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            BlocBuilder<NDAFormBloc, NDAFormState>(
-                              builder: (context, state) {
-                                return Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      0, 20, 0, 0),
                                   child: Text(
-                                    "Welcome to ${state.eventData!.eventDisplayName}",
+                                    "Welcome to ${state.eventData!
+                                        .eventDisplayName}",
                                     textAlign: TextAlign.center,
+                                    style: GoogleFonts.notoSans(
+                                        textStyle: TextStyle(
+                                          color: Colors.black.withAlpha(175),
+                                          fontSize: 40.0,
+                                          fontWeight: FontWeight.bold,
+                                        )
+                                    ),
+                                  ),
+                                ),
+                                Divider(),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      0, 20, 0, 0),
+                                  child: Text(
+                                    state.eventData!.eventWelcomeParagraph!,
+                                    style: GoogleFonts.notoSans(
+                                        textStyle: TextStyle(
+                                          color: Colors.black.withAlpha(175),
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.normal,
+                                        )
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      0, 20, 0, 0),
+                                  child: Text(
+                                    "Please Fill In The Following Details",
                                     style: GoogleFonts.notoSans(
                                       textStyle: TextStyle(
                                         color: Colors.black.withAlpha(175),
-                                        fontSize: 40.0,
-                                        fontWeight: FontWeight.bold,
-                                      )
+                                        fontSize: 24.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                            Divider(),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Text(
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
-                                style: GoogleFonts.notoSans(
-                                    textStyle: TextStyle(
-                                      color: Colors.black.withAlpha(175),
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.normal,
-                                    )
                                 ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Text(
-                                "Please Fill In The Following Details",
-                                 style: GoogleFonts.notoSans(
-                                  textStyle: TextStyle(
-                                    color: Colors.black.withAlpha(175),
-                                    fontSize: 24.0,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: BlocBuilder<NDAFormBloc, NDAFormState>(
-                                builder: (context, state) {
-                                  return ConstrainedBox(
-                                    constraints: BoxConstraints(maxWidth: 700),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 10,),
-                                          child: _FullNameInput(
-                                            displayMessageState: _fullNameDisplayMessage,
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      0, 20, 0, 0),
+                                  child: BlocBuilder<NDAFormBloc, NDAFormState>(
+                                      builder: (context, state) {
+                                        return ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                              maxWidth: 700),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .center,
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  top: 10,),
+                                                child: _FullNameInput(
+                                                  displayMessageState: _fullNameDisplayMessage,
+                                                ),
+                                              ),
+                                              _TitleInput(
+                                                displayMessageState: _titleDisplayMessage,
+                                              ),
+                                              _Address1Input(
+                                                displayMessageState: _address1DisplayMessage,
+                                              ),
+                                              _Address2Input(
+                                                displayMessageState: _address2DisplayMessage,
+                                              ),
+                                              _CityInput(
+                                                displayMessageState: _cityDisplayMessage,
+                                              ),
+                                              _StateAbbrInput(
+                                                displayMessageState: _stateAbbrDisplayMessage,
+                                              ),
+                                              _ZipcodeInput(
+                                                displayMessageState: _zipcodeDisplayMessage,
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        _TitleInput(
-                                          displayMessageState: _titleDisplayMessage,
-                                        ),
-                                        _Address1Input(
-                                          displayMessageState: _address1DisplayMessage,
-                                        ),
-                                        _Address2Input(
-                                          displayMessageState: _address2DisplayMessage,
-                                        ),
-                                        _CityInput(
-                                          displayMessageState: _cityDisplayMessage,
-                                        ),
-                                        _StateAbbrInput(
-                                          displayMessageState: _stateAbbrDisplayMessage,
-                                        ),
-                                        _ZipcodeInput(
-                                          displayMessageState: _zipcodeDisplayMessage,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              ),
-                            ),
-                          ],
+                                        );
+                                      }
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
                         ),
                       ),
                     ),

@@ -608,13 +608,6 @@ packages:
       relative: true
     source: path
     version: "29.1.33"
-  syncfusion_pdfviewer_macos:
-    dependency: "direct main"
-    description:
-      path: "packages/syncfusion_pdfviewer_macos"
-      relative: true
-    source: path
-    version: "29.1.33"
   syncfusion_pdfviewer_platform_interface:
     dependency: "direct main"
     description:
@@ -626,13 +619,6 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/syncfusion_pdfviewer_web"
-      relative: true
-    source: path
-    version: "29.1.33"
-  syncfusion_pdfviewer_windows:
-    dependency: "direct main"
-    description:
-      path: "packages/syncfusion_pdfviewer_windows"
       relative: true
     source: path
     version: "29.1.33"

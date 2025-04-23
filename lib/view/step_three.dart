@@ -35,17 +35,6 @@ class _StepThreeState extends State<StepThree> {
     initializeFormData();
     _pdfViewerController = PdfViewerController();
     super.initState();
-
-   // pdfNdaApi = generatePdfNdaApi();
-
-    // Load the PDF document from the asset.
-    /*
-    _generateAsset(pdfNdaApi).then((List<int> bytes) async {
-      setState(() {
-        _documentBytes = Uint8List.fromList(bytes);
-      });
-    });
-     */
   }
 
   Future<void> initializeFormData() async {
@@ -60,23 +49,6 @@ class _StepThreeState extends State<StepThree> {
       formJsonMap = returnList;
     });
 
-  }
-
-  PdfNdaApi generatePdfNdaApi() {
-    var state = context.read<NDAFormBloc>().state;
-
-    return PdfNdaApi(
-      guestData: state.guestData!,
-      eventData: state.eventData!,
-      clientData: state.clientData!,
-    );
-  }
-
-  // Read the asset file and return the bytes.
-  Future<List<int>> _generateAsset(PdfNdaApi pdfNdaApi) async {
-    final List<int> data = await pdfNdaApi.generateNDA();
-
-    return data;
   }
 
   Future<void> onPressedFooterFunction() async {
@@ -115,7 +87,7 @@ class _StepThreeState extends State<StepThree> {
     await _pdfViewerController
         .saveDocument(
           flattenOption: PdfFlattenOption.formFields,
-    //excludeFromFlattenList: ["guestSignature"]
+          excludeFromFlattenList: ["guestSignature"]
     );
   }
 

@@ -7,6 +7,7 @@ class EventData extends Equatable{
     required this.eventCity,
     required this.eventState,
     this.eventDisplayName,
+    this.eventWelcomeParagraph,
   });
 
   final DateTime eventDate;
@@ -14,6 +15,7 @@ class EventData extends Equatable{
   final String eventCity;
   final String eventState;
   late String? eventDisplayName;
+  late String? eventWelcomeParagraph;
 
   @override
   List<Object?> get props => [
@@ -22,5 +24,6 @@ class EventData extends Equatable{
     eventCity,
     eventState,
     eventDisplayName,
+    eventWelcomeParagraph,
   ];
 }

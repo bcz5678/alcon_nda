@@ -330,8 +330,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       var _savedPdf = await event.pdfViewerController
           .saveDocument(flattenOption: PdfFlattenOption.formFields);
 
-      print('nda_form_bloc -> onNDASubmitPdf -> ${_savedPdf}');
-
       emit(
           state.copyWith(
             savedPdf: _savedPdf,
@@ -395,6 +393,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       eventState: response["eventState"] as String,
       eventCity: response["eventCity"] as String,
       eventCongressConvention: response["eventCongressConvention"] as String,
+      eventWelcomeParagraph: response["eventWelcomeParagraph"] as String,
     );
   }
 

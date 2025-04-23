@@ -161,6 +161,8 @@ class PdfForm implements IPdfWrapper {
   /// Imports form value to the file with the specific [DataFormat].
   void importDataNew(Map<String, String> jsonMap, DataFormat dataFormat,
       [bool continueImportOnError = false]) {
+    print('pdf_form -> importDataNew -> entry');
+
     if (dataFormat == DataFormat.json) {
       _importDataJSONNew(jsonMap, continueImportOnError);
     }
@@ -664,7 +666,7 @@ class PdfForm implements IPdfWrapper {
           final int index =
           PdfFormFieldCollectionHelper.getHelper(fields).getFieldIndex(k);
           if (index == -1) {
-            throw ArgumentError('Incorrect field name. ${k}');
+            throw ArgumentError('pdf_form -> _importDataJSONNew -> Incorrect field name. ${k}, index: ${index}');
           }
           field = fields[index];
           if (field != null) {
@@ -976,11 +978,8 @@ class PdfFormHelper {
   /// internal method
   //Raises before stream saves.
   void beginSave(Object sender, SavePdfPrimitiveArgs? ars) {
-    print('pdf_form -> beginSave -> Entry');
 
     if (!isLoadedForm) {
-
-      print('pdf_form -> beginSave -> !isLoadedForm');
 
       if (signatureFlags.length > 1 ||
           (signatureFlags.isNotEmpty &&
@@ -994,9 +993,6 @@ class PdfFormHelper {
             PdfDictionaryProperties.needAppearances, needAppearances);
       }
     } else {
-
-      print('pdf_form -> beginSave -> isLoadedForm else');
-
       int i = 0;
       if (signatureFlags.length > 1 ||
           (signatureFlags.isNotEmpty &&
@@ -1013,10 +1009,12 @@ class PdfFormHelper {
       }
       while (i < form.fields.count) {
         final PdfField field = form.fields[i];
+
         if (field is PdfSignatureField) {
           needAppearances = false;
         }
         final PdfFieldHelper helper = PdfFieldHelper.getHelper(field);
+
         if (helper.isLoadedField) {
           final PdfDictionary dic = helper.dictionary!;
           bool isSigned = false;
@@ -1036,10 +1034,12 @@ class PdfFormHelper {
               !helper.changed) {
             isNeedAppearance = true;
           }
+
           if (helper.flags.length > 1) {
             helper.changed = true;
             helper.setFlags(helper.flags);
           }
+
           int fieldFlag = 0;
           if (dic.containsKey(PdfDictionaryProperties.f)) {
             final IPdfPrimitive? flag =
@@ -1053,9 +1053,16 @@ class PdfFormHelper {
             kids = PdfCrossTable.dereference(
                 helper.dictionary![PdfDictionaryProperties.kids]) as PdfArray?;
           }
+
+          if(excludedFlattenList.contains(form.fields[i].name)) {
+            helper.flattenField = false;
+          } else {
+            helper.flattenField = true;
+          }
+
           if (helper.flattenField && fieldFlag != 6) {
 
-            print('pdf_form -> beginSave -> -> notExcluded!=6 -> ${field.name}');
+
 
             if (field.page != null || kids != null) {
               helper.draw();
@@ -1070,19 +1077,10 @@ class PdfFormHelper {
               isNeedAppearance ||
               (setAppearanceDictionary && !isSigned)) {
 
-            print('pdf_form -> beginSave -> starting beginSave again');
-            print('pdf_form -> helper.changed -> ${helper.changed}');
-            print('pdf_form -> isNeedAppearance -> ${isNeedAppearance}');
-            print('pdf_form -> setAppearanceDictionary  - > ${setAppearanceDictionary}');
-            print('pdf_form -> !isSigned -> ${!isSigned}');
-
-
             helper.beginSave();
           }
         } else {
-          if (helper.flattenField && !excludedFlattenList.contains(field.name)) {
-
-            print('pdf_form -> beginSave -> -> notExcluded6 -> ${field.name}');
+          if (helper.flattenField) {
             form.fields.remove(field);
             helper.draw();
             --i;

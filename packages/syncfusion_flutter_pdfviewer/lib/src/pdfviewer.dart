@@ -1211,6 +1211,7 @@ class SfPdfViewer extends StatefulWidget {
 /// Typically used to open and close the bookmark view.
 class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
   late BuildContext _contextBloc;
+  late bool _alreadyImportedData;
 
   late PdfViewerPlugin _plugin;
   late PdfViewerController _pdfViewerController;
@@ -1365,6 +1366,7 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
     }
 
     _contextBloc = widget.contextBloc!;
+    _alreadyImportedData = false;
     _transformationController = TransformationControllerExt()
       ..addListener(_updateScrollOffset);
     _plugin = PdfViewerPlugin();
@@ -1941,6 +1943,10 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
           onUndoOrRedo: _updateFormField,
         ),
       );
+
+      setState(() {
+        _alreadyImportedData = true;
+      });
     }
   }
 
@@ -2161,7 +2167,8 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
 
     // Flatten the form fields if the PdfFlattenOption is enabled.
     if (_pdfViewerController._flattenOption == PdfFlattenOption.formFields) {
-      if(_pdfViewerController._excludeFromFlattenList!.isNotEmpty) {
+
+      if(_pdfViewerController._excludeFromFlattenList != null && _pdfViewerController._excludeFromFlattenList!.isNotEmpty) {
         _document!.form.flattenAllFieldsExcluded(_pdfViewerController._excludeFromFlattenList!);
       } else {
         _document!.form.flattenAllFields();
@@ -5597,7 +5604,10 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
             _document!.form.exportData(_pdfViewerController._exportDataFormat);
         setState(() {});
       }
-    } else if (property == 'importFormData') {
+    } else if (property == 'importFormData' || property == 'importFormDataNew') {
+
+      print('property ${property} called');
+
       if (_document != null) {
           _document!.form.importDataNew(
           _pdfViewerController._importedFormJsonMap,
@@ -6924,7 +6934,7 @@ class PdfViewerController extends ChangeNotifier with _ValueChangeNotifier {
     _importedFormJsonMap = jsonMap;
     _importDataFormat = dataFormat;
     _continueImportOnError = continueImportOnError;
-    _notifyPropertyChangedListeners(property: 'importFormData');
+    _notifyPropertyChangedListeners(property: 'importFormDataNew');
   }
 
   /// Export the form data with the specified [DataFormat] and return the bytes

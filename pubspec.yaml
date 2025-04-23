@@ -61,12 +61,8 @@ dependencies:
     path: packages/syncfusion_flutter_pdfviewer
   syncfusion_pdfviewer_platform_interface:
     path: packages/syncfusion_flutter_pdfviewer_platform_interface
-  syncfusion_pdfviewer_macos:
-    path: packages/syncfusion_pdfviewer_macos
   syncfusion_pdfviewer_web:
     path: packages/syncfusion_pdfviewer_web
-  syncfusion_pdfviewer_windows:
-    path: packages/syncfusion_pdfviewer_windows
   syncfusion_flutter_core:
     path: packages/syncfusion_flutter_core
   syncfusion_flutter_signaturepad:
