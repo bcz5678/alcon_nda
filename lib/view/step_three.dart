@@ -106,10 +106,16 @@ class _StepThreeState extends State<StepThree> {
     });
   }
 
-  void onPdfLoaded() {
+  void onPdfLoaded() async {
     _pdfViewerController.importFormDataNew(
       formJsonMap,
       DataFormat.json,
+    );
+
+    await _pdfViewerController
+        .saveDocument(
+          flattenOption: PdfFlattenOption.formFields,
+    //excludeFromFlattenList: ["guestSignature"]
     );
   }
 

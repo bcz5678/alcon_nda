@@ -126,6 +126,14 @@ class PdfForm implements IPdfWrapper {
     _helper.flatten = true;
   }
 
+  /// Flatten all the fields available in the form exclding thiose in te frvided list
+  ///
+  /// The flatten will add at the time of saving the current document.
+  void flattenAllFieldsExcluded(List<String> excludedFlattenList) {
+    _helper.flattenExcluded = true;
+    _helper.excludedFlattenList = excludedFlattenList;
+  }
+
   /// Imports form value from base 64 string to the file with the specific [DataFormat].
   void importDataFromBase64String(String base64String, DataFormat dataFormat,
       [bool continueImportOnError = false]) {
@@ -656,7 +664,7 @@ class PdfForm implements IPdfWrapper {
           final int index =
           PdfFormFieldCollectionHelper.getHelper(fields).getFieldIndex(k);
           if (index == -1) {
-            throw ArgumentError('Incorrect field name.');
+            throw ArgumentError('Incorrect field name. ${k}');
           }
           field = fields[index];
           if (field != null) {
@@ -925,6 +933,10 @@ class PdfFormHelper {
 
   /// internal field
   bool flatten = false;
+
+  bool flattenExcluded = false;
+  List<String> excludedFlattenList = [];
+
   bool _isDefaultAppearance = false;
   PdfFormFieldCollection? _fields;
 
@@ -964,7 +976,12 @@ class PdfFormHelper {
   /// internal method
   //Raises before stream saves.
   void beginSave(Object sender, SavePdfPrimitiveArgs? ars) {
+    print('pdf_form -> beginSave -> Entry');
+
     if (!isLoadedForm) {
+
+      print('pdf_form -> beginSave -> !isLoadedForm');
+
       if (signatureFlags.length > 1 ||
           (signatureFlags.isNotEmpty &&
               !signatureFlags.contains(SignatureFlags.none))) {
@@ -977,6 +994,9 @@ class PdfFormHelper {
             PdfDictionaryProperties.needAppearances, needAppearances);
       }
     } else {
+
+      print('pdf_form -> beginSave -> isLoadedForm else');
+
       int i = 0;
       if (signatureFlags.length > 1 ||
           (signatureFlags.isNotEmpty &&
@@ -1034,6 +1054,9 @@ class PdfFormHelper {
                 helper.dictionary![PdfDictionaryProperties.kids]) as PdfArray?;
           }
           if (helper.flattenField && fieldFlag != 6) {
+
+            print('pdf_form -> beginSave -> -> notExcluded!=6 -> ${field.name}');
+
             if (field.page != null || kids != null) {
               helper.draw();
             }
@@ -1046,10 +1069,20 @@ class PdfFormHelper {
           } else if (helper.changed ||
               isNeedAppearance ||
               (setAppearanceDictionary && !isSigned)) {
+
+            print('pdf_form -> beginSave -> starting beginSave again');
+            print('pdf_form -> helper.changed -> ${helper.changed}');
+            print('pdf_form -> isNeedAppearance -> ${isNeedAppearance}');
+            print('pdf_form -> setAppearanceDictionary  - > ${setAppearanceDictionary}');
+            print('pdf_form -> !isSigned -> ${!isSigned}');
+
+
             helper.beginSave();
           }
         } else {
-          if (helper.flattenField) {
+          if (helper.flattenField && !excludedFlattenList.contains(field.name)) {
+
+            print('pdf_form -> beginSave -> -> notExcluded6 -> ${field.name}');
             form.fields.remove(field);
             helper.draw();
             --i;
@@ -1123,14 +1156,14 @@ class PdfFormHelper {
     while (i < _fields!.count) {
       final PdfField field = _fields![i];
       final PdfFieldHelper helper = PdfFieldHelper.getHelper(field);
-      if (helper.flattenField) {
+      if (helper.flattenField && !excludedFlattenList.contains(field.name) ) {
         int? fieldFlag = 0;
         final PdfDictionary fieldDictionary = helper.dictionary!;
         if (fieldDictionary.containsKey(PdfDictionaryProperties.f)) {
           fieldFlag = (fieldDictionary[PdfDictionaryProperties.f]! as PdfNumber)
               .value as int?;
         }
-        if (fieldFlag != 6) {
+        if (fieldFlag != 6 ) {
           _addFieldResourcesToPage(field);
           helper.draw();
           _fields!.remove(field);

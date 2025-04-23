@@ -2161,7 +2161,11 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
 
     // Flatten the form fields if the PdfFlattenOption is enabled.
     if (_pdfViewerController._flattenOption == PdfFlattenOption.formFields) {
-      _document!.form.flattenAllFields();
+      if(_pdfViewerController._excludeFromFlattenList!.isNotEmpty) {
+        _document!.form.flattenAllFieldsExcluded(_pdfViewerController._excludeFromFlattenList!);
+      } else {
+        _document!.form.flattenAllFields();
+      }
     }
 
     // Save and reload the document
@@ -6587,6 +6591,9 @@ class PdfViewerController extends ChangeNotifier with _ValueChangeNotifier {
   /// Flatten option
   PdfFlattenOption _flattenOption = PdfFlattenOption.none;
 
+  /// Flatten option
+ List<String>? _excludeFromFlattenList = <String>[];
+
   /// Continue the form data import on error
   bool _continueImportOnError = false;
 
@@ -6937,8 +6944,10 @@ class PdfViewerController extends ChangeNotifier with _ValueChangeNotifier {
   /// option for flattening form fields.
   Future<List<int>> saveDocument({
     PdfFlattenOption flattenOption = PdfFlattenOption.none,
+    List<String>? excludeFromFlattenList,
   }) {
     _flattenOption = flattenOption;
+    _excludeFromFlattenList = excludeFromFlattenList;
     _notifyPropertyChangedListeners(property: 'saveDocument');
     return _savedDocumentBytes;
   }

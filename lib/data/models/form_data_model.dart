@@ -67,7 +67,7 @@ class FormDataModel extends Equatable {
       'signGuestTitle': guestData.title ?? "",
       'signClientTitle': clientData.clientTitle,
       'signGuestDate': DateFormat.yMd().format(DateTime.now()).toString(),
-      'signClientDate': '${DateFormat.MMMMd().format(clientData.clientDate)}, ${DateFormat.y().format(clientData.clientDate)}'.toUpperCase(),
+      'signClientDate': '${DateFormat.yMd().format(clientData.clientDate)}'.toString(),
     };
 
     return jsonData;
@@ -81,7 +81,7 @@ class FormDataModel extends Equatable {
     String returnData = "";
 
     for(var index = 0; index < guestData.experiencesSelected!.length; index++){
-      returnData  = returnData + "    • ${guestData.experiencesSelected![index]}\n";
+      returnData  = returnData + "    • ${guestData.experiencesSelected![index].name}\n";
     }
     return returnData;
   }
