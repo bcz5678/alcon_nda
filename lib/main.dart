@@ -1,5 +1,6 @@
 import 'package:alcon_flex_nda/app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -48,6 +49,9 @@ class AlcornNdaApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        shortcuts: {
+          LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
+        },
         debugShowCheckedModeBanner: false,
         title: "Alcon NDA App",
         theme: ThemeData.light(),
