@@ -100,6 +100,20 @@
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    const version = '4.10.38';
+    const pdfjsLibUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.min.mjs`;
+    const pdfjsWorkerUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.mjs`;
+    const loadPdfJs = async () => {
+      try {
+        const pdfjsLib = await import(pdfjsLibUrl);
+        pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
+      } catch (error) {
+
+      }
+    };
+    loadPdfJs();
+  </script>
 
   <noscript>
     <div class="js-disabled-content">

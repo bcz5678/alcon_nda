@@ -113,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return CustomScrollView(
+            primary: false,
             slivers: [
               SliverToBoxAdapter(
                 child: Center(

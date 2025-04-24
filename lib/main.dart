@@ -49,9 +49,6 @@ class AlcornNdaApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
-        shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
-        },
         debugShowCheckedModeBanner: false,
         title: "Alcon NDA App",
         theme: ThemeData.light(),
