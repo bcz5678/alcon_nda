@@ -18,10 +18,10 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Alcon NDA Form">
 
   <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="alcon_nda">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
@@ -29,24 +29,115 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>alcon_nda</title>
+  <title>ALcon NDA Form</title>
   <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = '{{flutter_service_worker_version}}';
+  </script>
+
+  <style>
+    body{
+      background: #FFFFFF;
+      width: 100wh;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0px;
+    }
+
+    .main-content{
+      padding:0
+      margin: 0;
+      width: min(550px, 90%);
+      animation: pulse 2s infinite;
+      transition: opacity .4s ease-out;
+    }
+
+    @keyframes pulse {
+      0% {transform: scale(0.9);}
+      70% {transform: scale(1.0);}
+      100% {transform: scale(0.9);}
+    }
+
+    #main-logo{
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+  </style>
+
+  <noscript>
+    <style>
+      body{
+        background: white;
+        width: 100wh;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0px;
+      }
+
+      .js-disabled-content{
+        padding: 0;
+        margin: auto;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: min(550px, 90%);
+      }
+
+      .main-content {
+        display:none;
+      }
+    </style>
+  </noscript>
+
+
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
-  <script>
-    const version = '4.10.38';
-    const pdfjsLibUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.min.mjs`;
-    const pdfjsWorkerUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.mjs`;
-    const loadPdfJs = async () => {
-      try {
-        const pdfjsLib = await import(pdfjsLibUrl);
-        pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
-      } catch (error) {
 
-      }
-    };
-    loadPdfJs();
+  <noscript>
+    <div class="js-disabled-content">
+      <p> Unfortunately, the ALcon NDA Form requires your browser to have Javascript enabled to play. Please speak to a support agent if you are unable to access it.</p>
+    </div>
+  </noscript>
+
+  <script>
+    function delay(time) {
+      return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    window.addEventListener('load', function(ev) {
+      //add listener for splash-logo animation
+      var loaderContent = document.querySelector("#loader-content");
+
+
+      // Download main.dart.js
+      _flutter.loader.load({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(async function(appRunner) {
+              loaderContent.style.opacity = "0";
+              await delay(400);
+              await appRunner.runApp();
+          });
+        }
+      });
+    });
   </script>
+
+  <div class="main-content" id="loader-content">
+    <img id="main-logo" src="alcon-logo.png" alt="Alcon NDA Form" />
+  </div>
+
 </body>
 </html>
+
+
