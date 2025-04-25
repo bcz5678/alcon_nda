@@ -35,8 +35,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     on<NDAFormExperienceSelectAll>(onNDAFormExperienceSelectAll);
     on<NDAFormExperienceUnselectAll>(onNDAFormExperienceUnselectAll);
     on<NDAFormAddSignature>(onNDAFormAddSignature);
-    on<NDASavePdf>(onNDASavePdf);
-    on<NDASubmitPdf>(onNDASubmitPdf);
+    on<NDASaveAndSubmitPdf>(onNDASaveAndSubmitPdf);
   }
 
   ///
@@ -271,6 +270,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       _selectedExperiences.add(
           ExperienceData(
             name: item["name"] as String,
+            dates:item["dates"] as String,
             description: item["description"] as String,
           )
       );
@@ -315,8 +315,8 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
   }
 
 
-  void onNDASavePdf(
-      NDASavePdf event,
+  void onNDASaveAndSubmitPdf(
+      NDASaveAndSubmitPdf event,
       Emitter<NDAFormState> emit
       ) async{
 
@@ -325,6 +325,8 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
         pdfSubmissionStatus: PdfSubmissionStatus.building,
       )
     );
+
+    print('nda_form_bloc -> onNDASavePdf');
 
     try {
       var _savedPdf = await event.pdfViewerController
@@ -336,24 +338,26 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
           )
       );
 
-      NDASubmitPdf();
+      print('nda_form_bloc -> onNDASavePdf -> postSaveAnd Emit');
+
+
+      NDASubmitPdf(emit);
 
     } catch(e) {
+
       emit(
           state.copyWith(
             pdfSubmissionStatus: PdfSubmissionStatus.error,
           )
       );
     }
-
   }
 
-  void onNDASubmitPdf(
-      NDASubmitPdf event,
+  void NDASubmitPdf(
       Emitter<NDAFormState> emit
       ) {
 
-    print('nda_form_bloc -> onNDASubmitForm -> Entry');
+    print('nda_form_bloc -> onNDASubmitPdf -> Entry');
 
     emit(
         state.copyWith(
@@ -363,9 +367,8 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
 
     print('nda_form_bloc -> onNDASubmitPdf -> ${state.pdfSubmissionStatus}');
 
+
     try{
-
-
       emit(
           state.copyWith(
             pdfSubmissionStatus: PdfSubmissionStatus.submitted,
@@ -377,10 +380,6 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     } catch(e) {
 
     }
-
-
-
-
   }
 
 

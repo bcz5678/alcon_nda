@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:alcon_flex_nda/bloc/nda_form_bloc.dart';
 import 'package:alcon_flex_nda/widgets/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -55,6 +56,8 @@ class _StepThreeState extends State<StepThree> {
 
     print('step_three -> onPressedFooterFunction -> Entry');
 
+    context.goNamed('submitPdf', extra: _pdfViewerController);
+    /*
     showDialog(
       context: context,
       builder: (context) {
@@ -66,6 +69,9 @@ class _StepThreeState extends State<StepThree> {
       barrierColor: Color.fromRGBO(0, 0, 0, 0.2),
       barrierDismissible: false,
     );
+     */
+
+
   }
 
   void onBackFooterFunction() {

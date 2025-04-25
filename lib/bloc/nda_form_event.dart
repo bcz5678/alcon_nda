@@ -147,19 +147,11 @@ class NDAFormAddSignature extends NDAFormEvent {
   List<Object?> get props => [signature];
 }
 
-class NDASavePdf extends NDAFormEvent {
-  const NDASavePdf(this.pdfViewerController);
+class NDASaveAndSubmitPdf extends NDAFormEvent {
+  const NDASaveAndSubmitPdf(this.pdfViewerController);
 
   final PdfViewerController pdfViewerController;
 
   @override
   List<Object?> get props => [pdfViewerController];
-}
-
-
-class NDASubmitPdf extends NDAFormEvent {
-  const NDASubmitPdf();
-
-  @override
-  List<Object?> get props => [];
 }

@@ -80,14 +80,12 @@ class FormDataModel extends Equatable {
   }
 
 
-
-
-
   String? buildExperiencesFormData() {
-    String returnData = "";
+    print(guestData.experiencesSelected!);
+    String returnData = "\n";
 
     for(var index = 0; index < guestData.experiencesSelected!.length; index++){
-      returnData  = returnData + "    • ${guestData.experiencesSelected![index].name}\n";
+      returnData  = returnData + '    • ${guestData.experiencesSelected![index].name}\n    • Dates: ${guestData.experiencesSelected![index].dates}\n\n';
     }
     return returnData;
   }
