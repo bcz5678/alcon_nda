@@ -154,7 +154,7 @@ class _StepThreeState extends State<StepThree> {
                               onTextSelectionChanged: null,
                             ) */
                               child: SfPdfViewer.asset(
-                                'assets/files/alcon_base_template_clean.pdf',
+                                'assets/files/CDA_2025_ASCRS.pdf',
                                 contextBloc: context,
                                 controller: _pdfViewerController,
                                 scrollDirection: PdfScrollDirection.vertical,

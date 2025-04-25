@@ -243,7 +243,8 @@ class _StepTwoState extends State<StepTwo> {
                                                             state.experiencesData![index].name,
                                                             style: UITextStyle.headline4,
                                                           ),
-                                                          if(state.experiencesData![index].description != null)
+                                                          if(state.experiencesData![index].description != null &&
+                                                              state.experiencesData![index].description != "")
                                                             Text(state.experiencesData![index].description!)
                                                         ],
                                                       ),

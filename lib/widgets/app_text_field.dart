@@ -21,6 +21,7 @@ class AppTextField extends StatelessWidget {
     this.errorText,
     this.prefix,
     this.suffix,
+    this.textCapitalization,
     this.keyboardType,
     this.onChanged,
     this.onSubmitted,
@@ -62,6 +63,9 @@ class AppTextField extends StatelessWidget {
 
   /// A widget that appears after the editable part of the text field.
   final Widget? suffix;
+
+  /// Define the text-capitalization for input
+  final TextCapitalization? textCapitalization;
 
   /// The type of keyboard to use for editing the text.
   /// Defaults to [TextInputType.text] if maxLines is one and
@@ -105,6 +109,7 @@ class AppTextField extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w300,
                 ),
+            textCapitalization: textCapitalization ?? TextCapitalization.sentences,
             onFieldSubmitted: onSubmitted,
             decoration: InputDecoration(
               hintText: hintText,

@@ -24,22 +24,25 @@ class FormDataModel extends Equatable {
     var experiencesList = buildExperiencesFormData();
 
     Map<String, dynamic> jsonData = {
+      /*
       'effectiveDate': '${DateFormat.MMMMd().format(
           clientData.clientDate)}, ${DateFormat.y().format(
           clientData.clientDate)}'.toUpperCase(),
+
+       */
       'guestFullName': guestData.fullName!.toUpperCase(),
       'guestTitle': guestData.title!.toUpperCase(),
       'address': '${guestData.address_1}${guestData.address_2 != "" ? ", ${guestData.address_2.toString()}, " : ", " }${guestData.city}, ${guestData.state} ${guestData.zipcode}'.toUpperCase(),
       'experiencesList': experiencesList,
-      'convention': eventData.eventCongressConvention,
-      'state': eventData.eventState,
-      'city': eventData.eventCity,
+      //'convention': eventData.eventCongressConvention,
+      //'state': eventData.eventState,
+      //'city': eventData.eventCity,
       'signGuestFullName': guestData.fullName,
-      'signClientFullName': guestData.fullName,
+      //'signClientFullName': guestData.fullName,
       'signGuestTitle': guestData.title,
-      'signClientTitle': clientData.clientTitle,
+      //'signClientTitle': clientData.clientTitle,
       'signGuestDate': DateFormat.yMd().format(DateTime.now()).toString(),
-      'signClientDate': '${DateFormat.MMMMd().format(clientData.clientDate)}, ${DateFormat.y().format(clientData.clientDate)}'.toUpperCase(),
+      //'signClientDate': '${DateFormat.MMMMd().format(clientData.clientDate)}, ${DateFormat.y().format(clientData.clientDate)}'.toUpperCase(),
     };
 
     jsonString = jsonEncode(jsonData);
@@ -53,21 +56,24 @@ class FormDataModel extends Equatable {
     var experiencesList = buildExperiencesFormData();
 
     Map<String, String> jsonData = {
+      /*
       'effectiveDate': '${DateFormat.MMMMd().format(
           clientData.clientDate)}, ${DateFormat.y().format(
           clientData.clientDate)}'.toUpperCase(),
+
+       */
       'guestFullName': guestData.fullName!.toUpperCase(),
       'address': '${guestData.address_1}${guestData.address_2 != "" ? ", ${guestData.address_2.toString()}, " : ", " }${guestData.city}, ${guestData.state} ${guestData.zipcode}'.toUpperCase(),
       'experiencesList': experiencesList ?? "",
-      'convention': eventData.eventCongressConvention,
-      'state': eventData.eventState,
-      'city': eventData.eventCity,
+      //'convention': eventData.eventCongressConvention,
+      //'state': eventData.eventState,
+      //'city': eventData.eventCity,
       'signGuestFullName': guestData.fullName ?? "",
-      'signClientFullName': clientData.clientName ?? "",
+      //'signClientFullName': clientData.clientName ?? "",
       'signGuestTitle': guestData.title ?? "",
-      'signClientTitle': clientData.clientTitle,
+      //'signClientTitle': clientData.clientTitle,
       'signGuestDate': DateFormat.yMd().format(DateTime.now()).toString(),
-      'signClientDate': '${DateFormat.yMd().format(clientData.clientDate)}'.toString(),
+      //'signClientDate': '${DateFormat.yMd().format(clientData.clientDate)}'.toString(),
     };
 
     return jsonData;

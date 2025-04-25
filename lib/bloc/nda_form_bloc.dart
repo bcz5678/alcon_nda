@@ -405,6 +405,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       returnList.add(
           ExperienceData(
             name: item["name"] as String,
+            dates: item["dates"] as String,
             description: item["description"] as String,
           )
       );
