@@ -36,6 +36,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     on<NDAFormExperienceUnselectAll>(onNDAFormExperienceUnselectAll);
     on<NDAFormAddSignature>(onNDAFormAddSignature);
     on<NDASaveAndSubmitPdf>(onNDASaveAndSubmitPdf);
+    on<NDAResetApp>(onNDAResetApp);
   }
 
   ///
@@ -347,7 +348,7 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
 
       emit(
           state.copyWith(
-            pdfSubmissionStatus: PdfSubmissionStatus.error,
+            pdfSubmissionStatus: PdfSubmissionStatus.submissionError,
           )
       );
     }
@@ -378,9 +379,42 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
       print('nda_form_bloc -> onNDASubmitPdf -> ${state.pdfSubmissionStatus}');
 
     } catch(e) {
+      emit(
+          state.copyWith(
+            pdfSubmissionStatus: PdfSubmissionStatus.submissionError,
+          )
+      );
+    }
+  }
+
+
+  void onNDAResetApp(
+      NDAResetApp event,
+      Emitter<NDAFormState> emit
+      ) {
+    try{
+      emit(
+          state.copyWith(
+            formzSubmissionStatus: FormzSubmissionStatus.initial,
+            formStepCurrent: NDAFormStep.start,
+            pdfSubmissionStatus: PdfSubmissionStatus.waiting,
+            fullNameInput: FullNameInput.pure(),
+            titleInput: TitleInput.pure(),
+            address1Input: Address1Input.pure(),
+            address2Input: Address2Input.pure(),
+            cityInput: CityInput.pure(),
+            stateAbbrInput: StateAbbrInput.pure(),
+            zipcodeInput: ZipcodeInput.pure(),
+            guestData: GuestData(),
+            selectedExperiences: [],
+            isSigned: false,
+          )
+      );
+    } catch(e) {
 
     }
   }
+
 
 
   EventData getEventDataFromLocal() {

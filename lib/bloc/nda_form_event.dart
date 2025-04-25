@@ -155,3 +155,11 @@ class NDASaveAndSubmitPdf extends NDAFormEvent {
   @override
   List<Object?> get props => [pdfViewerController];
 }
+
+class NDAResetApp extends NDAFormEvent {
+  const NDAResetApp();
+
+
+  @override
+  List<Object?> get props => [];
+}

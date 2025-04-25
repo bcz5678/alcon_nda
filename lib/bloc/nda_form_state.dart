@@ -12,7 +12,7 @@ enum PdfSubmissionStatus {
   building,
   submitting,
   submitted,
-  error,
+  submissionError,
 }
 
 class NDAFormState extends Equatable{

@@ -1,4 +1,5 @@
 import 'package:alcon_flex_nda/data/data.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -11,6 +12,7 @@ import 'package:alcon_flex_nda/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -159,6 +161,12 @@ class _StepThreeState extends State<StepThree> {
                               initialZoomLevel: 1.0,
                               onTextSelectionChanged: null,
                             ) */
+                              child: SfTheme(
+                                data: SfThemeData(
+                                  pdfViewerThemeData: SfPdfViewerThemeData(
+                                    progressBarColor: AppColors.crystalBlue,
+                                  )
+                                ),
                               child: SfPdfViewer.asset(
                                 'assets/files/CDA_2025_ASCRS.pdf',
                                 contextBloc: context,
@@ -168,6 +176,7 @@ class _StepThreeState extends State<StepThree> {
                                 onTextSelectionChanged: null,
                                 onDocumentLoaded: (details) => onPdfLoaded(),
                               ),
+                            ),
                           ),
                           /*
                           Padding(

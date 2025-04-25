@@ -19,7 +19,7 @@ class FullNameInput extends FormzInput<String, FullNameInputValidationError> {
   ///   .{8,}             // Must be at least 8 characters in length
   /// $'
   static final RegExp _fullNameInputRegExp = RegExp(
-    r'^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$',
+    r'^(?=.*?[A-Z])(?=.*?[a-z]).{4,}$',
   );
 
   /// Function: Password input Validator check

@@ -15,7 +15,7 @@ import 'firebase_options.dart';
 final _router = GoRouter(
   routes: [
     GoRoute(
-      name: '/',
+      name: 'home',
       path: '/',
       builder: (context, state) => HomePage(),
     ),
