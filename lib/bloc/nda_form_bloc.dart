@@ -2,8 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:aws_s3_upload_lite/aws_s3_upload_lite.dart';
+import 'package:file/file.dart';
+import 'package:file/memory.dart';
 import 'package:alcon_flex_nda/data/data.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
@@ -339,10 +343,19 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
           )
       );
 
+
+      print('nda_form_bloc -> onNDASavePdf -> postSave');
+      File _memoryPdfFile = await createMemoryPdfFile(_savedPdf);
+
+      print(_memoryPdfFile);
+
       print('nda_form_bloc -> onNDASavePdf -> postSaveAnd Emit');
 
 
-      NDASubmitPdf(emit);
+      NDASubmitPdf(
+        _memoryPdfFile,
+        emit
+      );
 
     } catch(e) {
 
@@ -354,9 +367,10 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
     }
   }
 
-  void NDASubmitPdf(
+  Future<void> NDASubmitPdf(
+      File memoryPdfFile,
       Emitter<NDAFormState> emit
-      ) {
+      ) async {
 
     print('nda_form_bloc -> onNDASubmitPdf -> Entry');
 
@@ -370,6 +384,13 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
 
 
     try{
+
+      await uploadAWSByFile(
+          memoryPdfFile
+      );
+
+
+
       emit(
           state.copyWith(
             pdfSubmissionStatus: PdfSubmissionStatus.submitted,
@@ -458,40 +479,26 @@ class NDAFormBloc extends Bloc<NDAFormEvent, NDAFormState> {
   }
 
 
-  /*
-  Future<void> loginToDrive() async {
-    final googleSignIn = signIn.GoogleSignIn.standard(scopes: [drive.DriveApi.driveScope]);
-    final signIn.GoogleSignInAccount? account = await googleSignIn.signIn();
-    Map<String, String>? _authHeaders = await account?.authHeaders;
+  Future<void> uploadAWSByFile(File memoryPdfFile) async {
+    String response = await AwsS3.uploadUint8List(
+        accessKey: awsAccessKey,
+        secretKey: awsSecretKey,
+        file: memoryPdfFile.readAsBytesSync(),
+        bucket: "alcon-signed",
+        region: "us-east-1",
+        destDir: 'nda',
+        filename: "${state.guestData!.fullName!} - ${state.eventData!.eventDisplayName}.pdf",
+      useSSL: false,
+    );
+
+    print(response);
   }
 
-  Future<void> uploadToDrive({
-    required List<int?> pdfFile,
-  }) async {
-
-    //final Directory directory = await getApplicationDocumentsDirectory();
-    final File file1 = File('${directory.path}/my_file.txt');
-    //file1.writeAsStringSync(jsonEncode(humanList));
-
-    var client = GoogleAuthClient(authHeaders);
-    var ga = drive.DriveApi(client);
-    var response;
-
-    drive.File fileToUpload = drive.File();
-    //pre defined string variable for the file name
-    fileToUpload.name = fileName;
-    try {
-      response = await ga.files.create(
-        fileToUpload,
-        uploadMedia: drive.Media(file1.openRead(), file1.lengthSync()),
-      );
-    } catch (e) {
-      print(e);
-    }
-
-   */
-}
-
-
-
+  Future<File> createMemoryPdfFile(List<int> _pdfFile) async {
+    final FileSystem fs = MemoryFileSystem();
+    final Directory tmp = await fs.systemTempDirectory.createTemp('example_');
+    final File outputFile = tmp.childFile('tmpPdfFile');
+    await outputFile.writeAsBytes(_pdfFile);
+    return outputFile;
+  }
 
